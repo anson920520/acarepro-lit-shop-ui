@@ -205,17 +205,17 @@
 	margin: 30upx;
 	padding-left: 20upx;	
 	position: relative;
-	&::before {
-		display: block;
-		content: "";
-		width: 10upx;
-		height: 10upx;
-		background: #FF9900;
-		border-radius: 50%;
-		position: absolute;
-		left: 0upx;
-		top: 15upx;
-	}
+	// &::before {
+	// 	display: block;
+	// 	content: "";
+	// 	width: 10upx;
+	// 	height: 10upx;
+	// 	background: #FF9900;
+	// 	border-radius: 50%;
+	// 	position: absolute;
+	// 	left: 0upx;
+	// 	top: 15upx;
+	// }
 }
 .iKnow {
 	border-top: solid #333 1px;
@@ -325,13 +325,16 @@
 		
 		<pop ref="pop">
 			<view class="msgMain">
-				<view class="bold ju mt20">优惠政策</view>
+				<view class="bold ju mt20">通知</view>
 				<view >
-					<view class="msgItem">金格、银格、铜格、黑格系列铁罐 买10送2 (每240升送48升) 活动优惠</view>
+					<!-- <view class="msgItem">金格、银格、铜格、黑格系列铁罐 买10送2 (每240升送48升) 活动优惠</view>
 					<view class="msgItem">橙罐系列铁罐 买10送1 (每240升送24升) 活动优惠</view>
 					<view class="pm">
 						<image class="width30" src="../../static/img/attention.png" mode=""></image>
 						<text>注意：1升产品均为12瓶装，需购买2箱1升装产品计为优惠政策的1箱.</text>
+					</view> -->
+					<view class="msgItem">
+						我司于5月1日-5月5日放假，在假期期间下的订单，于6号正常上班后安排发货，请知悉！
 					</view>
 				</view>
 				<view class="iKnow" @click="iKnow">
@@ -363,7 +366,6 @@
 		},
 		onLoad() {
 			this.getCate()
-			// uni.setStorageSync('userId',2)
 		},
 		computed: {
 			x () { return this.$store.state.x },

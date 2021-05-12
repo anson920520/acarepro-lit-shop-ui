@@ -2,6 +2,15 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			let route = this.$route
+			console.log(route)
+			if (route.path != "/pages/login/login") {
+				if (!uni.getStorageSync('userId')) {
+					uni.redirectTo({
+						url: "/pages/login/login"
+					})
+				}
+			}
 		},
 		onShow: function() {
 			console.log('App Show')

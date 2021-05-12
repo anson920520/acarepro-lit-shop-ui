@@ -1,8 +1,8 @@
 import axios from "axios"
 
-// axios.defaults.baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
+axios.defaults.baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
 // axios.defaults.baseURL = "/lwz/"
-axios.defaults.baseURL = "http://192.168.1.115:5005/api/v1/"
+// axios.defaults.baseURL = "http://192.168.1.115:5005/api/v1/"
 
 // window.imgUrl = "http://139.9.174.163/"
 window.imgUrl = "https://acarepro.online/IMGPATH/"

@@ -457,7 +457,7 @@ export default {
                 if (!this.createAt) {
                     return true
                 } else {
-                    return item.createTimestamp > this.createAt
+                    return item.createTimestamp >= this.createAt
                 }
             })
 
@@ -465,7 +465,7 @@ export default {
                 if (!this.updateAt) {
                     return true
                 } else {
-                    return item.createTimestamp < this.updateAt
+                    return item.createTimestamp <= (this.updateAt + 86400000)
                 }
             })
 
