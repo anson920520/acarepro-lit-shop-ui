@@ -126,6 +126,12 @@
             <template slot="company" slot-scope="{row}">
                 <div>{{users.find(u => u.ID==row.userID) ? users.find(u => u.ID==row.userID).company : "" }}</div>
             </template>
+            <template slot="logistics" slot-scope="{row}">
+                <div v-if="row.logistics_company" style="text-align: left;">
+                    <span>物流: {{row.logistics_company}}</span><br>
+                    <span>单号: {{row.logistics_num}}</span>
+                </div>
+            </template>
         </Table>
 
         <!-- 详情Modal -->
@@ -272,7 +278,7 @@ export default {
                 { title: "业务负责人", key: "sale", align: "center" },
                 { title: "下单日期", key: "createAt", align: "center" },
                 { title: "更新日期", key: "updateAt", align: "center" },
-                { title: "物流公司及单号", key: "logistics", align: "center" },
+                { title: "物流公司及单号", slot: "logistics", align: "center" },
                 { title: "总共箱数", key: "count", align: "center", width: 100 },
                 { title: "金额(￥)", key: "Total", align: "center", width: 100 },
                 { title: "订单状态", slot: "status", align: "center", width: 120 },

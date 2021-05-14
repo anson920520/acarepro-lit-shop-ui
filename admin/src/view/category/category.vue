@@ -38,8 +38,8 @@ export default {
         return {
             columns: [
                 { title: "系列名称",key: "Name", align: 'center' },
-                { title: "促销政策",key: "Desc", align: 'center' },
-                { title: "优惠数量",key: "Promotion", align: 'center' },
+                // { title: "促销政策",key: "Desc", align: 'center' },
+                // { title: "优惠数量",key: "Promotion", align: 'center' },
                 { title: "操作", slot: "action", align: 'center' }
             ],
             dataList: [],

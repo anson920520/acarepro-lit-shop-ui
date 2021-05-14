@@ -23,13 +23,13 @@
                     <input class="input" v-model="addForm.Name" />
                 </FormItem>
 
-                <FormItem label="促销政策" prop="Desc">
+                <!-- <FormItem label="促销政策" prop="Desc">
                     <input class="input" v-model="addForm.Desc" />
                 </FormItem>
 
                 <FormItem label="优惠数量" prop="Promotion">
                     <input class="input" v-model="addForm.Promotion" type="number" />
-                </FormItem>
+                </FormItem> -->
             </div>
         </Form>
         <br>
@@ -47,7 +47,7 @@ export default {
     data () {
         return {
             addForm: {
-                Name: '',Desc:"", Promotion: ""
+                Name: '',Desc:"default", Promotion: 0
             },
             id: "",
             rules: {
