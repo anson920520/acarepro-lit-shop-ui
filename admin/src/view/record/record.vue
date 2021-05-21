@@ -86,7 +86,7 @@
         <h4 class="ju">订单记录</h4>
         <br>
         <div class="flex-end">
-            当月总金额:<span class="bold redColor"> ￥{{format(total)}}</span>
+            {{totalText}}:<span class="bold redColor"> ￥{{format(total)}}</span>
         </div>
         <br>
 
@@ -294,6 +294,7 @@ export default {
             show: false,
             products: [],
             total: 0,
+            totalText: "当前总金额",
         }
     },
     created () {
@@ -308,22 +309,22 @@ export default {
             let D = new Date()
             let y = D.getFullYear()
             let m = D.getMonth() + 1
-            this.$axios({
-                url: "statistics/" + y + "-" + m,
-                // params: {
-                //     date: y + "-" + m
-                // }
-            }).then(res => {
-                console.log(res)
-                if (res.data[0]) {
-                    this.total = res.data[0]
-                } else {
-                    this.total = 0
-                }
-            }).catch(e => {
-                console.lgo(e)
-                this.total =0
-            })
+            // this.$axios({
+            //     url: "statistics/" + y + "-" + m,
+            //     // params: {
+            //     //     date: y + "-" + m
+            //     // }
+            // }).then(res => {
+            //     console.log(res)
+            //     if (res.data[0]) {
+            //         this.total = res.data[0]
+            //     } else {
+            //         this.total = 0
+            //     }
+            // }).catch(e => {
+            //     console.lgo(e)
+            //     this.total =0
+            // })
         },
         format (n) {
             n = Number(n)
@@ -474,6 +475,16 @@ export default {
                     return item.createTimestamp <= (this.updateAt + 86400000)
                 }
             })
+            this.total = 0
+            this.totalText = "所过滤订单总金额"
+            this.dataList.forEach(item => {
+                if (item.status == 1) {
+                    this.total += item.Total
+                }
+            })
+            if ((!this.userID) && (!this.createAt) && (!this.updateAt)) {
+                this.totalText = "当前总金额"
+            }
 
         },
         getUser () {
@@ -485,17 +496,22 @@ export default {
         },
         getData () {
             this.loading = true
+            this.total = 0
             this.$axios({
                 url: "order"
             }).then(res => {
                 this.loading = false
                 if (res.data) {
                     res.data.forEach(item => {
+                        this.totalText = "当前总金额"
+                        if (item.status == 1) {
+                            this.total += item.Total
+                        }
                         item.count = 0
                         item.Items.forEach(pro => {
                             item.count += Number(pro.Qty)
                         })
-                        item.Total = this.format(item.Total)
+                        // item.Total = this.format(item.Total)
                         item.logistics = item.logistics_company + " " + item.logistics_num
                         if (item.createAt) {
                             item.createTimestamp = new Date(item.createAt).getTime()
@@ -503,6 +519,7 @@ export default {
                         if (item.updateAt) {
                             item.updateTimestamp = new Date(item.updateAt).getTime()
                         }
+                        
                         
                     })
                     this.allData = this.dataList = res.data.reverse()
