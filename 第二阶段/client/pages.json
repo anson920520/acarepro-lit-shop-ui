@@ -1,0 +1,79 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path": "pages/products/products",
+			"style": {
+				"navigationBarTitleText": "分类"
+			}
+		},
+		{
+			"path": "pages/cart/cart",
+			"style": {
+				"navigationBarTitleText": "购物车"
+			}
+		},
+		{
+			"path": "pages/user/user",
+			"style": {
+				"navigationBarTitleText": "我"
+			}
+		}
+	    ,{
+            "path" : "pages/products/detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商品详情"
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "巴达尔资讯平台",
+		"navigationBarBackgroundColor": "#FFF",
+		"backgroundColor": "#EFEFF4"
+	},
+	"tabBar": {
+		"color":"#333333",
+		"selectedColor":"#EB664D",
+		"backgroundColor": "#FFFFFF",
+		"list":[
+			{
+				"pagePath":"pages/index/index",
+				"text":"首页",
+				"iconPath":"static/img/home.png",
+				"selectedIconPath":"static/img/home1.png"
+			},
+			{
+				"pagePath":"pages/products/products",
+				"text":"分类",
+				"iconPath":"static/img/cate.png",
+				"selectedIconPath":"static/img/cate1.png"
+			},
+			{
+				"pagePath":"pages/cart/cart",
+				"text":"购物车",
+				"iconPath":"static/img/cart.png",
+				"selectedIconPath":"static/img/cart1.png"
+			},
+			{
+				"pagePath":"pages/user/user",
+				"text": "我",
+				"iconPath":"static/img/user.png",
+				"selectedIconPath":"static/img/user1.png"
+			}
+		]
+	}
+}
