@@ -21,9 +21,13 @@ Vue.prototype.format = function (n) {
 	return num
 }
 
-// import Pop from "@/components/uni-popup/uni-popup.vue"
+import addSub from "@/components/addSub.vue"
+import Confirm from "@/components/confirm.vue"
+import uniPopup from "@/components/uni-popup/uni-popup.vue"
 
-// Vue.component("Pop", Pop)
+Vue.component("uniPopup", uniPopup)
+Vue.component("Confirm", Confirm)
+Vue.component("addSub", addSub)
 
 const app = new Vue({
 	store,

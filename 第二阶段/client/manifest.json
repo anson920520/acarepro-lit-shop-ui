@@ -67,5 +67,26 @@
     },
     "uniStatistics" : {
         "enable" : false
+    },
+    "h5" : {
+        "router" : {
+            "base" : ""
+        },
+        "devServer" : {
+            "port" : 8080,
+            "disableHostCheck" : true,
+            "proxy" : {
+                "/api" : {
+                    // "target" : "http://139.9.174.163:5005/api/v1/",
+                    "target" : "http://192.168.1.115:5005/",
+                    "changeOrigin" : true,
+                    "secure" : false,
+                    "pathRewrite" : {
+                        "^/api" : "/"
+                    }
+                }
+            },
+            "https" : false
+        }
     }
 }

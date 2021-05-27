@@ -213,6 +213,9 @@
 				this.$http({
 					url: "category",
 					method:"GET",
+					// header: {
+					// 	"Access-Control-Allow-Origin": "*"
+					// },
 					success (res) {
 						console.log(res)
 						if (res.data) {

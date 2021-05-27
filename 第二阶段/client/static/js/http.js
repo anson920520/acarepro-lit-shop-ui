@@ -1,5 +1,6 @@
 function http (options) {
-	// const baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
+	// const baseURL = "https://acarepro.online/store/qiaoyumin/login/little/"
+	// const baseURL = "/api/"
 	const baseURL = "http://192.168.1.115:5005/"
 	const imgUrl = "https://acarepro.online/IMGPATH/"
 	
@@ -37,6 +38,21 @@ function http (options) {
 							item.desc = {}
 						}
 					})
+				} else if (res.data instanceof Object) {
+					let item = res.data
+					try {
+						item.desc = JSON.parse(item.desc)
+						if (!item.desc.specification) {
+							item.desc.specification = {}
+						} else {
+							item.specification = item.desc.specification.val1 + item.desc.specification.val2 + " × " + item.desc.specification.val3 + item.desc.specification.val4
+						}
+						item.proNumber = item.desc.proNumber
+						item.viscosity = item.desc.viscosity
+					} catch {
+						console.log('cateh', item.ID, item)
+						item.desc = {}
+					}
 				}
 			}
 			
@@ -46,7 +62,7 @@ function http (options) {
 			options.fail ? options.fail(error) : null
 		},
 		complete (res) {
-			options.complete ? options.complete.complete(res) : null
+			options.complete ? options.complete(res) : null
 		},
 	})
 }
