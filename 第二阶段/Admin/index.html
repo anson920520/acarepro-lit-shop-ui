@@ -1,0 +1,254 @@
+<html>
+<head>
+    <title>翹宇下單系統訂單管理</title>
+</head>
+<body>
+<link rel="stylesheet" href="./css/bs.css">
+
+<div style="background: red;margin: auto;">
+        <img style="width:5%;margin: auto;text-align: center;" src="./KIUYU4x.png">
+    </div>
+    <br/>
+
+<div class="container">
+    <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home"><button id="activee"class="primary">訂單管理</button>  &nbsp; &nbsp;</a></li>
+            <li><a data-toggle="tab" href="#menu1"><button class="primary">新聞資訊發佈</button></a></li>
+        </ul>
+
+    <div class="tab-content">
+        <!--喬羽訂單-->
+        <div id="home" class="tab-pane fade active">
+            <section>
+                    <table class="table container" style="border:solid 1px lightgray;">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">訂單號碼</th>
+                            <th scope="col">下單帳號</th>
+                            <th scope="col">下單日期</th>
+                            <th scope="col">產品清單</th>
+                            <th scope="col">訂單價錢</th>
+                            <th scope="col">收貨狀態</th>
+                        </tr>
+                        </thead>
+                        <tbody id="orders">
+                        <tr>
+                            <th scope="row">加載訂單中...</th>
+                        </tr>
+                        </tbody>
+                    </table>
+            </section>
+        </div>
+        <!--潮語新聞資訊-->
+        <div id="menu1" class="tab-pane fade">
+            <div style="text-align:right;"><button  type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap"> + 創建新聞</button></div>
+            <!--創建視窗-->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">創建新新聞</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">標題:</label>
+                              <input type="text" class="form-control" id="news-title">
+                            </div>
+                             <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">簡述:</label>
+                              <input type="text" class="form-control" id="news-desc">
+                            </div>
+                             <div class="form-group">
+                              <label for="recipient-name" class="col-form-label">詳細內容:</label>
+                               <textarea class="form-control" id="news-content"></textarea>
+                            </div>
+                            <div class="form-group">
+                              <label for="message-text" class="col-form-label">圖片連結:</label>
+                              <input type="text" class="form-control" id="news-image">
+                            </div>
+                            <div class="form-group">
+                                 <label for="message-text" class="col-form-label">影片連結:</label>
+                                 <input type="text" class="form-control" id="news-video">
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                          <button type="button" id="createNewNews" class="btn btn-primary">創建新聞</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            <section>
+                    <table class="table container" style="border:solid 1px lightgray;">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">編號</th>
+                               <!-- <th scope="col">稿寫日期</th>!-->
+                                <th scope="col">新聞標題</th>
+                                <th scope="col">新聞介紹</th>
+                                <th scope="col">新聞內容</th>
+                                <th scope="col">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody id="newsList">
+                            <tr>
+                                <th scope="row">加載新聞中...</th>
+                            </tr>
+                            </tbody>
+                        </table>
+            </section>
+        </div>
+    </div>
+</div>
+</body>
+<script src="./js/jquery.min.js" ></script>
+<script src="./js/bs.js"></script>
+<script src="./js/popper.min.js"></script>
+
+<script>
+
+document.getElementById("activee").click(); 
+
+let res;
+let orderList = "";
+let newsList = "";
+
+var requestOptions = {
+  method: 'GET',
+  redirect: 'follow'
+};
+
+//Order
+fetch("http://139.9.174.163:5005/api/v1/order", requestOptions)
+  .then(response => response.text())
+  .then(function(result) {
+      
+      if(JSON.parse(result).length !== 0){
+        res = JSON.parse(result)
+        console.log(res.length)
+        for(let i = 0; i < res.length; i++){
+            let status;
+            let items = "";
+            //status
+            if(res[i].status == 0){
+                status = "<b style='background:red;color:white'>未取貨</b>";
+            }else{
+                status = "<b style='background:green;color:white'>已取貨</b>";
+            }
+                if(res[i].Items !== null){
+                for(let j = 0; j < res[i].Items.length; j++){
+                    items += res[i].Items[j].name + "| <span style='color:blue'>數量:"+ res[i].Items[j].Qty+ "</span><br/>"
+                }}else{
+                    items = "無效的訂單";
+                }
+
+            orderList = orderList +
+                '<tr>'+
+                    '<th scope="row">AC0000'+res[i].ID+'</th>'+
+                    '<td>TCAP0'+res[i].UserID+'</td>'+
+                    '<td>'+res[i].CreatedAt+'</td>'+
+                    '<td>'+items+'</td>'+
+                    '<td>¥'+res[i].Total+'</td>'+
+                    '<td>'+status+'</td>'+
+                '</tr>'
+            }
+
+        $("#orders").html(orderList);
+      }else{
+        $("#orders").html("'<tr><th colspan='6' style='text-align:center;' scope='row'>  暫時沒有訂單 </th></tr>");
+      }
+
+  })
+  .catch(error => console.log('error', error));
+
+//News
+fetch("http://139.9.174.163:5003/api/v1/news", requestOptions)
+  .then(response => response.text())
+  .then(function(result) {
+      
+      if(JSON.parse(result).length !== 0){
+        res = JSON.parse(result)
+        console.log(res.length)
+        for(let i = 0; i < res.length; i++){
+            newsList = newsList +
+                '<tr>'+
+                    '<th scope="row">000'+res[i].ID+'</th>'+
+                    //'<td>'+res[i].CreatedAt+'</td>'+
+                    '<td>'+res[i].Title+'</td>'+
+                    '<td>'+res[i].Description+'</td>'+
+                    '<td style="width:500px;"><div style="overflow-x: scroll;height: 100px;line-height:1.8rem;">'+res[i].Content+'</div></td>'+
+                    '<td class="del" data-target="'+res[i].ID+'"><button class="danger delNews" id="'+res[i].ID+'">刪除</button></td>'+
+                '</tr>'
+            }
+
+        $("#newsList").html(newsList);
+      }else{
+        $("#newsList").html("'<tr><th colspan='6' style='text-align:center;' scope='row'>  暫時沒有新聞 </th></tr>");
+      }
+
+  })
+  .catch(error => console.log('error', error));
+
+//Create News
+$("#createNewNews").click(function(){
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let raw = JSON.stringify({
+                            "Title":$("#news-title").val(),
+                            "Description":$("#news-desc").val(),
+                            "Content":$("#news-content").val(),
+                            "imageUrl":$("#news-image").val(),
+                            "videoUrl":$("#news-video").val()
+                        });
+    let requestOptions = {
+    method: 'POST',
+    //headers: myHeaders,
+    body: raw
+    //redirect: 'follow'
+    };
+
+    console.log(raw)
+
+    fetch("http://139.9.174.163:5003/api/v1/news/create", requestOptions)
+    .then(response => response.text())
+    .then(result => complete())
+    .catch(error => console.log('error', error));
+});
+
+function complete(){
+    alert("創建成功");
+    location.reload();
+}
+
+//Delete News
+$(document).on("click",".delNews",function(){
+    let id = $(this).attr('id');
+   
+    $.ajax({
+             type: "GET",
+             url: "http://139.9.174.163:5003/api/v1/delete/" + id,
+             header:{
+                "Access-Control-Allow-Origin":"*",
+                "Content-Type":"application/json",
+                "Access-Control-Allow-Credentials":"true",
+                "Access-Control-Allow-Methods":"GET, PUT, POST, DELETE, HEAD, OPTIONS",
+                "Access-Control-Allow-Headers":"X-Requested-With, origin, content-type, accept"
+             },
+             success: function(data){
+                deleted();
+             }
+        })
+
+});
+
+function deleted(){
+    alert("刪除成功");
+    location.reload();
+}
+</script>
+</html>
