@@ -57,7 +57,13 @@
     export default {
         name: "app",
         created () {
-            
+            let role = localStorage.getItem('role')
+            if (role) {
+                this.$store.commit("setState", {
+                    key: "role",
+                    value: Number(role)
+                })
+            }
         }
     }
 </script>

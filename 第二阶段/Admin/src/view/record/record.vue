@@ -95,19 +95,31 @@
                 <div class="al mr10">
                     <span class="label" style="width: 160px">企业名称 (业务负责人): </span>
                     <Select style="width: 300px;" v-model="userID">
-                        <Option :value="0">全部</Option>
+                        <Option value="-1">全部</Option>
                         <Option v-for="(item,i) in users" :key="i" :value="item.ID">{{item.company}} ({{item.sale}})</Option>
                     </Select>
                 </div>
 
                 <div class="al mr10">
                     <span class="label">起始时间: </span>
-                    <DatePicker type="date" format="yyyy/MM/dd" style="width: 150px;" @on-change="changeDate($event, 'createAt')"></DatePicker>
+                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 150px;" @on-change="changeDate($event, 'start_time')"></DatePicker>
                 </div>
 
                 <div class="al mr10">
                     <span class="label">结束时间: </span>
-                    <DatePicker type="date" format="yyyy/MM/dd" style="width: 150px;" @on-change="changeDate($event, 'updateAt')"></DatePicker>
+                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 150px;" @on-change="changeDate($event, 'end_time')"></DatePicker>
+                </div>
+
+                <div class="al mr10">
+                    <span class="label">订单状态: </span>
+                    <Select style="width: 100px;" v-model="status">
+                        <Option value="-1">全部</Option>
+                        <Option value="0">正在处理</Option>
+                        <Option value="2">待发货</Option>
+                        <Option value="3">待发货</Option>
+                        <Option value="4">待收货</Option>
+                        <Option value="1">已收货</Option>
+                    </Select>
                 </div>
             </div>
             
@@ -133,6 +145,10 @@
                 </div>
             </template>
         </Table>
+        <br>
+        <div class="flex-end">
+            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+        </div>
 
         <!-- 详情Modal -->
         <Modal v-model="show" :width="600">
@@ -283,18 +299,23 @@ export default {
                 { title: "金额(￥)", key: "Total", align: "center", width: 100 },
                 { title: "订单状态", slot: "status", align: "center", width: 120 },
             ],
-            userID: 0,
             allData: [],
             dataList: [],
             loading: false,
             users: [],
-            createAt: "",
-            updateAt: "",
+            start_time: "",
+            end_time: "",
             detail: {},
             show: false,
             products: [],
             total: 0,
             totalText: "当前总金额",
+            limit: 1,
+            offset: 20,
+            sale: "",
+            userID: "-1",
+            status: "-1",
+            count: 0,
         }
     },
     created () {
@@ -305,6 +326,10 @@ export default {
     },
     
     methods:{
+        chnagePage (e) {
+            this.limit = e
+            this.getData()
+        },
         getAccount () {
             let D = new Date()
             let y = D.getFullYear()
@@ -449,64 +474,85 @@ export default {
             // }
         },
         changeDate (e, key) {
-            let str = e.replace("-", "/").replace("-", "/")
-            console.log(e,str)
-            this[key] = new Date(str).getTime()
+            this[key] = e
         },
         filterData () {
-            if (this.userID) {
-                this.dataList = this.allData.filter(item => item.userID == this.userID)
-            } else {
-                this.dataList = this.allData
-            }
+            this.getData()
+            // if (this.userID) {
+            //     this.dataList = this.allData.filter(item => item.userID == this.userID)
+            // } else {
+            //     this.dataList = this.allData
+            // }
             
-            this.dataList = this.dataList.filter(item => {
-                if (!this.createAt) {
-                    return true
-                } else {
-                    return item.createTimestamp >= this.createAt
-                }
-            })
+            // this.dataList = this.dataList.filter(item => {
+            //     if (!this.createAt) {
+            //         return true
+            //     } else {
+            //         return item.createTimestamp >= this.createAt
+            //     }
+            // })
 
-            this.dataList = this.dataList.filter(item => {
-                if (!this.updateAt) {
-                    return true
-                } else {
-                    return item.createTimestamp <= (this.updateAt + 86400000)
-                }
-            })
-            this.total = 0
-            this.totalText = "所过滤订单总金额"
-            this.dataList.forEach(item => {
-                if (item.status == 1) {
-                    this.total += item.Total
-                }
-            })
-            if ((!this.userID) && (!this.createAt) && (!this.updateAt)) {
-                this.totalText = "当前总金额"
-            }
+            // this.dataList = this.dataList.filter(item => {
+            //     if (!this.updateAt) {
+            //         return true
+            //     } else {
+            //         return item.createTimestamp <= (this.updateAt + 86400000)
+            //     }
+            // })
+            // this.total = 0
+            // this.totalText = "所过滤订单总金额"
+            // this.dataList.forEach(item => {
+            //     if (item.status == 1) {
+            //         this.total += item.Total
+            //     }
+            // })
+            // if ((!this.userID) && (!this.createAt) && (!this.updateAt)) {
+            //     this.totalText = "当前总金额"
+            // }
 
         },
         getUser () {
             this.$axios({
                 url: "",
             }).then(res => {
+                res.data.forEach(item => {
+                    item.ID = String(item.ID)
+                })
                 this.users = res.data.reverse()
             })
         },
         getData () {
+            let status = Number(this.status)
+            if (status == -1) { status = '' }
+            let userID = Number(this.userID)
+            if (userID == -1) { userID = '' }
+            // status = '(0,1)'
+            if (status) {
+                if (status == 2) {
+                    status = '(2,3)'
+                } else {
+                    status = '(' + status +')'
+                }
+            } else {
+                status = ''
+            }
+            status = "(0,1)"
             this.loading = true
             this.total = 0
             this.$axios({
-                url: "order"
+                url: "getAdminOrder",
+                params: {
+                    offset: this.limit,
+                    limit: this.offset,
+                    start_time: this.start_time,
+                    end_time: this.end_time,
+                    status: status,
+                    user_id: userID
+                }
             }).then(res => {
                 this.loading = false
                 if (res.data.code == 200) {
                     res.data.data.forEach(item => {
-                        this.totalText = "当前总金额"
-                        if (item.status == 1) {
-                            this.total += item.Total
-                        }
                         item.count = 0
                         item.Items.forEach(pro => {
                             item.count += Number(pro.Qty)
@@ -521,18 +567,26 @@ export default {
                             item.UpdatedAt = new Date(item.UpdatedAt).toLocaleDateString()
                             item.updateTimestamp = new Date(item.updateAt).getTime()
                         }
+
                         
                         
                     })
                     this.allData = this.dataList = res.data.data.reverse()
+                    this.totalText = "当前总金额"
+                    this.total = res.data.all_total[0]
+                    this.count = res.data.all_count[0]
                 }
             }).catch(e => {
                 this.loading = false
                 console.log(e)
             })
         },
-        format (n) {
+        format (n, x=2) {
             n = Number(n)
+            if (x) {
+                let pow = Math.pow(10,x)
+                n = Math.ceil(n*pow) / pow
+            }
             var str = n.toString();
             str = str.replace(/[A-z]+/g, "")
             var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g

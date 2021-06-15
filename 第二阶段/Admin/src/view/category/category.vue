@@ -12,7 +12,7 @@
         <div class="sb">
             <div></div>
 
-            <Button class="blueBtn" @click="toAdd">新增系列</Button>
+            <Button class="blueBtn" @click="toAdd" v-if="role==1">新增系列</Button>
         </div>
         <br>
         <Table :columns="columns" :data="dataList" :loading="loading">
@@ -47,7 +47,13 @@ export default {
             id: "",
         }
     },
+    computed: {
+        role () { return this.$store.state.role }
+    },
     created () {
+        if (this.role == 2) {
+            this.columns.pop()
+        }
         this.getData()
     },
     methods:{

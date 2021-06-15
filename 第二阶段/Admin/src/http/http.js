@@ -1,5 +1,6 @@
 import axios from "axios"
 import router from "@/router/router"
+import {Modal} from "view-design"
 
 // window.baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
 // axios.defaults.baseURL = "/lwz/"
@@ -46,11 +47,18 @@ axios.interceptors.response.use(res => {
 
     return res
 }, e => {
-    console.log(123, e.response)
-    if (e.response.data) {
+    console.log(123,e, e.response)
+    if (e.response) {
         if (e.response.data.msg) {
             if (e.response.data.msg.includes("token")) {
-                router.replace("/login")
+                Modal.warning({
+                    title: "提示",
+                    content: "登录信息已过期，请重新登录！",
+                    onOk () {
+                        router.replace("/login")
+                    }
+                })
+                
             }
         }
     }
