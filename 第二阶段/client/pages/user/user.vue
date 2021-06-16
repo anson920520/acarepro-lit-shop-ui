@@ -79,7 +79,7 @@
 				<text>我的钱包</text>
 			</view>
 			<view class="point columns ju al p20">
-				<viwe class="width50upx ju al"><text class="color-6">0</text></viwe>
+				<view class="width50upx ju al"><text class="color-6">0</text></view>
 				
 				<view class="ju al">
 					<image src="../../static/img/coin.png" mode="widthFix" class="coin"></image>

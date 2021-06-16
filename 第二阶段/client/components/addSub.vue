@@ -1,24 +1,24 @@
 <style lang="less" scoped>
-	@import url("@/static/css/color.less");
 	.addsubrap {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		padding: 20upx 0;
-		width: 220upx;
+		width: 140upx;
 		// border: solid red 1px;
 	}
 	.addSubBtn {
 		// border: solid black 1px;
-		width: 50upx;
-		height: 50upx;
+		width: 30upx;
+		height: 30upx;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		font-size: 30upx;
 		font-weight: bold;
 		box-sizing: border-box;
-		background: @color-4;
+		border-radius: 50%;
+		background: #FF9900;
 		color: white;
 		transform: scale(1.2);
 		position: relative;
@@ -27,16 +27,13 @@
 		opacity: 0.6;
 	}
 	.numInput {
-		width: 110upx;
+		width: 80upx;
 		text-align: center;
-		background: #EEEEEE;
-		height: 60upx;
-		margin: 0 10upx;
 	}
 	.ADD::after,.SUB::after{
 		width: 15upx;
 		height: 4upx;
-		background: #333;
+		background: black;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -47,7 +44,7 @@
 	.SUB::before{
 		width: 15upx;
 		height: 4upx;
-		background: #333;
+		background: black;
 		position: absolute;
 		left: 50%;
 		top: 50%;
@@ -76,7 +73,7 @@
 		},
 		props: {
 			num: {
-				default: 1
+				default: 0
 			},
 			max: {
 				default:100
@@ -96,7 +93,7 @@
 					// 输入空白默认0
 					if (val == "") {
 						setTimeout(() => {
-							this.index = "1"
+							this.index = "0"
 						},100)
 					}
 				},
@@ -110,7 +107,7 @@
 				let num = e.detail.value
 				this.index = num*1 + ""
 				if (num == ""){
-					this.index = "1"
+					this.index = "0"
 				}
 				this.finish()
 			},

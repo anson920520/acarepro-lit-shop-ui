@@ -9,29 +9,29 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				// "navigationBarTitleText": "首页"
 			}
 		},
 		{
-			"path": "pages/products/products",
+			"path": "pages/publicity/publicity",
 			"style": {
-				"navigationBarTitleText": "分类"
+				// "navigationBarTitleText": "分类"
 			}
 		},
 		{
 			"path": "pages/cart/cart",
 			"style": {
-				"navigationBarTitleText": "购物车"
+				// "navigationBarTitleText": "购物"
 			}
 		},
 		{
 			"path": "pages/user/user",
 			"style": {
-				"navigationBarTitleText": "我"
+				// "navigationBarTitleText": "客户资料"
 			}
 		}
 	    ,{
-            "path" : "pages/products/detail",
+            "path" : "pages/cart/detail",
             "style" :                                                                                    
             {
                 "navigationBarTitleText": "商品详情"
@@ -57,10 +57,10 @@
 				"selectedIconPath":"static/img/home1.png"
 			},
 			{
-				"pagePath":"pages/products/products",
-				"text":"分类",
-				"iconPath":"static/img/cate.png",
-				"selectedIconPath":"static/img/cate1.png"
+				"pagePath":"pages/publicity/publicity",
+				"text":"宣传素材",
+				"iconPath":"static/img/gift.png",
+				"selectedIconPath":"static/img/gift1.png"
 			},
 			{
 				"pagePath":"pages/cart/cart",

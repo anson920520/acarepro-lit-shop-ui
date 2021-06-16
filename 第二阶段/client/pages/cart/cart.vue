@@ -1,37 +1,164 @@
+<style lang="less" scoped>
+@import url("@/static/css/color.less");
+
+.s-label {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	// border: solid red 1px;
+	pointer-events: none;
+}
+.s-ico {
+	width: 30upx;
+	height: 30upx;
+	margin-right: 10upx;
+}
+.c-item-wrap {
+	// border: solid red 1px;
+	padding: 20upx 0;
+	display: inline-block;
+	width: 190upx;
+	text-align:center;
+}
+.c-item {
+	display: inline-block;
+	padding:13upx 0upx;
+	// margin: 20upx;
+}
+.categories {
+	white-space: nowrap;
+}
+.p-item {
+	border: solid #000 1px;
+	min-height: 100upx;
+	margin-left: 4%;
+	margin-bottom: 2%;
+	padding-bottom: 15upx;
+	border-radius: 20upx;
+	width: 690upx;
+}
+.pl20 {
+	width: 102%;
+}
+.act {
+	color: @color-6 !important;
+	border-bottom: solid 2px @color-6 !important;
+}
+.flex10 {
+	flex: 10;
+	// border: solid
+}
+.height100 {
+	height: 100%;
+}
+.pro-img {
+	width: 25%;
+	height: 200upx;
+}
+.pro-main {
+	width: 75%;
+}
+.height2 {
+	height: 70upx;
+	// border: solid red 1px;
+}
+.mb10 {
+	margin-top: 15upx;
+	padding: 0 15upx;
+}
+.loading {
+	position: relative;
+	&::after {
+		display: block;
+		content: "";
+		width: 40upx;
+		height: 40upx;
+		border: solid 3px #ff9900;
+		border-top: solid 3px transparent;
+		border-radius: 50%;
+		position: absolute;left:43%;
+		top:-180upx;
+		animation: rotate 1s linear infinite;
+	}
+}
+.height0 {
+	height: 0;
+}
+.page-title {
+	padding: 20upx;
+}
+.width70 {
+	width: 70%;
+}
+.width30 {
+	width: 30%;
+}
+
+</style>
+
 <template>
-	<view>
-		<view class="bg-2 pb130">
-			<view v-for="(item,i) in dataList" :key="i" class="cart-items al">
-				<view>
-					<view @click="changeCheck(i,item.check)" :class="['myCheckBox',{checked: item.check}]"></view>
-				</view>
-				<image class="pro-img" src="../../static/img/cate1.png" mode="aspectFill"></image>
-				<view class="flex10">
-					<view class="c1"><text>名字</text> </view>
-					<view class="c1 size25 color-5"><text>规格: 1L* 24</text> </view>
-					<view class="sb al">
-						<text>$111</text>
-						<addSub :num="item.Qty" @changeNum="changeNum($event, i)"></addSub>
+	<view class="height100 bg-2">
+		<view class="columns height100">
+			<view>
+				<view class="ju page-title"><text>产品清单</text></view>
+				<scroll-view class="bg-2 categories" scroll-x scroll-with-animation :scroll-left="x">
+					<view class="c-item-wrap" :id="'cate' + i"
+						v-for="(item,i) in categories" :key="item.Name">
+						<view :class="['c-item', { act: index==i }]" 
+							@click="clickNav(item,i)"
+							>{{item.Name}}</view>
 					</view>
-				</view>
+					
+				</scroll-view>
 			</view>
-		</view> 
-		
-		<view class="bottomBar sb">
-			<view class="al p20">
-				<view @click="allCheck=!allCheck" :class="['myCheckBox',{checked: allCheck}]"></view>
-				<text class="p20">全选</text>
-				<text class="p20 color-7">￥100</text>
-			</view>
-			<view class="al">
-				<view class="b-btn bg1 ju al color-2 op" v-if="!edit" @click="edit=true">编辑</view>
-				<view class="b-btn bg1 ju al color-2 op" v-else @click="edit=false">完成</view>
+			
+			<view class="flex10">
+				<swiper :indicator-dots="false" class="height100" :autoplay="false" :duration="300" circular :current="index" @change="swiperChange">
+					<swiper-item v-for="(item,i) in categories" :key="i">
+						<view class="noData" v-if="item.product.length===0">
+							<text>暂无产品</text>
+						</view>
+						<scroll-view scroll-y class="height100" v-else>
+							<view class="clearBoth pl20">
+								<view :class="['p-item bg-2']" 
+									v-for="(pro,j) in item.product" :key="j" @click="toDetail(pro)">
+									<view class="relative sb al">
+										<image @load="loadOver(i,j)" :lazy-load="true" :src="imgUrl +'images/' + pro.image" mode="aspectFill" class="pro-img"></image>
+										<view class="pro-main al">
+											<view class="width70">
+												<view class="height2 mb10">
+													<view class="c2">{{pro.name}}</view>
+												</view>
+												<view class="al sb mb10">
+													<view class="">
+														<view><text>编号: {{pro.proNumber}}</text></view>
+														<view><text>粘度: {{pro.viscosity}}</text></view>
+														<view><text>规格: {{pro.specification}}</text></view>
+													</view>
+													
+												</view>
+											</view>
+											<view class="width30">
+												<view><text class="color-8">￥{{format(pro.price)}}</text></view>
+												<addSub></addSub>
+											</view>
+											
+										</view>
+										
+									</view>
+								</view>
+							</view>
+						</scroll-view>
+					</swiper-item>
+				</swiper>
 				
-				<view class="b-btn bg-7 ju al color-2 op" v-if="!edit">结算</view>
-				<view class="b-btn bg-7 ju al color-2 op" v-else @click="del">删除</view>
 			</view>
 		</view>
-		<Confirm :show="show" :text="'确定将已选商品移出购物车?'" @confirm="callDel"></Confirm>
+		
+		
+		
+		
 	</view>
 </template>
 
@@ -39,119 +166,100 @@
 	export default {
 		data() {
 			return {
-				dataList: [
-					{},{},{}
-				],
-				edit: false,
-				show: false,
+				keyword:'',
+				categories: [],
+				products: [],
+				index: 0,
+				x: 0,
+			};
+		},
+		created () {
+			this.getCategory()
+		},
+		watch: {
+			index (val) {
+				this.getPro(val)
 			}
 		},
 		computed: {
-			allCheck: {
-				get () { return this.dataList.every(item => item.check) },
-				set (val) {
-					this.dataList.forEach(item => {
-						item.check = val
-					})
-					this.dataList = [...this.dataList]
-				}
-			}
+			imgUrl () { return this.$store.state.app.imgUrl }
 		},
 		methods:{
-			changeCheck (i,boo) {
-				this.dataList[i].check = !boo
-				this.dataList = [...this.dataList]
+			toDetail (item) {
+				uni.navigateTo({
+					url: "/pages/cart/detail?id=" + item.ID
+				})
 			},
-			changeNum (e, i) {
-				this.dataList[i].Qty = e
-				this.dataList = [...this.dataList]
+			loadOver (i,j) {
+				this.categories[i].product[j].showImg = true
+				this.categories = [...this.categories]
 			},
-			del () {
-				let boo = this.dataList.every(item => !item.check)
-				if (!boo) {
-					this.show = true
-				}
-				
+			swiperChange (e) {
+				console.log(e)
+				let index = e.detail.current
+				this.clickNav(this.categories[index], index)
 			},
-			callDel (e) {
-				if (e) {
-					
-				}
-				this.show = false
+			clickNav (item,i) {
+				let that = this
+				this.index = i
+				uni.createSelectorQuery().select(".categories").boundingClientRect(res => {
+					let navMain = res.width
+					uni.createSelectorQuery().select("#cate" + i).boundingClientRect(res1 => {
+						let item = res1.width
+						that.x = item*i - navMain/2 + (item/2)
+					}).exec()
+				}).exec()
+			},
+			getCategory () {
+				let that = this
+				this.$http({
+					url: "category",
+					method:"GET",
+					// header: {
+					// 	"Access-Control-Allow-Origin": "*"
+					// },
+					data: {
+						page: 1,
+						offset: 99999
+					},
+					success (res) {
+						console.log(res)
+						if (res.data) {
+							res.data.data.forEach(item => {
+								item.product = []
+							})
+							that.categories = res.data.data
+							setTimeout(() => {
+								that.getPro(0)
+							},50)
+						}
+					},
+					fail (e) {
+						console.log(e)
+					}
+				})
+			},
+			getPro (index) {
+				let that = this
+				this.$http({
+					url: "product/" + this.categories[index].ID,
+					data: {
+						page: 1,
+						offset: 99999
+					},
+					success (res) {
+						console.log(res)
+						if (res.data) {
+							// res.data.forEach(item => {
+								
+							// })
+							that.categories[index].product = res.data.data
+						}
+					}
+				})
 			}
 		}
 	}
 </script>
 
-<style lang="less" scoped>
-@import url("@/static/css/color.less");
-.pb130 {
-	padding-bottom: 230upx;
-}
-.cart-items {
-	padding: 20upx;
-	border-top: solid @color-4 1px;
-}
-.pro-img {
-	width: 150upx;
-	height: 150upx;
-	margin: 0 20upx;
-}
-.myCheckBox {
-	width: 40upx;
-	height: 40upx;
-	border-radius: 50%;
-	background: #fff;
-	border:solid 1px #CCC;
-	position: relative;
-	// margin-left: 20upx;
-}
-.checked::before {
-	position: absolute;
-	width: 12upx;
-	height: 5upx;
-	background:white;
-	content: "";	
-	// border: solid green 1px;
-	left: 18%;
-	top: 53%;
-	transform: rotate(45deg);
-}
-.checked::after {
-	position: absolute;
-	width: 18upx;
-	height: 5upx;
-	background:white;
-	content: "";	
-	// border: solid green 1px;
-	left: 33%;
-	top: 46%;
-	transform: rotate(-45deg);
-}
-.checked {
-	background: @color-7 !important;
-	border: solid @color-7 2px !important;
-}
-.flex10 {
-	flex: 10;
-}
-.bottomBar {
-	width: 100%;
-	height: 100upx;
-	position: fixed;
-	background: #FFF;
-	left: 0;
-	bottom: 100upx;
-}
-.bg1 {
-	background: #5284de;
-	color: #FFF;
-}
-.p20 {
-	padding: 0 20upx;
-}
-.b-btn {
-	height: 100%;
-	width: 150upx;
-}
-</style>
+
