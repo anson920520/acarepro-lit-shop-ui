@@ -3,7 +3,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationBarTitleText": "登录"
+				// "navigationBarTitleText": "登录"
 			}
 		},
 		{
@@ -34,7 +34,15 @@
             "path" : "pages/cart/detail",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "商品详情"
+                // "navigationBarTitleText": "商品详情"
+            }
+            
+        }
+        ,{
+            "path" : "pages/news/news",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
             }
             
         }

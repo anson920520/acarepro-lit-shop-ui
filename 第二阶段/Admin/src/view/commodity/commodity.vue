@@ -32,7 +32,7 @@
                     v-for="(item,i) in categories" :key="i">{{item.Name}}</div>
             </div>
 
-            <Button class="blueBtn" @click="toAdd">新增产品</Button>
+            <Button class="blueBtn" @click="toAdd" v-if="role==1">新增产品</Button>
         </div>
         <br>
         <Table :columns="columns" :data="dataList" :loading="loading">
@@ -77,7 +77,14 @@ export default {
             categories: [],
         }
     },
+    computed: {
+        role () { return this.$store.state.role }
+    },
     created () {
+        if (this.role == 2) {
+            this.columns.pop()
+            this.columns.pop()
+        }
         this.getCate()
     },
     methods:{

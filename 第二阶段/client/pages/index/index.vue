@@ -1,6 +1,21 @@
 <template>
 	<view class="pb200">
-		<swiper class="adv-wrap" :indicator-dots="true" :autoplay="true" :interval="5000" :duration="500">
+		<!-- <pop ref="pop">
+			<view class="msgMain">
+				<view class="bold ju mt20">通知</view>
+				<view >
+					<view class="msgItem">
+						我司于5月1日-5月5日放假，在假期期间下的订单，于6号正常上班后安排发货，请知悉！
+					</view>
+				</view>
+				<view class="iKnow" @click="iKnow">
+					<text class="op">我知道了</text>
+				</view>
+			</view>
+		</pop> -->
+		
+		
+		<swiper class="adv-wrap" :indicator-dots="true" circular :autoplay="true" :interval="5000" :duration="500">
 			<swiper-item v-for="(item,i) in adv" :key='item.name'>
 				<view class="adv-item">
 					<image :src="item.image" mode="aspectFill" class="full-img"></image>
@@ -11,7 +26,7 @@
 		<view class="container">
 			<view class="tc"><text class="box-title">热销产品</text></view>
 			<view class="sb mb30">
-				<view class="hot-pro op" v-for="(item,i) in hotPro" :key="i">
+				<view class="hot-pro op" v-for="(item,i) in hotPro" :key="i" @click="toDetail(item)">
 					<image class="full-img" :src="item.image" mode="aspectFill"></image>
 				</view>
 			</view>
@@ -20,7 +35,7 @@
 		<view class="container">
 			<view class="tc"><text class="box-title">最新新闻</text></view>
 			<view class="mb30">
-				<view v-for="(item,i) in news" :key="i" class="sb op">
+				<view v-for="(item,i) in news" :key="i" class="sb op" @click="toNews(item)">
 					<view style="flex:7" class="c1">{{item.name}}</view>
 					<view style="flex:3" class="tr">{{item.CreatedAt}}</view>
 				</view>
@@ -53,7 +68,15 @@
 			this.getNews()
 			this.getHot()
 		},
+		mounted () {
+			// this.$refs.pop.open()
+		},
 		methods: {
+			toNews (item) {
+				uni.navigateTo({
+					url: "/pages/news/news?id=" + item.ID
+				})
+			},
 			getHot () {
 				let that = this
 				this.$http({
@@ -88,9 +111,14 @@
 							res.data.data.forEach(item => {
 								item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
 							})
-							that.news = res.data.data.reverse().slice(0,10)
+							that.news = res.data.data.filter(item => item.status==1).reverse().slice(0,10)
 						}
 					}
+				})
+			},
+			toDetail (item) {
+				uni.navigateTo({
+					url: "/pages/cart/detail?id=" + item.ID
 				})
 			},
 			getAdv () {
@@ -104,11 +132,16 @@
 					success (res) {
 						console.log(res)
 						if (res.data.code == 200) {
-							that.adv = res.data.data
+							that.adv = res.data.data.filter(item => item.status==1)
 						}
 					}
 				})
-			}
+			},
+			iKnow () {
+				this.$refs.pop.close()
+			},
+			
+			
 		}
 	}
 </script>
@@ -161,5 +194,32 @@
 	}
 	.pb200 {
 		padding-bottom: 200upx;
+	}
+	.msgMain {
+		background: #FFF;
+		width: 500upx;
+		border-radius: 20upx;
+		// padding: 20upx;
+	}
+	.msgItem {
+		margin: 30upx;
+		padding-left: 20upx;	
+		position: relative;
+		// &::before {
+		// 	display: block;
+		// 	content: "";
+		// 	width: 10upx;
+		// 	height: 10upx;
+		// 	background: #FF9900;
+		// 	border-radius: 50%;
+		// 	position: absolute;
+		// 	left: 0upx;
+		// 	top: 15upx;
+		// }
+	}
+	.iKnow {
+		border-top: solid #333 1px;
+		text-align: center;
+		padding: 20upx 0;
 	}
 </style>

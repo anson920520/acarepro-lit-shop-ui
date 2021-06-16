@@ -28,12 +28,11 @@ function http (options) {
 		method: options.method ? options.method : "GET",
 		header: header,
 		success (res) {
-			
 			//处理产品的数据
 			if (options.url.includes("product")) {
 				if (res.data.data instanceof Array) {
 					res.data.data.forEach(item => {
-						console.log(item)
+						// console.log(item)
 						try {
 							item.desc = JSON.parse(item.desc)
 							if (!item.desc.specification) {
@@ -73,16 +72,19 @@ function http (options) {
 			options.fail ? options.fail(error) : null
 		},
 		complete (res) {
-			console.log("all", res)
-			if (res.data.code == 40002){
-				uni.showToast({
-					title: "登录状态过期，请重新登录",
-					icon: "none"
-				})
-				uni.redirectTo({
-					url: "/pages/login/login"
-				})
+			// console.log("all", res)
+			if (res.data) {
+				if (res.data.code == 40002){
+					uni.showToast({
+						title: "登录状态过期，请重新登录",
+						icon: "none"
+					})
+					uni.redirectTo({
+						url: "/pages/login/login"
+					})
+				}
 			}
+			
 			options.complete ? options.complete(res) : null
 		},
 	})

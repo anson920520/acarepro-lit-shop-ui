@@ -749,10 +749,10 @@ export default {
                 duration:100
             })
             this.$axios({
-                url: "order",
+                url: "getAdminOrder",
                 params: {
-                    page: this.page,
-                    offset: this.offset
+                    offset: this.page,
+                    limit: this.offset,
                 }
             }).then(res => {
                 console.log(res)

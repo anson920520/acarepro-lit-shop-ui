@@ -2,7 +2,7 @@
 @import url("~@/assets/css/color.less");
 .loginBg {
 	height: 100vh;
-	background-image: url('~@/assets/img/bg3.png');
+	background-image: url('~@/assets/img/bg2.png');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: right top;
@@ -11,17 +11,18 @@
 	padding: 20px;
 	position: fixed;
 	width: 500px;
-	left: -10px;
+	left: 5%;
 	top: 50%;
 	transform: translateY(-50%);
 	border-radius:10px;
-	background: #000;
+	background: #5F5F5F;
+	box-shadow: 0px 3px 5px #5F5F5F;
 }
 .formItem {
 	position: relative;
 	padding-top: 20px;
 	padding-bottom: 20px;
-	width:80%;
+	width:70%;
 	margin: auto;
 	input {
 		width: 85%;
@@ -29,8 +30,9 @@
 		border: none;
 		background: #FFF;
 		border-radius: 10px;
-		padding: 5px 5px;
+		padding: 3px 5px;
 		color: #000;
+		border: solid #878787 2px;
 	}
 	// input:focus ~ label,input:valid ~ label {
 	// 	top: 0!important;
@@ -93,7 +95,7 @@ export default {
 				this.$Message.warning("请输入账号和密码")
 			} else {
 				let load = this.$Message.loading({
-					content: "登陆中...",
+					content: "登入中...",
 					duration: 100
 				})
 				this.$axios({
@@ -109,6 +111,11 @@ export default {
 						this.$router.push("/index")
 						localStorage.setItem("jwt", res.data.token)
 						localStorage.setItem("name", res.data.detail.name)
+						localStorage.setItem("role", res.data.detail.role)
+						this.$store.commit("setState", {
+							key: "role",
+							value: res.data.detail.role
+						})
 					} else {
 						this.$Message.warning(res.data.message)
 					}

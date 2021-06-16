@@ -5,8 +5,12 @@
 <template>
    <div>
         <h4 class="ju">账户管理</h4>
-        <div>
-            <Button class="blueBtn" @click="addUser">创建新用户</Button>
+        <div class="sb">
+            <div>
+                <Input type="text" v-model="keyword" placeholder="输入关键字搜索" style="width: 200px;margin-right: 10px;" />
+                <Button class="blueBtn" @click="getData">搜索</Button>
+            </div>
+            <Button class="blueBtn" v-if="role==1" @click="addUser">创建新用户</Button>
         </div>
         <br>
 
@@ -24,6 +28,10 @@
                 </Dropdown>
             </template>
         </Table>
+        <br>
+        <div class="flex-end">
+            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+        </div>
    </div>
 
 </template>
@@ -46,12 +54,26 @@ export default {
             ],
             dataList: [],
             loading: false,
+            keyword:"",
+            limit: 1,
+            offset: 5,
+            count: 0,
         }
     },
+    computed: {
+        role () { return this.$store.state.role }
+    },
     created () {
+        if (this.role == 2) {
+            this.columns.pop()
+        }
         this.getData()
     },
     methods:{
+        chnagePage (e) {
+            this.limit = e
+            this.getData()
+        },
         action (e,item) {
             console.log(item)
             if (e == 'edit') {
@@ -72,7 +94,12 @@ export default {
         getData () {
             this.loading = true
             this.$axios({
-                url: ""
+                url: "",
+                params: {
+                    offset: this.limit,
+                    limit: this.offset,
+                    id: this.keyword,
+                }
             }).then(res => {
                 if (res.data) {
                     this.dataList = res.data.reverse()

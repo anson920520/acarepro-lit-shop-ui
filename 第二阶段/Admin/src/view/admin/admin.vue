@@ -5,7 +5,7 @@
 <template>
    <div>
         <h4 class="ju">管理员账户</h4>
-        <div>
+        <div v-if="role==1">
             <Button class="blueBtn" @click="addUser">创建管理员</Button>
         </div>
         <br>
@@ -30,6 +30,11 @@
 
 
         </Table>
+        <br>
+        <div class="flex-end">
+            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+        </div>
+
    </div>
 
 </template>
@@ -48,16 +53,23 @@ export default {
             loading: false,
             page: 1,
             offset: 99999,
+            count: 0,
         }
     },
     created () {
-        if (this.role == 2) {}
+        if (this.role == 2) {
+            this.columns.pop()
+        }
         this.getData()
     },
     computed: {
         role () { return this.$store.state.role }
     },
     methods:{
+        chnagePage (e) {
+            this.limit = e
+            this.getData()
+        },
         action (e,item) {
             console.log(item)
             if (e == 'edit') {
@@ -81,8 +93,8 @@ export default {
                 url: "getAdmin/",
                 method:"GET",
                 params: {
-                    page: this.page,
-                    offset: this.offset
+                    offset: this.page,
+                    limit: this.offset
                 }
             }).then(res => {
                 if (res.data.code == 200) {

@@ -94,7 +94,101 @@
 .width30 {
 	width: 30%;
 }
+.indexBottom {
+	width: 100%;
+	height: 130upx;
+	background: #000000;
+	position: fixed;
+	left: 0;
+	bottom: 50px;
+	color: white;
+	z-index:100;
+}
+.indexBottomLeft {
+	flex:0.8;
+	// width: 100upx;
+	// height: 100upx;
+	// background: white;
+	margin-left: 20upx;
+	border-radius: 10upx;
+}
+.indexBottomCenter {
+	flex:6;
+	padding-right: 20upx;
+	font-size: 25upx;
+	text-align: right;
+}
+.indexBottomRight {
+	flex:3;
+}
+.topBottomIcon {
+	width: 100%;
+	height: 100%;
+}
+.bottomTotal {
+	justify-content: flex-end;
+}
+.submit {
+	background: #FF9900;
+	padding: 20upx 0;
+	margin-right: 20upx;
+	border-radius: 20upx;
+	color: black;
+	font-weight: bold;
+}
+// 弹出层
+.drapBox {
+	width: 100%;
+	height: 130vh;
+	position: fixed;
+	// border: solid red 1px;
+	// background: green;
+	z-index: 16;
+	left: 0;
+	top: 30%;
+	pointer-events: none;
+}
+.indexArea {
+	// border: solid red;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+.indexView {
+	width: 100%;
+	height: 50%;
+	background: white;
+	pointer-events: auto !important;
+	border-radius: 30upx;
+}
+.backarea {
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background: black;
+	left: 0;
+	top: 0;
+	opacity: 0.5;
+	z-index: 10;
+}
 
+.bottomScroll {
+	width: 95%;
+	margin: auto;
+	height: calc(70vh - 250upx);
+	// border: solid red 2px;
+	box-sizing: border-box;
+}
+.bottomTitle {
+	width: 100%;
+	height: 60upx;
+	color: #888888;
+}
+
+.p30 {
+	padding: 10upx 30upx;
+	box-sizing: border-box;
+}
 </style>
 
 <template>
@@ -114,7 +208,8 @@
 			</view>
 			
 			<view class="flex10">
-				<swiper :indicator-dots="false" class="height100" :autoplay="false" :duration="300" circular :current="index" @change="swiperChange">
+				<swiper :indicator-dots="false" class="height100" :autoplay="false" :duration="300" 
+					circular :current="index" @change="swiperChange">
 					<swiper-item v-for="(item,i) in categories" :key="i">
 						<view class="noData" v-if="item.product.length===0">
 							<text>暂无产品</text>
@@ -122,6 +217,7 @@
 						<scroll-view scroll-y class="height100" v-else>
 							<view class="clearBoth pl20">
 								<view :class="['p-item bg-2']" 
+									v-show="pro.desc.status==1"
 									v-for="(pro,j) in item.product" :key="j" @click="toDetail(pro)">
 									<view class="relative sb al">
 										<image @load="loadOver(i,j)" :lazy-load="true" :src="imgUrl +'images/' + pro.image" mode="aspectFill" class="pro-img"></image>
@@ -153,6 +249,50 @@
 					</swiper-item>
 				</swiper>
 				
+				<!-- 底部提交订单 -->
+				<view class="indexBottom al" @click="showChecked">
+					<view class="indexBottomLeft ju al">
+						<image :class="['topBottomIcon']" src="../../static/img/cart3.png" mode="widthFix"></image>
+					</view>
+					<view class="indexBottomCenter">
+						<view>共 {{0}} 箱</view>
+						<view class="al bottomTotal">总金额:
+							<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{0}}</text>
+						</view>
+					</view>
+					<view class="indexBottomRight">
+						<view class="submit ju op" @click.stop="createOrder">下一步</view>
+					</view>
+				
+				</view>
+				<!-- 底部拖动栏 -->
+				<view class="backarea" v-if="showDrag" @click="showChecked"></view>
+				<view class="drapBox" >
+					<movable-area class="indexArea">
+						<movable-view class="indexView" :y='y' inertia direction="vertical" @change='changeArea' damping='40'>
+							<view class="bottomTitle ju al" >订单明细</view>
+							<scroll-view scroll-y="true" class="bottomScroll">
+								<view class="lube al"
+									style="wdth: 96.5%;"
+									v-for="(item, i) in inCart" :key='i' v-show="item.num > 0">
+									<image :src="item.image" mode="aspectFit" class="productImg"></image>
+									<view class="productCenter">
+										<view style="font-weight: bold;">{{item.name}}</view>
+										<view>编号: {{item.proNumber}}</view>
+										<view>粘度: {{item.viscosity}}</view>
+										<view>规格: {{item.specification}}</view>
+									</view>
+									<view class="productRight ju" style="flex-direction: column;">
+										<text style="color: #FF9900;font-weight: bold;">$ {{item.price}}</text>
+										<addSub :num='item.num' @changeNum='changeNum2($event,i)'></addSub>
+									</view>
+								</view>
+								
+							</scroll-view>
+						</movable-view>
+					</movable-area>
+				</view>
+				
 			</view>
 		</view>
 		
@@ -171,6 +311,10 @@
 				products: [],
 				index: 0,
 				x: 0,
+				y: 1000,
+				showDrag: false,
+				inCart: [{}],
+				timer: null,
 			};
 		},
 		created () {
@@ -185,6 +329,35 @@
 			imgUrl () { return this.$store.state.app.imgUrl }
 		},
 		methods:{
+			createOrder () {
+				
+			},
+			// 底部拖动事件
+			changeArea (e) {
+				// console.log(e.detail.y)
+				clearTimeout(this.timer)
+				this.timer = setTimeout(() => {
+					if (e.detail.y < 100) {
+						this.showDrag = true
+						this.y = 0
+					} else {
+						this.showDrag = false
+						this.y =1000
+					}
+				},80)
+			},
+			// 显示已选择
+			showChecked () {
+				if (!this.showDrag) {
+					if (this.inCart.length) {
+						this.y = 0
+						this.showDrag = true
+					}
+				} else {
+					this.y = 1000
+					this.showDrag = false
+				}
+			},
 			toDetail (item) {
 				uni.navigateTo({
 					url: "/pages/cart/detail?id=" + item.ID
