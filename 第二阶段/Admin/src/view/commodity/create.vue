@@ -224,7 +224,7 @@ export default {
                 url: "category"
             }).then(res => {
                 if (res.data) {
-                    this.categories = res.data
+                    this.categories = res.data.data
                 } else {
                     this.loading = false
                 }

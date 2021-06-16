@@ -5,13 +5,14 @@ import {Modal} from "view-design"
 // window.baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
 // axios.defaults.baseURL = "/lwz/"
 // axios.defaults.baseURL = "/local/"
-window.baseURL = "http://192.168.1.115:5005/api/v1/"
+// window.baseURL = "http://192.168.1.115:5005/api/v1/"
+window.baseURL = "http://139.9.194.151:9005/api/v1/"
 
 
 axios.defaults.baseURL = window.baseURL
 
-// window.imgUrl = "http://139.9.174.163/"
-window.imgUrl = "https://acarepro.online/IMGPATH/"
+window.imgUrl = "http://139.9.194.151:7111/"
+// window.imgUrl = "https://acarepro.online/IMGPATH/"
 
 axios.interceptors.request.use(config => {
     config.headers = {
@@ -36,7 +37,7 @@ axios.interceptors.response.use(res => {
     if (res.config.url.includes("product")) {
         if (res.data) {
             try {
-                res.data.forEach(pro => {
+                res.data.data.forEach(pro => {
                     initPro(pro)
                 })
             } catch {}

@@ -14,24 +14,20 @@
 
 <template>
     <div>
-        <h4 class="ju" v-if="!id">新增业务负责人</h4>
-        <h4 class="ju" v-else>编辑业务负责人</h4>
+        <h4 class="ju" v-if="!id">新增新闻分类</h4>
+        <h4 class="ju" v-else>编辑新闻分类</h4>
         <br>
         <Form :label-width="120" :model="addForm" ref="addForm" :rules="rules" >
             <div class="borderBox al ju">
-                <FormItem label="姓名" prop="username">
-                    <input class="input" v-model="addForm.username" />
-                </FormItem>
-
-                <FormItem label="密码" prop="password">
-                    <input class="input" type="text" v-model="addForm.password" />
+                <FormItem label="分类名称" prop="name">
+                    <input class="input" v-model="addForm.name" />
                 </FormItem>
 
             </div>
         </Form>
         <br>
         <div class="width70 flex-end">
-            <Button class="blueBtn" @click="okAdd" v-if="!id">确认新增业务负责人</Button>
+            <Button class="blueBtn" @click="okAdd" v-if="!id">确认新增新闻分类</Button>
             <Button class="blueBtn" @click="okEdit" v-else>储存</Button>
         </div>
 
@@ -44,12 +40,11 @@ export default {
     data () {
         return {
             addForm: {
-                username: '',password:"", Promotion: ""
+                name: ''
             },
             id: "",
             rules: {
-                username: [ { required: true, message: "请输入业务负责人名称",trigger: 'blur' } ],
-                password: [ { required: true, message: "密码",trigger: 'blur' } ],
+                name: [ { required: true, message: "请输入新闻分类名称",trigger: 'blur' } ],
             },
         }
     },
@@ -63,30 +58,34 @@ export default {
     methods:{ 
         getOne () {
             this.$axios({
-                url: "sale/users"
+                url: "getNewsCategory/",
+                params: {
+                    id: this.id
+                }
             }).then(res => {
-                if (res.data) {
-                    res.data.forEach(item => {
-                        if (item.id == this.id) {
-                            this.addForm.username = item.username
-                            this.addForm.password = item.password
-                        }
-                    })
+                if (res.data.data[0]) {
+                    this.addForm.name = res.data.data[0].name
+                    // res.data.forEach(item => {
+                    //     if (item.id == this.id) {
+                    //         this.addForm.username = item.username
+                    //         this.addForm.password = item.password
+                    //     }
+                    // })
                 }
             })
         },
         okEdit () {
             let that = this
             let Form = new FormData()
-            Form.append("id", that.id)
-            Form.append("username", that.addForm.username)
-            Form.append("password", that.addForm.password)
             this.$refs.addForm.validate(flag => {
                 if (flag) {
                     that.$axios({
-                        url: "sale/edit/",
+                        url: "putNewsCategory/",
                         method:"PUT",
-                        data: Form,
+                        data: {
+                            id: that.id * 1 ,
+                            name: that.addForm.name
+                        },
                     }).then(res => {
                         console.log(res)
                         // if (res.data.code == 200) {
@@ -101,22 +100,17 @@ export default {
         },
         okAdd () {
             let that = this
-            let Form = new FormData()
-            Form.append("username", that.addForm.username)
-            Form.append("password", that.addForm.password)
-
             this.$refs.addForm.validate(flag => {
                 if (flag) {
                     that.$axios({
-                        url: "sale/register/",
+                        url: "postNewsCategory/",
                         method:"POST",
-                        data: Form,
-                        // headers: {
-						// 	"Content-Type": "application/x-www-form-urlencoded"
-						// },
+                        data: {
+                            name: this.addForm.name
+                        }
                     }).then(res => {
                         console.log(res)
-                        if (res.data.ID) {
+                        if (res.data.code == 200) {
                             this.$Message.success('创建成功')
                             this.$router.back()
                         } else {

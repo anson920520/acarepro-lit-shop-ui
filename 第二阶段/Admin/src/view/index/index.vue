@@ -125,24 +125,29 @@ export default {
                     name: "业务负责人管理",
                     children: []
                 },
+                {
+                    path:"/index/adv",
+                    name: "广告管理",
+                    children: []
+                },
                 
-                // {
-                //     path:"/",
-                //     name: "折叠2",
-                //     children: [
-                //         {
-                //             path:"/index/child1",
-                //             name: "子菜单3",
-                //             children: []
-                //         },
-                //         {
-                //             path:"/index/child2",
-                //             name: "子菜单4",
-                //             children: []
-                //         },
+                {
+                    path:"/",
+                    name: "新闻",
+                    children: [
+                        {
+                            path:"/index/newsCategory",
+                            name: "新闻分类管理",
+                            children: []
+                        },
+                        {
+                            path:"/index/news",
+                            name: "新闻管理",
+                            children: []
+                        },
                         
-                //     ]
-                // },
+                    ]
+                },
             ],
             name: "Administrator"
         }

@@ -114,7 +114,7 @@ export default {
                 url: "category"
             }).then(res => {
                 if (res.data) {
-                    this.categories = res.data
+                    this.categories = res.data.data
                     this.getData(this.categories[this.act])
                 } else {
                     this.loading = false
@@ -130,10 +130,11 @@ export default {
         getData (cate) {
             this.loading=true
             this.$axios({
-                url: "product/" + cate.ID
+                url: "product/" + cate.ID,
+                
             }).then(res => {
                 if (res.data) {
-                    res.data.forEach(item => {
+                    res.data.data.forEach(item => {
                         // try {
                         //     item.desc = JSON.parse(item.desc)
                         //     if (!item.desc.specification) {
@@ -148,7 +149,7 @@ export default {
                         // }
                         
                     })
-                    this.dataList = res.data
+                    this.dataList = res.data.data
                 }
                 this.loading = false
             }).catch(e => {

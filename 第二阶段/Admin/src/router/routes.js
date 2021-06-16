@@ -123,6 +123,56 @@ export default [
                 },
                 component: () => import("@/view/sale/create.vue")
             },
+
+            {
+                path:"/index/newsCategory",
+                name: "newsCategory",
+                meta: {
+                    name: "新闻分类管理"
+                },
+                component: () => import("@/view/newsCategory/newsCategory.vue")
+            },
+            {
+                path:"/index/newsCategory/create",
+                name: "newsCategoryCreate",
+                meta: {
+                    name: "新增新闻分类"
+                },
+                component: () => import("@/view/newsCategory/create.vue")
+            },
+            {
+                path:"/index/news",
+                name: "news",
+                meta: {
+                    name: "新闻管理"
+                },
+                component: () => import("@/view/news/news.vue")
+            },
+            {
+                path:"/index/news/create",
+                name: "newsCreate",
+                meta: {
+                    name: "新增新闻"
+                },
+                component: () => import("@/view/news/create.vue")
+            },
+
+            {
+                path:"/index/adv",
+                name: "adv",
+                meta: {
+                    name: "广告管理"
+                },
+                component: () => import("@/view/adv/adv.vue")
+            },
+            {
+                path:"/index/adv/create",
+                name: "advCreate",
+                meta: {
+                    name: "新增广告"
+                },
+                component: () => import("@/view/adv/create.vue")
+            },
         ]
     },
     

@@ -29,6 +29,10 @@
                 </Dropdown>
             </template>
         </Table>
+        <br>
+        <div class="flex-end">
+            <Page :total="count" :current="page" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+        </div>
     </div>
 </template>
 
@@ -45,6 +49,9 @@ export default {
             dataList: [],
             loading: false,
             id: "",
+            page: 1,
+            offset: 20,
+            count: 0,
         }
     },
     computed: {
@@ -57,16 +64,28 @@ export default {
         this.getData()
     },
     methods:{
+        chnagePage (e) {
+            this.page = e
+            this.getData()
+        },
         toAdd () {
             this.$router.push("/index/category/create")
         },
         getData () {
             this.loading=true
             this.$axios({
-                url: "category"
+                url: "category",
+                params: {
+                    page: this.page,
+                    offset: this.offset
+                }
             }).then(res => {
-                if (res.data) {
-                    this.dataList = res.data
+                if (res.data.code == 200) {
+                    this.dataList = res.data.data
+                    this.count = res.data.all_count[0]
+                } else {
+                    this.dataList = []
+                    this.count = 0
                 }
                 this.loading = false
             }).catch(e => {

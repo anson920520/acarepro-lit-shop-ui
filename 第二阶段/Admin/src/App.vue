@@ -1,7 +1,7 @@
-<style>
+<style lang="less">
 @import url("~@/assets/css/public.css");
 .Wrap {
-    height: calc(100% - 10px);
+    height: calc(100%);
     min-width: 1000px;
 }
 
@@ -42,6 +42,48 @@
 .tLeft2 {
     text-align: left;
     overflow: hidden;
+}
+.imgList {
+    width: 75px;
+    height: 75px;
+    border: solid #888 1px;
+    float: left;
+    margin-top: 10px;
+    margin-right: 10px;
+    cursor:move;
+    transition: 0.3s;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    &:hover {
+        box-shadow: 0 0 5px #333;
+    }
+}
+.noBorder input {
+    border: none !important;
+    box-shadow: none !important;
+}
+.delImg1 {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #E50000;
+    cursor: pointer;
+    right: -7px;
+    top: -7px;
+    display: flex;
+    transition: 0.3s;
+    &:hover {
+        transform: rotate(180deg);
+    }
+    >div {
+        width: 60%;
+        height: 3px;
+        margin: auto;
+        background: #FFF;
+    }
+    
 }
 
 </style>
