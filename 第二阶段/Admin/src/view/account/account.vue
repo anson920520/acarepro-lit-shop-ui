@@ -7,7 +7,7 @@
         <h4 class="ju">账户管理</h4>
         <div class="sb">
             <div>
-                <Input type="text" v-model="keyword" placeholder="输入关键字搜索" style="width: 200px;margin-right: 10px;" />
+                <Input type="text" clearable @on-clear='getData' v-model="keyword" placeholder="输入公司名称搜索" style="width: 200px;margin-right: 10px;" />
                 <Button class="blueBtn" @click="getData">搜索</Button>
             </div>
             <Button class="blueBtn" v-if="role==1" @click="addUser">创建新用户</Button>
@@ -30,7 +30,7 @@
         </Table>
         <br>
         <div class="flex-end">
-            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+            <Page :total="count" :current="page" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
         </div>
    </div>
 
@@ -55,8 +55,8 @@ export default {
             dataList: [],
             loading: false,
             keyword:"",
-            limit: 1,
-            offset: 5,
+            page: 1,
+            offset: 20,
             count: 0,
         }
     },
@@ -71,7 +71,7 @@ export default {
     },
     methods:{
         chnagePage (e) {
-            this.limit = e
+            this.page = e
             this.getData()
         },
         action (e,item) {
@@ -94,15 +94,19 @@ export default {
         getData () {
             this.loading = true
             this.$axios({
-                url: "",
+                url: "fetch/user/",
                 params: {
-                    offset: this.limit,
-                    limit: this.offset,
-                    id: this.keyword,
+                    page: this.page,
+                    offset: this.offset,
+                    company: this.keyword,
                 }
             }).then(res => {
-                if (res.data) {
-                    this.dataList = res.data.reverse()
+                if (res.data.code == 200) {
+                    this.dataList = res.data.data
+                    this.count = res.data.all_count[0]
+                } else {
+                    this.dataList = []
+                    this.count = 0
                 }
                 this.loading = false
             }).catch(e => {

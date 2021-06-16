@@ -7,12 +7,12 @@
 
 <template>
     <div>
-        <h4 class="ju">业务负责人管理</h4>
+        <h4 class="ju">新闻管理</h4>
         <br>
         <div class="sb">
             <div></div>
 
-            <Button class="blueBtn" @click="toAdd" v-if="role==1">新增业务负责人</Button>
+            <Button class="blueBtn" @click="toAdd" v-if="role==1">新增新闻</Button>
         </div>
         <br>
         <Table :columns="columns" :data="dataList" :loading="loading">
@@ -28,6 +28,18 @@
                     </DropdownMenu>
                 </Dropdown>
             </template>
+            <template slot="cate" slot-scope="{row}">
+                <span>{{
+                    categories.find(item => item.ID == row.news_category_id)?categories.find(item => item.ID == row.news_category_id).name : 'Loading...'
+                }}</span>
+            </template>
+            <template slot="status" slot-scope="{row}">
+                <Tag v-if="row.status==1" color='success'>启用</Tag>
+                <Tag v-if="row.status==0" color='warning'>隐藏</Tag>
+            </template>
+            <template slot="detail" slot-scope="{row}">
+                <div class="c1">{{row.detail}}</div>
+            </template>
         </Table>
         <br>
         <div class="flex-end">
@@ -41,8 +53,12 @@ export default {
     data () {
         return {
             columns: [
-                { title: "姓名",key: "username", align: 'center' },
-                { title: "密码",key: "password", align: 'center' },
+                { title: "分类",slot: "cate", align: 'center' },
+                { title: "标题",key: "name", align: 'center' },
+                { title: "开始时间",key: "start_time", align: 'center' },
+                { title: "结束时间",key: "end_time", align: 'center' },
+                { title: "状态",slot: "status", align: 'center' },
+                { title: "详情",slot: "detail", align: 'center' },
                 { title: "操作", slot: "action", align: 'center' }
             ],
             dataList: [],
@@ -51,6 +67,7 @@ export default {
             page: 1,
             offset: 20,
             count: 0,
+            categories: []
         }
     },
     created () {
@@ -58,28 +75,45 @@ export default {
             this.columns.pop()
         }
         this.getData()
+        this.getCate()
     },
     computed: {
         role () { return this.$store.state.role }
     },
     methods:{
+        getCate () {
+            this.$axios({
+                url: "getNewsCategory/",
+                params: {
+                    page: 1,
+                    offset: 99999,
+                }
+            }).then(res => {
+                console.log(res)
+                this.categories = res.data.data
+            })
+        },
         chnagePage (e) {
             this.page = e
             this.getData()
         },
         toAdd () {
-            this.$router.push("/index/sale/create")
+            this.$router.push("/index/news/create")
         },
         getData () {
             this.loading=true
             this.$axios({
-                url: "sale/users",
+                url: "getNews/",
                 params: {
                     page: this.page,
                     offset: this.offset,
                 }
             }).then(res => {
                 if (res.data.code == 200) {
+                    res.data.data.forEach(item => {
+                        item.start_time = new Date(item.start_time).toLocaleDateString()
+                        item.end_time = new Date(item.end_time).toLocaleDateString()
+                    })
                     this.dataList = res.data.data
                     this.count = res.data.all_count[0]
                 } else {
@@ -96,9 +130,9 @@ export default {
             console.log(item)
             if (e == 'edit') {
                 this.$router.push({
-                    path: "/index/sale/create",
+                    path: "/index/news/create",
                     query: {
-                        id: item.id,
+                        id: item.ID,
                     }
                 })
             } 
@@ -108,16 +142,16 @@ export default {
         },
         del (item) {
             let that = this
-            let Form = new FormData()
-            Form.append("id", item.ID)
             that.$Modal.confirm({
                 title: "提示!",
                 content: "确定删除这条信息?",
                 onOk () {
                     that.$axios({
-                        url: "sale/delete",
+                        url: "deleteNews/",
                         method:"DELETE",
-                        data: Form
+                        data: {
+                            id: item.ID
+                        }
                     }).then(res => {
                         that.getData()
                     }).catch(e => {

@@ -116,7 +116,7 @@
                         <Option value="-1">全部</Option>
                         <Option value="0">正在处理</Option>
                         <Option value="2">待发货</Option>
-                        <Option value="3">待发货</Option>
+                        <!-- <Option value="3">待发货</Option> -->
                         <Option value="4">待收货</Option>
                         <Option value="1">已收货</Option>
                     </Select>
@@ -147,7 +147,7 @@
         </Table>
         <br>
         <div class="flex-end">
-            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+            <Page :total="count" :current="page" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
         </div>
 
         <!-- 详情Modal -->
@@ -310,7 +310,7 @@ export default {
             products: [],
             total: 0,
             totalText: "当前总金额",
-            limit: 1,
+            page: 1,
             offset: 20,
             sale: "",
             userID: "-1",
@@ -327,7 +327,7 @@ export default {
     
     methods:{
         chnagePage (e) {
-            this.limit = e
+            this.page = e
             this.getData()
         },
         getAccount () {
@@ -515,14 +515,14 @@ export default {
             this.$axios({
                 url: "",
             }).then(res => {
-                res.data.forEach(item => {
+                res.data.data.forEach(item => {
                     item.ID = String(item.ID)
                 })
-                this.users = res.data.reverse()
+                this.users = res.data.data.reverse()
             })
         },
         getData () {
-            let status = Number(this.status)
+            let status = this.status
             if (status == -1) { status = '' }
             let userID = Number(this.userID)
             if (userID == -1) { userID = '' }
@@ -536,14 +536,14 @@ export default {
             } else {
                 status = ''
             }
-            status = "(0,1)"
+            // status = "(0,1)"
             this.loading = true
             this.total = 0
             this.$axios({
                 url: "getAdminOrder",
                 params: {
-                    offset: this.limit,
-                    limit: this.offset,
+                    page: this.page,
+                    offset: this.offset,
                     start_time: this.start_time,
                     end_time: this.end_time,
                     status: status,
@@ -575,6 +575,9 @@ export default {
                     this.totalText = "当前总金额"
                     this.total = res.data.all_total[0]
                     this.count = res.data.all_count[0]
+                } else {
+                    this.allData = this.dataList = []
+                    this.count = 0
                 }
             }).catch(e => {
                 this.loading = false

@@ -22,7 +22,7 @@
 }
 .menuBox {
 	text-indent: 1em;
-	background:#038b63;             // 展开的子菜单的背景色
+	// background:#038b63;             // 展开的子菜单的背景色
 	transition: 0.3s linear;
 	max-height: 0px;
 	overflow:hidden;
@@ -31,11 +31,11 @@
 	display: block;
 	position: absolute;
 	right: 10px;
-	top: 19px;
+	top: 15px;
 	width: 0px;
 	height: 0px;
 	border: solid transparent 8px;
-	border-top:solid #FFF 8px !important;
+	border-top:solid #000 8px !important;
 	transition: 0.3s linear;
 	border-bottom: 0 !important;
 }
@@ -48,7 +48,7 @@
 </style>
 
 <template>
-    <div class="myMenu"><br>
+    <div class="myMenu bar"><br>
 		<div v-for="(item,i) in dataList" :key="i">
 			<div :class="['menuItem', {act: act==item.name}]" v-if="item.children.length==0"><a @click="active(item)">{{item.name}}</a></div>
 			<div v-else class="menuItem">
@@ -124,6 +124,7 @@ export default {
 				}
 			})
 			this.dataList[i].expand = !this.dataList[i].expand
+			this.dataList = [...this.dataList]
 		}
 	}
 }

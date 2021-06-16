@@ -52,7 +52,7 @@ export default {
             dataList: [],
             loading: false,
             page: 1,
-            offset: 99999,
+            offset: 20,
             count: 0,
         }
     },
@@ -67,7 +67,7 @@ export default {
     },
     methods:{
         chnagePage (e) {
-            this.limit = e
+            this.page = e
             this.getData()
         },
         action (e,item) {
@@ -99,6 +99,10 @@ export default {
             }).then(res => {
                 if (res.data.code == 200) {
                     this.dataList = res.data.data
+                    this.count = res.data.all_count[0]
+                } else {
+                    this.dataList = []
+                    this.count = 0
                 }
                 this.loading = false
             }).catch(e => {

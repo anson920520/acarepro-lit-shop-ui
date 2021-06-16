@@ -550,7 +550,7 @@ export default {
             this.$axios({
                 url: "",
             }).then(res => {
-                this.users = res.data.reverse()
+                this.users = res.data.data
             })
         },
         getProduct () {
@@ -751,8 +751,8 @@ export default {
             this.$axios({
                 url: "getAdminOrder",
                 params: {
-                    offset: this.page,
-                    limit: this.offset,
+                    page: this.page,
+                    offset: this.offset,
                 }
             }).then(res => {
                 console.log(res)
