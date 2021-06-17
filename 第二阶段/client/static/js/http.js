@@ -15,9 +15,14 @@ function http (options) {
 	if (options.header) {
 		header = Object.assign(options.header, header)
 	}
-	if (options.url.includes("login/sale")) {
+	if (
+		options.url.includes("login/sale")
+	) {
 		header = {}
 		baseURL = baseURL.replace("api/c1/",'')
+	}
+	if (!options.method) {
+		options.method = "GET"
 	}
 	
 	
@@ -25,16 +30,24 @@ function http (options) {
 	uni.request({
 		url: baseURL + options.url,
 		data: options.data ? options.data : {},
-		method: options.method ? options.method : "GET",
+		method: options.method,
 		header: header,
 		success (res) {
 			//处理产品的数据
-			if (options.url.includes("product")) {
+			if ((options.url.includes("product") || options.url.includes("getShoppingCar")) && options.method=='GET' ) {
+				// if (options.url.includes("getShoppingCar")) {
+				// 	console.log(123123, res.data.data[0])
+				// }
 				if (res.data.data instanceof Array) {
 					res.data.data.forEach(item => {
 						// console.log(item)
 						try {
-							item.desc = JSON.parse(item.desc)
+							if (item.detail) {
+								item.desc = JSON.parse(item.detail)
+							} else {
+								item.desc = JSON.parse(item.desc)
+							}
+							
 							if (!item.desc.specification) {
 								item.desc.specification = {}
 							} else {

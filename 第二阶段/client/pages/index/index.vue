@@ -33,7 +33,7 @@
 		</view>
 		<!-- 最新新闻 -->
 		<view class="container">
-			<view class="tc"><text class="box-title">最新新闻</text></view>
+			<view class="tc"><text class="box-title">最新消息</text></view>
 			<view class="mb30">
 				<view v-for="(item,i) in news" :key="i" class="sb op" @click="toNews(item)">
 					<view style="flex:7" class="c1">{{item.name}}</view>
@@ -91,7 +91,7 @@
 							res.data.data.forEach(item => {
 								item.image = window.imgUrl + "images/" + item.image
 							})
-							that.hotPro = res.data.data
+							that.hotPro = res.data.data.slice(0,3)
 						}
 						console.log(that, that.hotPro)
 					}
@@ -148,7 +148,7 @@
 
 <style lang="less" scoped>
 	.adv-wrap {
-		height: 400upx;
+		height: 480upx;
 	}
 	.adv-item {
 		width:100%;
@@ -175,7 +175,7 @@
 		width: 25%;
 		border: solid #000 1px;
 		border-radius: 15upx;
-		height: 180upx;
+		height: 170upx;
 		margin: 0upx 30upx 0;
 		overflow: hidden;
 	}

@@ -246,6 +246,14 @@
 		created () {
 			this.initData()
 		},
+		watch: {
+			rebate (val) {
+				// console.log(val)
+				if (Number(val) > 5) {
+					this.rebate = 5
+				}
+			}
+		},
 		methods: {
 			initData () {
 				this.gift = this.item.gift ? this.item.gift : "无"
@@ -279,6 +287,9 @@
 					// url: that.$store.state.baseURL + "update/sale/order/" + that.item.ID,
 					url: that.$store.state.baseURL + "sale/update/" + that.item.ID,
 					method:"PUT",
+					header: {
+						token: uni.getStorageSync('token')
+					},
 					// header: {
 					// 	"Content-Type": "application/json",
 					// 	"Access-Control-Allow-Origin": "*",
