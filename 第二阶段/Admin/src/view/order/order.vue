@@ -211,7 +211,7 @@
                         </div>
                     </div>
                     <br>
-                    <p>下单日期: {{item.createAt}}</p>
+                    <p>下单日期: {{item.CreatedAt}}</p>
                     <p>总共 {{item.count}} 箱</p>
                     <p>RMB {{format(item.Total)}}</p>
                     <br>
@@ -263,7 +263,7 @@
                 <div>
                     <br><br>
                     <span class="size12">订单编号: {{detail.OrderID}}</span><br>
-                    <span class="size12">下单日期: {{detail.createAt}}</span>
+                    <span class="size12">下单日期: {{detail.CreatedAt}}</span>
                 </div>
             </div>
             <div class="size12 relative">
@@ -365,7 +365,7 @@
                         <div class="al totalWrap">
                             <span>总金额: </span>
                             <div>
-                                <div class="total"> {{format(detail.Total)}} </div>
+                                <div class="total"> ￥{{format(detail.Total)}} </div>
                             </div>
                         </div>
                     </div>
@@ -634,7 +634,7 @@ export default {
             let that = this
             this.$Modal.confirm({
                 title: "提示!",
-                ontent: "确定锁定这个订单? ",
+                content: "确定锁定这个订单? ",
                 onOk () {
                     that.$axios({
                         url: "admin/order/lock/" + item.ID,
@@ -735,14 +735,14 @@ export default {
             
             
         },
-        format (n) {
-            n = Number(n)
-            var str = n.toString();
-            str = str.replace(/[A-z]+/g, "")
-            var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
-            let num = str.replace(reg,"$1,");
-            return num
-        },
+        // format (n) {
+        //     n = Number(n)
+        //     var str = n.toString();
+        //     str = str.replace(/[A-z]+/g, "")
+        //     var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+        //     let num = str.replace(reg,"$1,");
+        //     return num
+        // },
         getData () {
             let load = this.$Message.loading({
                 content: '加载中...',
@@ -765,8 +765,9 @@ export default {
                                 item.count += Number(pro.Qty)
                             })
                         }
+                        item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
                     })
-                    this.dataList = res.data.data.reverse().filter(item => item.status != 1)
+                    this.dataList = res.data.data.filter(item => item.status != 1)
                 }
             }).catch(e => {
                 console.log(e)

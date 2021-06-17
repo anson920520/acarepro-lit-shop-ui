@@ -1,7 +1,7 @@
 <style lang="less">
 @import url("~@/assets/css/public.css");
 .Wrap {
-    height: calc(100%);
+    height: 99%;
     min-width: 1000px;
 }
 

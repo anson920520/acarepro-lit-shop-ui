@@ -79,6 +79,10 @@ export default {
             let Form = new FormData()
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "putNewsCategory/",
                         method:"PUT",
@@ -87,6 +91,7 @@ export default {
                             name: that.addForm.name
                         },
                     }).then(res => {
+                        load()
                         console.log(res)
                         // if (res.data.code == 200) {
                             this.$Message.success('编辑成功')
@@ -94,6 +99,9 @@ export default {
                         // } else {
                             // this.$Message.success(res.data.message)
                         // }
+                    }).catch(e => {
+                        console.log(e)
+                        load()
                     })
                 }
             })
@@ -102,6 +110,10 @@ export default {
             let that = this
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "postNewsCategory/",
                         method:"POST",
@@ -109,6 +121,7 @@ export default {
                             name: this.addForm.name
                         }
                     }).then(res => {
+                        load()
                         console.log(res)
                         if (res.data.code == 200) {
                             this.$Message.success('创建成功')
@@ -116,6 +129,9 @@ export default {
                         } else {
                             this.$Message.success(res.data.message)
                         }
+                    }).catch(e => {
+                        console.log(e)
+                        load()
                     })
                 }
             })

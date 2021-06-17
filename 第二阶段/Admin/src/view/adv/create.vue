@@ -175,11 +175,8 @@ export default {
             },
             id: "",
             rules: {
-                name: [ { required: true, message: "　　　　　请输入广告名称",trigger: 'blur' } ],
-                news_category_id: [ { required: true, message: "　　　　　请选择广告" } ],
-                start_time: [ { required: true, message: "　　　　　请选择开始时间",trigger: 'blur' } ],
-                end_time: [ { required: true, message: "　　　　　请选择结束时间",trigger: 'blur' } ],
-                detail: [ { required: true, message: "　　　　　请输入详情",trigger: 'blur' } ],
+                // name: [ { required: true, message: "　　　　　请输入广告名称",trigger: 'blur' } ],
+                // detail: [ { required: true, message: "　　　　　请输入详情",trigger: 'blur' } ],
             },
             categories: [],
             startImg: -1,
@@ -249,6 +246,10 @@ export default {
             let Form = new FormData()
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "putAdvertisement/",
                         method:"PUT",
@@ -260,6 +261,7 @@ export default {
                             image: this.addForm.image,
                         },
                     }).then(res => {
+                        load()
                         console.log(res)
                         // if (res.data.code == 200) {
                             this.$Message.success('编辑成功')
@@ -275,6 +277,10 @@ export default {
             let that = this
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "postAdvertisement/",
                         method:"POST",
@@ -286,6 +292,7 @@ export default {
                             // image: "['1','2','3']",
                         }
                     }).then(res => {
+                        load()
                         console.log(res)
                         if (res.data.code == 200) {
                             this.$Message.success('创建成功')
@@ -295,6 +302,7 @@ export default {
                         }
                     }).catch(e => {
                         console.log(e)
+                        load()
                         // if (e.response) {
                         //     this.$Message.success(e.response.data.message)
                         // }

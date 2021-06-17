@@ -249,6 +249,10 @@ export default {
             let Form = new FormData()
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "putNews/",
                         method:"PUT",
@@ -263,6 +267,7 @@ export default {
                             image: JSON.stringify(this.addForm.img),
                         },
                     }).then(res => {
+                        load()
                         console.log(res)
                         // if (res.data.code == 200) {
                             this.$Message.success('编辑成功')
@@ -270,6 +275,9 @@ export default {
                         // } else {
                             // this.$Message.success(res.data.message)
                         // }
+                    }).catch(e => {
+                        console.log(e)
+                        load()
                     })
                 }
             })
@@ -278,6 +286,10 @@ export default {
             let that = this
             this.$refs.addForm.validate(flag => {
                 if (flag) {
+                    let load = this.$Message.loading({
+                        content: "Loading...",
+                        duration: "999"
+                    })
                     that.$axios({
                         url: "postNews/",
                         method:"POST",
@@ -292,6 +304,7 @@ export default {
                             // image: "['1','2','3']",
                         }
                     }).then(res => {
+                        load()
                         console.log(res)
                         if (res.data.code == 200) {
                             this.$Message.success('创建成功')
@@ -300,6 +313,7 @@ export default {
                             this.$Message.success(res.data.message)
                         }
                     }).catch(e => {
+                        load()
                         console.log(e)
                         // if (e.response) {
                         //     this.$Message.success(e.response.data.message)

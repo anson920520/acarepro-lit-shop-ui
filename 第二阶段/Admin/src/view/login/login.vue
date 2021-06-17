@@ -20,12 +20,12 @@
 }
 .formItem {
 	position: relative;
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 15px;
+	padding-bottom: 15px;
 	width:70%;
 	margin: auto;
 	input {
-		width: 85%;
+		width: 80%;
 		outline: none;
 		border: none;
 		background: #FFF;
@@ -39,7 +39,7 @@
 	// 	font-size: 12px !important;
 	// }
 	label {
-		width: 15%;
+		width: 19%;
 	}
 }
 .loginBtn {
@@ -47,7 +47,7 @@
 	display: block;
 	width: 140px;
 	background: @color-4;
-	margin:30px auto;
+	margin:20px auto;
 	text-align:center;
 	cursor: pointer;
 	user-select: none;

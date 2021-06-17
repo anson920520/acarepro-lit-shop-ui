@@ -32,7 +32,7 @@
         </Table>
         <br>
         <div class="flex-end">
-            <Page :total="count" :current="limit" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
+            <Page :total="count" :current="page" :page-size="offset" show-elevator show-total @on-change="chnagePage" />
         </div>
 
    </div>
@@ -93,8 +93,8 @@ export default {
                 url: "getAdmin/",
                 method:"GET",
                 params: {
-                    offset: this.page,
-                    limit: this.offset
+                    page: this.page,
+                    offset: this.offset
                 }
             }).then(res => {
                 if (res.data.code == 200) {

@@ -94,7 +94,7 @@
             <div class="al">
                 <div class="al mr10">
                     <span class="label" style="width: 160px">企业名称 (业务负责人): </span>
-                    <Select style="width: 300px;" v-model="userID">
+                    <Select style="width: 200px;" v-model="userID">
                         <Option value="-1">全部</Option>
                         <Option v-for="(item,i) in users" :key="i" :value="item.ID">{{item.company}} ({{item.sale}})</Option>
                     </Select>
@@ -102,12 +102,12 @@
 
                 <div class="al mr10">
                     <span class="label">起始时间: </span>
-                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 150px;" @on-change="changeDate($event, 'start_time')"></DatePicker>
+                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 120px;" @on-change="changeDate($event, 'start_time')"></DatePicker>
                 </div>
 
                 <div class="al mr10">
                     <span class="label">结束时间: </span>
-                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 150px;" @on-change="changeDate($event, 'end_time')"></DatePicker>
+                    <DatePicker type="date" format="yyyy-MM-dd" style="width: 120px;" @on-change="changeDate($event, 'end_time')"></DatePicker>
                 </div>
 
                 <div class="al mr10">
@@ -157,7 +157,7 @@
                 <div>
                     <br><br>
                     <span class="size12">订单编号: {{detail.OrderID}}</span><br>
-                    <span class="size12">下单日期: {{detail.createAt}}</span>
+                    <span class="size12">下单日期: {{detail.CreatedAt}}</span>
                 </div>
             </div>
             <div class="size12 relative">
@@ -258,7 +258,7 @@
                         <div class="al totalWrap">
                             <span>总金额: </span>
                             <div>
-                                <div class="total"> {{(detail.Total)}} </div>
+                                <div class="total"> ￥{{format(detail.Total)}} </div>
                             </div>
                         </div>
                     </div>
@@ -350,14 +350,6 @@ export default {
             //     console.lgo(e)
             //     this.total =0
             // })
-        },
-        format (n) {
-            n = Number(n)
-            var str = n.toString();
-            str = str.replace(/[A-z]+/g, "")
-            var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
-            let num = str.replace(reg,"$1,");
-            return num
         },
         //下載訂單
         exportCsv () {
@@ -485,10 +477,10 @@ export default {
             // }
             
             // this.dataList = this.dataList.filter(item => {
-            //     if (!this.createAt) {
+            //     if (!this.CreatedAt) {
             //         return true
             //     } else {
-            //         return item.createTimestamp >= this.createAt
+            //         return item.createTimestamp >= this.CreatedAt
             //     }
             // })
 
@@ -506,7 +498,7 @@ export default {
             //         this.total += item.Total
             //     }
             // })
-            // if ((!this.userID) && (!this.createAt) && (!this.updateAt)) {
+            // if ((!this.userID) && (!this.CreatedAt) && (!this.updateAt)) {
             //     this.totalText = "当前总金额"
             // }
 
@@ -561,7 +553,7 @@ export default {
                         item.logistics = item.logistics_company + " " + item.logistics_num
                         if (item.CreatedAt) {
                             item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
-                            item.createTimestamp = new Date(item.createAt).getTime()
+                            item.createTimestamp = new Date(item.CreatedAt).getTime()
                         }
                         if (item.UpdatedAt) {
                             item.UpdatedAt = new Date(item.UpdatedAt).toLocaleDateString()
@@ -569,9 +561,8 @@ export default {
                         }
 
                         
-                        
                     })
-                    this.allData = this.dataList = res.data.data.reverse()
+                    this.allData = this.dataList = res.data.data
                     this.totalText = "当前总金额"
                     this.total = res.data.all_total[0]
                     this.count = res.data.all_count[0]
@@ -584,18 +575,18 @@ export default {
                 console.log(e)
             })
         },
-        format (n, x=2) {
-            n = Number(n)
-            if (x) {
-                let pow = Math.pow(10,x)
-                n = Math.ceil(n*pow) / pow
-            }
-            var str = n.toString();
-            str = str.replace(/[A-z]+/g, "")
-            var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
-            let num = str.replace(reg,"$1,");
-            return num
-        },
+        // format (n, x=2) {
+        //     n = Number(n)
+        //     if (x) {
+        //         let pow = Math.pow(10,x)
+        //         n = Math.ceil(n*pow) / pow
+        //     }
+        //     var str = n.toString();
+        //     str = str.replace(/[A-z]+/g, "")
+        //     var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+        //     let num = str.replace(reg,"$1,");
+        //     return num
+        // },
     }
 }
 </script>

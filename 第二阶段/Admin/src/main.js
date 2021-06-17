@@ -26,6 +26,19 @@ Vue.use(ViewUI);
 // import 'vue-image-swipe/dist/vue-image-swipe.css'
 // Vue.use(VueImageSwipe)
 
+Vue.prototype.format = function (n,x) {
+    n = Number(n)
+    if (x) {
+        let pow = Math.pow(10,x)
+        n = Math.ceil(n*pow) / pow
+    }
+    var str = n.toString();
+    str = str.replace(/[A-z]+/g, "")
+    var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+    let num = str.replace(reg,"$1,");
+    return num
+}
+
 import store from "@/store/store"
 
 new Vue({

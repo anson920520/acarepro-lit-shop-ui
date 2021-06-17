@@ -28,6 +28,9 @@
                     </DropdownMenu>
                 </Dropdown>
             </template>
+            <template slot="all_total" slot-scope="{row}">
+                <span>{{format(row.all_total)}}</span>
+            </template>
         </Table>
         <br>
         <div class="flex-end">
@@ -43,6 +46,8 @@ export default {
             columns: [
                 { title: "姓名",key: "username", align: 'center' },
                 { title: "密码",key: "password", align: 'center' },
+                { title: "订单数量",key: "all_num", align: 'center' },
+                { title: "总销售额(￥)",slot: "all_total", align: 'center' },
                 { title: "操作", slot: "action", align: 'center' }
             ],
             dataList: [],
