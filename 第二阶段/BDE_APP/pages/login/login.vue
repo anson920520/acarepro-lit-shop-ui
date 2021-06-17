@@ -58,7 +58,7 @@
 					})
 				}else {
 					uni.request({
-						url: that.$store.state.baseURL + "sale/login/",
+						url: that.$store.state.baseURL.replace("api/c1/",'') + "sale/login/",
 						method:"POST",
 						data: {
 							username: that.UserName,
@@ -69,16 +69,18 @@
 						},
 						success (res) {
 							console.log(res)
-							if (res.data.password) {
-								uni.setStorageSync("UserName", res.data.username)
+							if (res.data.code == 200) {
+								uni.setStorageSync("UserName", that.UserName)
 								uni.setStorageSync("password",that.password)
-								uni.setStorageSync("pwd", res.data.password)
+								uni.setStorageSync("pwd", res.data.data.password)
+								uni.setStorageSync("detail", res.data.data)
+								uni.setStorageSync("token", res.data.token)
 								uni.navigateTo({
 									url:"/pages/allOrder/allOrder"
 								})
 							} else {
 								uni.showToast({
-									title:"密码错误",
+									title:"账号或密码错误",
 									icon: "none"
 								})
 							}

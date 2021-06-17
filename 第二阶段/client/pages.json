@@ -3,6 +3,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
+				"navigationStyle":"custom"
 				// "navigationBarTitleText": "登录"
 			}
 		},
@@ -46,6 +47,22 @@
             }
             
         }
+        ,{
+            "path" : "pages/createOrder/createOrder",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/allOrder/allOrder",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -72,13 +89,13 @@
 			},
 			{
 				"pagePath":"pages/cart/cart",
-				"text":"购物车",
+				"text":"购物",
 				"iconPath":"static/img/cart.png",
 				"selectedIconPath":"static/img/cart1.png"
 			},
 			{
 				"pagePath":"pages/user/user",
-				"text": "我",
+				"text": "客户资料",
 				"iconPath":"static/img/user.png",
 				"selectedIconPath":"static/img/user1.png"
 			}

@@ -37,6 +37,7 @@
 	padding-bottom: 15upx;
 	border-radius: 20upx;
 	width: 690upx;
+	overflow: hidden;
 }
 .pl20 {
 	width: 102%;
@@ -175,7 +176,7 @@
 .bottomScroll {
 	width: 95%;
 	margin: auto;
-	height: calc(70vh - 250upx);
+	height: calc(70vh - 300upx);
 	// border: solid red 2px;
 	box-sizing: border-box;
 }
@@ -188,6 +189,44 @@
 .p30 {
 	padding: 10upx 30upx;
 	box-sizing: border-box;
+}
+
+.productCenter {
+	width: 70%;
+}
+.lube {
+	// border: solid #999999 1px;
+	width: 99%;
+	padding: 10upx 0;
+	margin: 10upx 0;
+	font-size: 23upx;
+	border-radius: 20upx;
+	background: white;
+	overflow: hidden;
+	border: solid 1px #000000;
+}
+.lube:last-child {
+	margin-bottom: 40upx;
+}
+.productImg {
+	width: 20%;
+	height: 140upx;
+	border-radius: 20upx;
+}
+.productCenter {
+	width: 50%;
+	padding-left: 20upx;
+}
+.productRight {
+	width: 30%;
+	// height:50upx;
+	// border: solid red 1px;
+}
+.marginb-200 {
+	box-sizing: border-box;
+	margin-bottom: 200upx;
+	// border: solid 1px;
+	height: calc(100% - 130upx) !important;
 }
 </style>
 
@@ -208,7 +247,7 @@
 			</view>
 			
 			<view class="flex10">
-				<swiper :indicator-dots="false" class="height100" :autoplay="false" :duration="300" 
+				<swiper :indicator-dots="false" class="height100 marginb-200" :autoplay="false" :duration="300" 
 					circular :current="index" @change="swiperChange">
 					<swiper-item v-for="(item,i) in categories" :key="i">
 						<view class="noData" v-if="item.product.length===0">
@@ -216,7 +255,7 @@
 						</view>
 						<scroll-view scroll-y class="height100" v-else>
 							<view class="clearBoth pl20">
-								<view :class="['p-item bg-2']" 
+								<view :class="['p-item size25 bg-2']" 
 									v-show="pro.desc.status==1"
 									v-for="(pro,j) in item.product" :key="j" @click="toDetail(pro)">
 									<view class="relative sb al">
@@ -235,9 +274,9 @@
 													
 												</view>
 											</view>
-											<view class="width30">
+											<view class="width30" @click.stop=''>
 												<view><text class="color-8">￥{{format(pro.price)}}</text></view>
-												<addSub></addSub>
+												<addSub :num="pro.num" @changeNum='changeNum($event,pro)'></addSub>
 											</view>
 											
 										</view>
@@ -255,9 +294,9 @@
 						<image :class="['topBottomIcon']" src="../../static/img/cart3.png" mode="widthFix"></image>
 					</view>
 					<view class="indexBottomCenter">
-						<view>共 {{0}} 箱</view>
+						<view>共 {{qty}} 箱</view>
 						<view class="al bottomTotal">总金额:
-							<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{0}}</text>
+							<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{format(total)}}</text>
 						</view>
 					</view>
 					<view class="indexBottomRight">
@@ -270,11 +309,12 @@
 				<view class="drapBox" >
 					<movable-area class="indexArea">
 						<movable-view class="indexView" :y='y' inertia direction="vertical" @change='changeArea' damping='40'>
-							<view class="bottomTitle ju al" >订单明细</view>
+							<view class="bottomTitle ju al" >已选产品</view>
+							<view class="noData" v-if="inCart? inCart.length===0 : false">您的购物车空空如也</view>
 							<scroll-view scroll-y="true" class="bottomScroll">
 								<view class="lube al"
 									style="wdth: 96.5%;"
-									v-for="(item, i) in inCart" :key='i' v-show="item.num > 0">
+									v-for="(item, i) in inCart" :key='i' v-show="item.number > 0">
 									<image :src="item.image" mode="aspectFit" class="productImg"></image>
 									<view class="productCenter">
 										<view style="font-weight: bold;">{{item.name}}</view>
@@ -284,7 +324,7 @@
 									</view>
 									<view class="productRight ju" style="flex-direction: column;">
 										<text style="color: #FF9900;font-weight: bold;">$ {{item.price}}</text>
-										<addSub :num='item.num' @changeNum='changeNum2($event,i)'></addSub>
+										<addSub :num='item.number' @changeNum='changeNum2($event,item)'></addSub>
 									</view>
 								</view>
 								
@@ -313,12 +353,15 @@
 				x: 0,
 				y: 1000,
 				showDrag: false,
-				inCart: [{}],
+				inCart: [],
 				timer: null,
+				qty: 0,
+				total: 0,
 			};
 		},
 		created () {
 			this.getCategory()
+			this.getCart()
 		},
 		watch: {
 			index (val) {
@@ -326,10 +369,267 @@
 			}
 		},
 		computed: {
-			imgUrl () { return this.$store.state.app.imgUrl }
+			imgUrl () { return this.$store.state.app.imgUrl },
 		},
 		methods:{
 			createOrder () {
+				if (this.inCart.length) {
+					uni.navigateTo({
+						url: "/pages/createOrder/createOrder"
+					})
+				} else {
+					uni.showToast({
+						title: "您未添加任何产品",
+						icon: "none"
+					})
+				}
+				
+			},
+			changeNum2 (e,cart) {
+				let item = JSON.parse(JSON.stringify(cart))
+				item.num = item.number
+				item.cartId = item.id * 1
+				item.ID = item.product_id
+				this.changeNum(e,item)
+			},
+			// 修改产品数量
+			changeNum (e,item) {
+				let that = this
+				if (item.num == 0) {
+					that.$http({
+						url: "postShoppingCar/",
+						method:"POST",
+						data: {
+							user_id: uni.getStorageSync("userId"),
+							product_id: item.ID,
+							number: e * 1
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "加入购物车失败",
+									icon: "none"
+								})
+							}
+						},
+					})
+				} else {
+					if (e <= 0) {
+						that.$http({
+							url: "deleteShoppingCar/",
+							method:"DELETE",
+							data: {
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					} else {
+						that.$http({
+							url: "putShoppingCar/",
+							method:"PUT",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e * 1,
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					}
+				}
+				return false
+				// console.log(e, item.num)
+				if (e == 1) {  
+					if (item.num >=1) {
+						console.log("编辑")
+						that.$http({
+							url: "putShoppingCar/",
+							method:"PUT",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e * 1,
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					} else if (item.num < 1) {
+						// console.log("创建")
+						that.$http({
+							url: "postShoppingCar/",
+							method:"POST",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "加入购物车失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					}
+				} else if (e <= 0) {
+					console.log("删除")
+					that.$http({
+						url: "deleteShoppingCar/",
+						method:"DELETE",
+						data: {
+							id: item.cartId
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								// that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "修改数量失败",
+									icon: "none"
+								})
+							}
+						},
+					})
+				} else {
+					console.log("编辑")
+					that.$http({
+						url: "putShoppingCar/",
+						method:"PUT",
+						data: {
+							user_id: uni.getStorageSync("userId"),
+							product_id: item.ID,
+							number: e * 1,
+							id: item.cartId
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								// that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "修改数量失败",
+									icon: "none"
+								})
+							}
+						},
+					})
+				}
+				item.num = e
+				
+			},
+			// 获取购物车
+			getCart () {
+				let that = this
+				that.$http({
+					url: "getShoppingCar/",
+					data: {
+						user_id: uni.getStorageSync("userId"),
+						page: 1,
+						offset: 999
+					},
+					success (res) {
+						console.log(res)
+						if (res.data.code == 200) {
+							that.total = 0
+							that.qty = 0
+							res.data.data.forEach(item => {
+								item.image = window.imgUrl + "images/" + item.image
+								that.total += (item.price*item.number)
+								that.qty += item.number
+								
+								if (item.number==0) {
+									that.$http({
+										url: "deleteShoppingCar/",
+										method:"DELETE",
+										data: {
+											id: item.id * 1
+										},
+										success (res) {
+											console.log(res)
+											if (res.data.code == 200) {
+												// that.inCart = res.data.data
+												that.getCart()
+											}
+										},
+									})
+								}
+							})
+							that.inCart = res.data.data
+							
+							
+						} else {
+							that.inCart = []
+							that.total = 0
+							that.qty = 0
+						}
+						that.initProductNum()
+					},
+					fail (e) {
+						console.log('err', e)
+					}
+				})
+			},
+			// 预设产品数量
+			initProductNum () {
+				if (this.categories[this.index]) {
+					this.categories[this.index].product.forEach(item => {
+						item.num = 0
+						this.inCart.forEach((cart) => {
+							if (item.ID == cart.product_id) {
+								item.num = cart.number
+								item.cartId = cart.id * 1
+							}
+						})
+					})
+					
+					this.categories = [...this.categories]
+				}
 				
 			},
 			// 底部拖动事件
@@ -349,19 +649,20 @@
 			// 显示已选择
 			showChecked () {
 				if (!this.showDrag) {
-					if (this.inCart.length) {
+					// if (this.inCart.length) {
 						this.y = 0
 						this.showDrag = true
-					}
+					// }
 				} else {
 					this.y = 1000
 					this.showDrag = false
 				}
 			},
+			// 进入产品详情
 			toDetail (item) {
-				uni.navigateTo({
-					url: "/pages/cart/detail?id=" + item.ID
-				})
+				// uni.navigateTo({
+				// 	url: "/pages/cart/detail?id=" + item.ID
+				// })
 			},
 			loadOver (i,j) {
 				this.categories[i].product[j].showImg = true
@@ -428,6 +729,7 @@
 							// })
 							that.categories[index].product = res.data.data
 						}
+						that.initProductNum()
 					}
 				})
 			}

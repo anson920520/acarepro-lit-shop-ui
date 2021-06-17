@@ -1,5 +1,5 @@
 <template>
-	<view class="all-warpper">
+	<view class="all-warpper bg-2">
 		<view class="Login_one_main">
 			<image class="Perfect_user_logo" src="../../static/img/logo.png" mode="widthFix"></image>
 			<view class="loginText">巴达尔资讯平台</view>
@@ -81,6 +81,7 @@
 								uni.setStorageSync("sale", res.data.detail.sale)
 								uni.setStorageSync("company", res.data.detail.company)
 								uni.setStorageSync("token", res.data.token)
+								uni.setStorageSync("detail",res.data.detail) 
 								that.toHome()
 							} 
 							else if (res.data.message == "Wrong password") {

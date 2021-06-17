@@ -18,6 +18,7 @@
 		background-color: @color-4;
 		font-size: 30upx;
 		height: 100%;
+		// color: #000;
 	}
 	.noData {
 		color: @color-5;

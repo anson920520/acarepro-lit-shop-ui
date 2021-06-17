@@ -8,7 +8,7 @@
 			</swiper-item>
 		</swiper>
 		
-		<view class="container" style="min-height:500upx;">
+		<view class="container" style="min-height:700upx;">
 			<view class="size35 bold">
 				<text>{{detail.name}}</text>
 			</view>

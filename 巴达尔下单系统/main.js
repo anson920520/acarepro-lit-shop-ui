@@ -16,6 +16,17 @@ Vue.component("pop", pop)
 
 import store from "./store/store.js"
 
+Vue.prototype.format = function (n,x=2) {
+    n = Number(n)
+    let pow = Math.pow(10,x)
+    n = Math.floor(n*pow) / pow
+    var str = n.toString();
+    str = str.replace(/[A-z]+/g, "")
+    var reg = str.indexOf(".") > -1 ? /(\d)(?=(\d{3})+\.)/g : /(\d)(?=(?:\d{3})+$)/g
+    let num = str.replace(reg,"$1,");
+    return num
+}
+
 const app = new Vue({
 	store,
     ...App

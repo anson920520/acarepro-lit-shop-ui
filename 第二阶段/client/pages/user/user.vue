@@ -1,108 +1,109 @@
-<style lang="less" scoped>
-@import url("@/static/css/color.less");
-.user-top {
-	height: 360upx;
-	background: linear-gradient(to bottom, #EF8744, #F6c768);
-}
-.ava {
-	width: 100upx;
-	height: 100upx;
-	border: solid #FFF 2px;
-	border-radius: 50%;
-	padding: 20upx;
-	margin: auto;
-	display: block;
-}
-.pl40 {
-	padding: 15upx 15upx 15upx 60upx;
-}
-.lIcn {
-	width: 60upx;
-	height: 60upx;
-	border-radius: 50%;
-	position: absolute;
-	left: -12upx;
-	bottom: -6upx;
-}
-.radiu5 {
-	border-radius: 15upx;
-	margin-bottom: 15upx;
-}
-.ty30 {
-	transform: translateY(-20upx);
-}
-.money {
-	width: 40%;
-	background: #FBFBFB;
-}
-.point {
-	width: 60%;
-}
-.width50upx {
-	width: 60upx;
-	height: 60upx;
-	margin-bottom: 20upx;
-	// border: solid red 1px;
-}
-.p20 {
-	padding: 20upx;
-}
-.coin {
-	width: 30upx;
-	height: 30upx;
-	margin-top: 5upx;
-	margin-right: 10upx;
-}
-.border-botton {
-	border: solid @color-4 1px;
-	margin-top: 20upx;
-}
-</style>
-
 <template>
 	<view>
-		<view class="user-top ju al">
-			<view>
-				<image src="../../static/img/ava.png" mode="aspectFill" class="ava"></image>
-				<view class="tc ty30">
-					<view class="relative  bg-1 radiu5">
-						<image src="../../static/img/zuan.png" mode="aspectFill" class="lIcn"></image>
-						<text class="color-2 pl40">普通用户</text>
-					</view>
-					<text class="size33 color-2">用户名</text>
-				</view>
+		<view class="">
+			<image class="avag" src="../../static/img/avag.png" mode="aspectFill"></image>
+			<view class="ju lineh1"><text>{{detail.company}}</text></view>
+			<view class="ju lineh1"><text>{{detail.principal}} 　{{detail.phone}}</text></view>
+			<view class="flex width80 lineh1">
+				<text class="label1">注册地址：</text>
+				<text class="val1">{{detail.address}}</text>
 			</view>
-		</view>
-		<view class="bg-2 al">
-			<view class="money columns ju al p20">
-				<image src="../../static/img/wallet.png" class="width50upx" mode="aspectFill"></image>
-				<text>我的钱包</text>
-			</view>
-			<view class="point columns ju al p20">
-				<view class="width50upx ju al"><text class="color-6">0</text></view>
-				
-				<view class="ju al">
-					<image src="../../static/img/coin.png" mode="widthFix" class="coin"></image>
-					<text>积分</text>
-				</view>
+			<view class="flex width80 lineh1">
+				<text class="label1">收货地址：</text>
+				<text class="val1">{{detail.shipping}}</text>
 			</view>
 		</view>
 		
-		
-		<view class="bg-2 border-botton">
-			<view class="main">我的订单</view>
+		<view class="margint20">
+			<view class="container sb al op" @click="toOrder">
+				<text>订单记录</text>
+				<image src="../../static/img/right.png" mode="aspectFill" class="r-icon"></image>
+			</view>
+			
+			<view class="container sb al op" @click="noOpen">
+				<text>二级网点销售记录</text>
+				<image src="../../static/img/right.png" mode="aspectFill" class="r-icon"></image>
+			</view>
+			
+			<view class="container sb al op" @click="noOpen">
+				<text>修改个人资料</text>
+				<image src="../../static/img/right.png" mode="aspectFill" class="r-icon"></image>
+			</view>
+			
+			<view class="container sb al op" @click="noOpen">
+				<text>联络客服</text>
+				<image src="../../static/img/right.png" mode="aspectFill" class="r-icon"></image>
+			</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
-		data() {
+		data () {
 			return {
-				
-			};
+				detail: {}
+			}
+		},
+		onLoad () {
+			let detail = uni.getStorageSync("detail")
+			if (detail) {
+				this.detail = detail
+				console.log(detail)
+			}
+		},
+		methods:{
+			noOpen() {
+				uni.showToast({
+					title: "该功能未开放",
+					icon: "none"
+				})
+			},
+			toOrder () {
+				uni.navigateTo({
+					url: "/pages/allOrder/allOrder"
+				})
+			}
 		}
 	}
 </script>
 
-
+<style lang="less" scoped>
+	.avag {
+		width: 280upx;
+		height: 280upx;
+		display: block;
+		margin: 80upx auto 50upx;
+	}
+	.lineh1 {
+		padding: 8upx 0;
+	}
+	.width80 {
+		width: 80%;
+		margin: auto;
+	}
+	.label1 {
+		width: 30%;
+		display: block;
+		text-align: right;
+	}
+	.val1 {
+		width: 70%;
+		display: block;
+	}
+	.container {
+		width: 690upx;
+		margin: 30upx auto;
+		border-radius: 20upx;
+		background: #FFF;
+		padding: 20upx 40upx;
+	}
+	.margint20 {
+		margin-top: 60upx;
+		padding-bottom: 200upx;
+	}
+	.r-icon {
+		width: 50upx;
+		height: 50upx;
+	}
+</style>

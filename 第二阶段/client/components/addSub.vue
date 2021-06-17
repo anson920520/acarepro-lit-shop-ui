@@ -127,6 +127,7 @@
 				this.finish()
 			},
 			inputNum (e) {
+				if (e.detail.value === '') { return false }
 				this.index = e.detail.value
 				this.finish()
 			},
