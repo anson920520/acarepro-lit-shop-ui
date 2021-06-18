@@ -69,7 +69,7 @@
 		text-indent: 2em;
 	}
 	.adv-wrap {
-		height: 500upx;
+		height: 480upx;
 	}
 	.adv-item {
 		width:100%;
