@@ -9,8 +9,8 @@ const store = new Vuex.Store({
 		showBox: false,           //显示隐藏 header的菜单栏,
 		// baseURL : "https://acarepro.online/store/qiaoyumin/login/little/api/v1/",         //服务器代理,线上使用
 		// baseURL : "/api/",              
-		baseURL : "http://192.168.1.115:5005/api/c1/",      //本地设置的反向代理,仅开发使用
-		// baseURL : "http://139.9.194.151:9005/api/v1/",      
+		// baseURL : "http://192.168.1.115:5005/api/c1/",      //本地设置的反向代理,仅开发使用
+		baseURL : "http://139.9.194.151:9005/api/c1/",      
 		
 		imgUrl: "https://acarepro.online/IMGPATH/",
 		
