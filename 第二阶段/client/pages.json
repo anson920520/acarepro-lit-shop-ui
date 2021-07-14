@@ -3,7 +3,7 @@
 		{
 			"path": "pages/login/login",
 			"style": {
-				"navigationStyle":"custom"
+				
 				// "navigationBarTitleText": "登录"
 			}
 		},
@@ -47,6 +47,14 @@
             }
             
         }
+		,{
+		    "path" : "pages/news/newsDetail",
+		    "style" :                                                                                    
+		    {
+		        "enablePullDownRefresh": false
+		    }
+		    
+		}
         ,{
             "path" : "pages/createOrder/createOrder",
             "style" :                                                                                    
@@ -68,7 +76,8 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "巴达尔资讯平台",
 		"navigationBarBackgroundColor": "#FFF",
-		"backgroundColor": "#EFEFF4"
+		"backgroundColor": "#EFEFF4",
+		"navigationStyle":"custom"
 	},
 	"tabBar": {
 		"color":"#333333",

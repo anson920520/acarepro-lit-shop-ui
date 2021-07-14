@@ -1,22 +1,42 @@
+<style lang="less" scoped>
+@import url("@/static/css/color.less");
+.p30 {
+	padding:  40upx 40upx 0upx;
+}
+.container {
+	width: 690upx;
+	margin: 0upx auto 50upx;
+	border-radius: 20upx;
+	background: #FFF;
+	// padding: 20upx;
+}
+.r-icon {
+	width: 50upx;
+	height: 50upx;
+}
+</style>
+
 <template>
-	<view>
-		<swiper class="adv-wrap" :indicator-dots="true" circular :autoplay="true" :interval="5000" :duration="500">
-			<swiper-item v-for="(item,i) in img" :key='item.name'>
-				<view class="adv-item">
-					<image :src="item" mode="aspectFill" class="full-img"></image>
-				</view>
-			</swiper-item>
-		</swiper>
+	<view class="height100vh bg-2">
+		<my-header></my-header>
+		<view class="p30">
+			<page-nav></page-nav>
+		</view>
 		
-		<view class="container" style="min-height:700upx;">
-			<view class="size35 bold">
-				<text>{{detail.name}}</text>
-			</view>
-			<view class="flex-end size20 color-5 pad30">
-				<text>{{detail.CreatedAt}}</text>
-			</view>
-			<view class="news-content">
-				<text>{{detail.detail}}</text>
+		<view class="container">
+			<view class="noData" v-if="dataList.length===0">暂无数据</view>
+			<view v-for="(item,i) in dataList" :key="i" class="sb pri-list">
+				<image :src="item.preImg" mode="aspectFill" class="news-img"></image>
+				<view class="flex10">
+					<view class="news-title">{{item.name}}</view>
+					<view class="news-content size23 c4">{{item.detail}}</view>
+					<view class="flex-end">
+						<button  size="mini" class="primaryBtn op" @click="toDetail(item)">阅读更多...</button>
+					</view>
+					
+				</view>
+				<!-- <view style="flex:7" class="c1">{{item.name}}</view>
+				<view style="flex:3" class="tr">{{item.CreatedAt}}</view> -->
 			</view>
 		</view>
 	</view>
@@ -26,22 +46,38 @@
 	export default {
 		data() {
 			return {
-				img: [],
-				id: "",
-				detail: {},
+				dataList: [],
+				page: 1,
+				offset: 10,
 			};
 		},
-		onLoad (val) {
-			this.id = val.id
+		created () {
+			this.getData()
+		},
+		watch: {
+			
+		},
+		computed: {
+			
+		},
+		onReachBottom () {
+			this.page++
 			this.getData()
 		},
 		methods:{
+			toDetail (item) {
+				
+			},
 			getData () {
 				let that = this
+				uni.showLoading({
+					title: "loading..."
+				})
 				this.$http({
-					url: "getNews/",
+					url: "getClientNews/",
 					data: {
-						id: that.id
+						page: this.page,
+						offset: this.offset,
 					},
 					success (res) {
 						console.log(res)
@@ -49,43 +85,22 @@
 							res.data.data.forEach(item => {
 								item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
 							})
-							that.detail = res.data.data[0]
-							that.img = JSON.parse(that.detail.image)
-						} else {
-							that.detail = {}
+							that.dataList = that.dataList.concat( res.data.data.filter(item => item.status==1) )
 						}
+					},
+					complete () {
+						uni.hideLoading()
 					}
+				})
+			},
+			noOpen() {
+				uni.showToast({
+					title: "该功能未开放",
+					icon: "none"
 				})
 			}
 		}
 	}
 </script>
 
-<style lang="less" scoped>
-	.pad30 {
-		padding: 30upx 0;
-	}
-	.news-content {
-		text-indent: 2em;
-	}
-	.adv-wrap {
-		height: 480upx;
-	}
-	.adv-item {
-		width:100%;
-		height: 100%;
-		// border: solid red 1px;
-	}
-	.full-img {
-		width: 100%;
-		height: 100%;
-	}
-	.container {
-		padding: 30upx;
-		margin: 30upx auto;
-		width: 690upx;
-		padding: 30upx;
-		background: #FFF;
-		border-radius: 20upx;;
-	}
-</style>
+

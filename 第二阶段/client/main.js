@@ -23,8 +23,14 @@ Vue.prototype.format = function (n) {
 
 import addSub from "@/components/addSub.vue"
 import Confirm from "@/components/confirm.vue"
+import myHeader from "@/components/myHeader.vue"
+import pageNav from "@/components/pageNav.vue"
+import tabBar from "@/components/tabBar.vue"
 import uniPopup from "@/components/uni-popup/uni-popup.vue"
 
+Vue.component("tabBar", tabBar)
+Vue.component("pageNav", pageNav)
+Vue.component("myHeader", myHeader)
 Vue.component("uniPopup", uniPopup)
 Vue.component("Confirm", Confirm)
 Vue.component("addSub", addSub)

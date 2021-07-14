@@ -25,6 +25,10 @@ function http (options) {
 		options.method = "GET"
 	}
 	
+	if ( options.url.includes("getAdvertisement") ) { baseURL = baseURL.replace("c1",'c2') }
+	if ( options.url.includes("News") ) { baseURL = baseURL.replace("c1",'c2') }
+	if ( options.url.includes("productLike") ) { baseURL = baseURL.replace("c1",'c2') }
+	
 	
 	
 	uni.request({
@@ -34,7 +38,7 @@ function http (options) {
 		header: header,
 		success (res) {
 			//处理产品的数据
-			if ((options.url.includes("product") || options.url.includes("getShoppingCar")) && options.method=='GET' ) {
+			if ((options.url.includes("product") || options.url.includes("getShoppingCar") || options.url.includes("productLike")) && options.method=='GET' ) {
 				// if (options.url.includes("getShoppingCar")) {
 				// 	console.log(123123, res.data.data[0])
 				// }
@@ -75,6 +79,18 @@ function http (options) {
 						console.log('catch', item.ID, item)
 						item.desc = {}
 					}
+				}
+			}
+			
+			//处理新闻
+			if ((options.url.includes("News") ) && options.method=='GET' ) {
+				if(res.data.data instanceof Array) {
+					res.data.data.forEach(item => {
+						if (item.image) {
+							item.image = JSON.parse(item.image)
+							item.preImg = item.image[0]
+						}
+					})
 				}
 			}
 			

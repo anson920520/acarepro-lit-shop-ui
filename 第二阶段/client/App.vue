@@ -16,9 +16,12 @@
 	@import url("@/static/css/color.less");
 	page {
 		background-color: @color-4;
-		font-size: 30upx;
+		font-size: 28upx;
 		height: 100%;
 		// color: #000;
+	}
+	.height100vh {
+		min-height: 100vh;
 	}
 	.noData {
 		color: @color-5;
@@ -38,5 +41,35 @@
 		margin: 20upx auto;
 		padding: 20upx;
 		box-sizing: border-box;
+	}
+	.primaryBtn {
+		background: #FFCC32;
+		color: #000;
+		margin: 0;
+	}
+	.blackBtn {
+		margin: 0;
+		background: #000;
+		color: #FFF;
+		border-radius: 20upx;
+	}
+	
+	
+	.pri-list {
+		margin: 40upx 0;
+	}
+	.news-img {
+		width: 280upx;
+		height: 250upx;
+		// border: solid 1px;
+		margin-right: 20upx;
+	}
+	.flex10 {
+		flex: 10;
+	}
+	.news-content {
+		height: 120upx;
+		margin-top: 20upx;
+		margin-bottom: 25upx;
 	}
 </style>

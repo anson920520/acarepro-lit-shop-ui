@@ -1,6 +1,7 @@
 <template>
-	<view class="pb200">
-		<!-- <pop ref="pop">
+	<view class="pb200 bg-1">
+		<my-header></my-header>
+		<!-- <uniPopup ref="pop">
 			<view class="msgMain">
 				<view class="bold ju mt20">通知</view>
 				<view >
@@ -12,7 +13,7 @@
 					<text class="op">我知道了</text>
 				</view>
 			</view>
-		</pop> -->
+		</uniPopup> -->
 		
 		
 		<swiper class="adv-wrap" :indicator-dots="true" circular :autoplay="true" :interval="5000" :duration="500">
@@ -23,33 +24,53 @@
 			</swiper-item>
 		</swiper>
 		<!-- 热销产品 -->
-		<view class="container">
+		<!-- <view class="container1">
 			<view class="tc"><text class="box-title">热销产品</text></view>
 			<view class="sb mb30">
 				<view class="hot-pro op" v-for="(item,i) in hotPro" :key="i" @click="toDetail(item)">
 					<image class="full-img" :src="item.image" mode="aspectFill"></image>
 				</view>
 			</view>
-		</view>
+		</view> -->
 		<!-- 最新新闻 -->
-		<view class="container">
-			<view class="tc"><text class="box-title">最新消息</text></view>
-			<view class="mb30">
-				<view v-for="(item,i) in news" :key="i" class="sb op" @click="toNews(item)">
-					<view style="flex:7" class="c1">{{item.name}}</view>
-					<view style="flex:3" class="tr">{{item.CreatedAt}}</view>
-				</view>
-			</view>
-		</view>
 		<!-- 最新宣传素材 -->
-		<view class="container">
+		<view class="container1">
 			<view class="tc"><text class="box-title">最新宣传素材</text></view>
 			<view class="sb mb30">
 				<view class="hot-pro1" v-for="(item,i) in 3" :key="i">
-					<image class="full-img" src="" mode="aspectFill"></image>
+					<image class="info-img" src="" mode="aspectFill"></image>
+					<view class="c1"><text>宣传标题</text></view>
+					<view class="c4 size23"><text>宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容</text></view>
+				</view>
+			</view>
+			<view class="mb30 ju">
+				<button class="primaryBtn op" @click="toPub" size="mini">查看更多...</button>
+			</view>
+		</view>
+		<view class="container1">
+			<view class="tc"><text class="box-title">最新消息</text></view>
+			<view class="mb30">
+				<view v-for="(item,i) in news" :key="i" class="sb pri-list">
+					<image :src="item.preImg" mode="aspectFill" class="news-img"></image>
+					<view class="flex10">
+						<view class="news-title">{{item.name}}</view>
+						<view class="news-content size23 c4">{{item.detail}}</view>
+						<view class="flex-end">
+							<button  size="mini" class="primaryBtn op" @click="toNews(item)">阅读更多...</button>
+						</view>
+						
+					</view>
+					<!-- <view style="flex:7" class="c1">{{item.name}}</view>
+					<view style="flex:3" class="tr">{{item.CreatedAt}}</view> -->
+				</view>
+				
+				<view class="noData size23 ju al op" @click="toNewsList">
+					查看更多历史消息
+					<image src="../../static/img/right1.png" mode="widthFix" style="width: 30upx;"></image>
 				</view>
 			</view>
 		</view>
+		
 		
 	</view>
 </template>
@@ -66,15 +87,25 @@
 		onLoad() {
 			this.getAdv()
 			this.getNews()
-			this.getHot()
+			// this.getHot()
 		},
 		mounted () {
 			// this.$refs.pop.open()
 		},
 		methods: {
+			toPub () {
+				uni.switchTab({
+					url: "/pages/publicity/publicity"
+				})
+			},
+			toNewsList () {
+				uni.navigateTo({
+					url: "/pages/news/news"
+				})
+			},
 			toNews (item) {
 				uni.navigateTo({
-					url: "/pages/news/news?id=" + item.ID
+					url: "/pages/news/newsDetail?id=" + item.ID
 				})
 			},
 			getHot () {
@@ -100,10 +131,10 @@
 			getNews () {
 				let that = this
 				this.$http({
-					url: "getNews/",
+					url: "getClientNews/",
 					data: {
 						page: 1,
-						offset: 9999,
+						offset: 3,
 					},
 					success (res) {
 						console.log(res)
@@ -111,7 +142,7 @@
 							res.data.data.forEach(item => {
 								item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
 							})
-							that.news = res.data.data.filter(item => item.status==1).reverse().slice(0,10)
+							that.news = res.data.data.filter(item => item.status==1)
 						}
 					}
 				})
@@ -148,7 +179,11 @@
 
 <style lang="less" scoped>
 	.adv-wrap {
-		height: 480upx;
+		height: 900upx;
+		width: 720upx;
+		margin: auto;
+		border-radius: 20upx;
+		overflow: hidden;
 	}
 	.adv-item {
 		width:100%;
@@ -159,14 +194,15 @@
 		width: 100%;
 		height: 100%;
 	}
-	.container {
+	.container1 {
 		padding: 30upx;
 		margin: 30upx auto;
-		width: 690upx;
+		width: 720upx;
 		padding: 30upx;
 		background: #FFF;
 		border-radius: 20upx;;
 	}
+
 	.box-title {
 		padding-bottom: 10upx;
 		border-bottom: solid #000 1px;
@@ -187,10 +223,13 @@
 	}
 	.hot-pro1 {
 		width: 29%;
-		border-radius: 15upx;
-		height: 200upx;
 		margin: 0upx 0upx 0;
-		background: #CCC;
+	}
+	.info-img {
+		width: 100%;
+		height: 160upx;
+		border: solid 1px;
+		border-radius: 15upx;
 	}
 	.pb200 {
 		padding-bottom: 200upx;
@@ -222,4 +261,9 @@
 		text-align: center;
 		padding: 20upx 0;
 	}
+
+	
+	
+	
+	
 </style>

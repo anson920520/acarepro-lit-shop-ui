@@ -228,14 +228,57 @@
 	// border: solid 1px;
 	height: calc(100% - 130upx) !important;
 }
+.container {
+	width: 680upx;
+	margin: 30upx auto 0;
+}
+.s-wrap {
+	border-radius: 20upx;
+	border: solid @color-4 1px;
+	width: 70%;
+	margin: 30upx auto 0;
+}
+.search-inp {
+	padding: 10upx;
+	width: 100%;
+}
+.res-list {
+	// border: solid red 1px;
+	box-sizing: border-box;
+	padding-top: 30upx;
+	margin-bottom: 250upx;
+}
+.clearable {
+	width: 20upx;
+	height: 20upx;
+	position: absolute;
+	left: 90%;
+	top: 20upx;
+	z-index: 10;
+}
+
 </style>
 
 <template>
 	<view class="height100 bg-2">
 		<view class="columns height100">
 			<view>
-				<view class="ju page-title"><text>产品清单</text></view>
-				<scroll-view class="bg-2 categories" scroll-x scroll-with-animation :scroll-left="x">
+				<my-header></my-header>
+				<view class="container">
+					<page-nav></page-nav>
+					
+					<view class="ju s-wrap">
+						<view class="relative" style="width: 70%;">
+							<image src="../../static/img/close.png" mode="widthFix" 
+								@click="keyword=''"
+								class="clearable op" v-show="keyword"></image>
+							<input type="text" placeholder="输入产品名称......" v-model="keyword" class="search-inp" />
+						</view>
+						<button class="blackBtn ju al op" style="width: 150upx;" size="mini" @click="searchFn">搜索</button>
+					</view>
+				</view>
+				
+				<scroll-view class="bg-2 categories" scroll-x scroll-with-animation :scroll-left="x" v-show="!showRes">
 					<view class="c-item-wrap" :id="'cate' + i"
 						v-for="(item,i) in categories" :key="item.Name">
 						<view :class="['c-item', { act: index==i }]" 
@@ -247,7 +290,7 @@
 			</view>
 			
 			<view class="flex10">
-				<swiper :indicator-dots="false" class="height100 marginb-200" :autoplay="false" :duration="300" 
+				<swiper :indicator-dots="false" class="height100 marginb-200" :autoplay="false" :duration="300" v-if="!showRes"
 					circular :current="index" @change="swiperChange">
 					<swiper-item v-for="(item,i) in categories" :key="i">
 						<view class="noData" v-if="item.product.length===0">
@@ -287,6 +330,41 @@
 						</scroll-view>
 					</swiper-item>
 				</swiper>
+				
+				<!-- 搜索结果 -->
+				<view scroll-y class="height100 res-list" v-else>
+					<view class="clearBoth pl20">
+						<view class="noData" v-if="products.length===0">暂无搜素结果</view>
+						<view :class="['p-item size25 bg-2']" 
+							v-show="pro.desc.status==1"
+							v-for="(pro,j) in products" :key="j" @click="toDetail(pro)">
+							<view class="relative sb al">
+								<image :lazy-load="true" :src="imgUrl +'images/' + pro.image" mode="aspectFill" class="pro-img"></image>
+								<view class="pro-main al">
+									<view class="width70">
+										<view class="height2 mb10">
+											<view class="c2">{{pro.name}}</view>
+										</view>
+										<view class="al sb mb10">
+											<view class="">
+												<view><text>编号: {{pro.proNumber}}</text></view>
+												<view><text>粘度: {{pro.viscosity}}</text></view>
+												<view><text>规格: {{pro.specification}}</text></view>
+											</view>
+											
+										</view>
+									</view>
+									<view class="width30" @click.stop=''>
+										<view><text class="color-8">￥{{format(pro.price)}}</text></view>
+										<addSub :num="pro.num" @changeNum='changeNum($event,pro)'></addSub>
+									</view>
+									
+								</view>
+								
+							</view>
+						</view>
+					</view>
+				</view>
 				
 				<!-- 底部提交订单 -->
 				<view class="indexBottom al" @click="showChecked">
@@ -357,21 +435,62 @@
 				timer: null,
 				qty: 0,
 				total: 0,
+				showRes: false,
 			};
 		},
-		created () {
+		onShow () {
 			this.getCategory()
 			this.getCart()
+			
+			// this.keyword = "金格"
+			// this.searchFn()
 		},
 		watch: {
 			index (val) {
 				this.getPro(val)
+			},
+			keyword (val) {
+				if (!val) {
+					this.products = []
+					this.showRes = false
+				}
 			}
 		},
 		computed: {
 			imgUrl () { return this.$store.state.app.imgUrl },
 		},
 		methods:{
+			searchFn () {
+				let that = this
+				if (!this.keyword) { return false }
+				uni.showLoading({
+					title: "搜索中..."
+				})
+				this.$http({
+					url: "productLike",
+					method:"GET",
+					// header: {
+					// 	"Access-Control-Allow-Origin": "*"
+					// },
+					data: {
+						search: that.keyword,
+						page: 1,
+						offset: 999
+					},
+					success (res) {
+						console.log(res)
+						that.products = res.data.data
+						that.initProductNum()
+					},
+					fail (e) {
+						console.log(e)
+					},
+					complete () {
+						that.showRes = true
+						uni.hideLoading()
+					}
+				})
+			},
 			createOrder () {
 				if (this.inCart.length) {
 					uni.navigateTo({
@@ -631,6 +750,16 @@
 					this.categories = [...this.categories]
 				}
 				
+				this.products.forEach(item => {
+					item.num = 0
+					this.inCart.forEach((cart) => {
+						if (item.ID == cart.product_id) {
+							item.num = cart.number
+							item.cartId = cart.id * 1
+						}
+					})
+				})
+				
 			},
 			// 底部拖动事件
 			changeArea (e) {
@@ -660,9 +789,9 @@
 			},
 			// 进入产品详情
 			toDetail (item) {
-				// uni.navigateTo({
-				// 	url: "/pages/cart/detail?id=" + item.ID
-				// })
+				uni.navigateTo({
+					url: "/pages/cart/detail?id=" + item.ID
+				})
 			},
 			loadOver (i,j) {
 				this.categories[i].product[j].showImg = true

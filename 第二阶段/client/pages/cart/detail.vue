@@ -1,218 +1,266 @@
 <style lang="less" scoped>
 	@import url("@/static/css/color.less");
 	.big-img {
-		width: 750upx;
-		height: 750upx;
-	}
-	.cartIco {
-		width: 80upx;
-		height:80upx;
-		border-radius: 50%;
-		right: 30upx;
-		top: 200upx;
-		position: absolute;
-		border-left: solid 1px #CCC;
-		border-right: solid 1px #CCC;
-		border-bottom: solid 2px #CCC;
-		z-index: 1;
-	}
-	.width30 {
-		width: 50upx;
-		height: 50upx;
-	}
-	.mleft40 {
-		margin-left: 40upx;
-	}
-	.rightIco {
-		width: 30upx;
-		height: 30upx;
-	}
-	.vm {
-		vertical-align: middle;
-	}
-	.label {
-		width: 100upx;
-		display: inline-block;
-	}
-	.pb10 {
-		padding-bottom: 100upx;
-	}
-	.bottomBar {
 		width: 100%;
-		height: 110upx;
-		position: fixed;
-		left: 0;
-		bottom: 0;
-		border-top: solid 1px @color-4;
-		z-index:10;
+		height: 650upx;
+		margin: 30upx 0;
 	}
-	.btn-1 {
-		width: 18%;
-		height: 100%;
-		// border: solid red 1px;
+
+	
+	.backIco {
+		width: 0;
+		height: 0;
+		border: solid 15upx transparent;
+		border-right: solid #000 15upx;
+		margin-right: 15upx;
 	}
-	.bl1 {
-		border-left: solid 1px @color-4;
+	.container {
+		width: 90%;
+		margin: auto;
+		
 	}
-	.btn-2 {
-		width: 32%;
+	.numBox {
+		width: 50%;
+	}
+	.num-btn {
+		width: 70upx;
+		height: 70upx;
+		background: @color-6;
 		color: #FFF;
+		text-align: center;
+		line-height: 68upx;
+		border-radius: 50%;
 	}
-	.bg1 {
-		background: #E69C36;
+	.num-inp {
+		width: 50%;
 	}
-	.bg2 {
-		background: @color-7;
+	.pro-detail {
+		width: 100%;
+		height: 650upx;
+		border: solid #CCC 1px;
 	}
-	.wid20 {
-		width: 40upx;
-		height: 40upx;
+	.full {
+		width: 100%;
+		height: 100%;
 	}
-	.bottomModal {
-		width: 750upx;
-		height: 600upx;
-		// border: solid red 1px;
+	
+	
+	
+	.indexBottom {
+		width: 100%;
+		height: 130upx;
+		background: #000000;
 		position: fixed;
 		left: 0;
-		bottom: -600upx;
-		transition: 0.3s;
-		z-index: 5;
+		bottom: 50px;
+		color: white;
+		z-index:100;
 	}
-	.bottom110 {
-		bottom: 110upx !important;
-	}
-	.b-m-header {
-		padding-left: 210upx;
-		border-bottom: solid @color-4 1px;
-	}
-	.marginr50 {
-		margin-right: 50upx;
-	}
-	.p30 {
-		padding: 30upx;
-	}
-	.modal-img {
-		width: 200upx;
-		height: 200upx;
-		// border: solid red 1px;
-		position: absolute;
-		bottom: 10upx;
-		left: 20upx;
-	}
-	.skus {
-		background: @color-4;
-		float: left;
-		margin-top: 20upx;
-		margin-right: 20upx;
-		padding: 15upx;
+	.indexBottomLeft {
+		flex:0.8;
+		// width: 100upx;
+		// height: 100upx;
+		// background: white;
+		margin-left: 20upx;
 		border-radius: 10upx;
 	}
-	.bb1 {
-		border-bottom: solid @color-4 1px;
-		padding-bottom: 20upx;
+	.indexBottomCenter {
+		flex:6;
+		padding-right: 20upx;
+		font-size: 25upx;
+		text-align: right;
 	}
-	.sku-act {
-		background: @color-7 !important;
-		color: #FFF !important;
+	.indexBottomRight {
+		flex:3;
 	}
-	.mask {
-		width: 750upx;
-		height: 100vh;
-		background: rgba(0,0,0,0.5);
+	.topBottomIcon {
+		width: 100%;
+		height: 100%;
+	}
+	.bottomTotal {
+		justify-content: flex-end;
+	}
+	.submit {
+		background: #FF9900;
+		padding: 20upx 0;
+		margin-right: 20upx;
+		border-radius: 20upx;
+		color: black;
+		font-weight: bold;
+	}
+	// 弹出层
+	.drapBox {
+		width: 100%;
+		height: 130vh;
 		position: fixed;
+		// border: solid red 1px;
+		// background: green;
+		z-index: 16;
+		left: 0;
+		top: 30%;
+		pointer-events: none;
+	}
+	.indexArea {
+		// border: solid red;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+	.indexView {
+		width: 100%;
+		height: 50%;
+		background: white;
+		pointer-events: auto !important;
+		border-radius: 30upx;
+	}
+	.backarea {
+		width: 100%;
+		height: 100%;
+		position: fixed;
+		background: black;
 		left: 0;
 		top: 0;
-		z-index: 4;
+		opacity: 0.5;
+		z-index: 10;
 	}
+	
+	.bottomScroll {
+		width: 95%;
+		margin: auto;
+		height: calc(70vh - 300upx);
+		// border: solid red 2px;
+		box-sizing: border-box;
+	}
+	.bottomTitle {
+		width: 100%;
+		height: 60upx;
+		color: #888888;
+	}
+	.productCenter {
+		width: 70%;
+	}
+	.lube {
+		// border: solid #999999 1px;
+		width: 99%;
+		padding: 10upx 0;
+		margin: 10upx 0;
+		font-size: 23upx;
+		border-radius: 20upx;
+		background: white;
+		overflow: hidden;
+		border: solid 1px #000000;
+	}
+	.lube:last-child {
+		margin-bottom: 40upx;
+	}
+	.productImg {
+		width: 20%;
+		height: 140upx;
+		border-radius: 20upx;
+	}
+	.productCenter {
+		width: 50%;
+		padding-left: 20upx;
+	}
+	.productRight {
+		width: 30%;
+		// height:50upx;
+		// border: solid red 1px;
+	} 
 </style>
 
 <template>
-	<view class="relative pb10">
-		<image src="../../static/img/cart1.png" mode="aspectFill" class="big-img"></image>
-		<view class="bg-2">
-			<view class="cartIco ju al bg-2 op">
-				<image src="../../static/img/cart.png" class="width30" mode="aspectFill"></image>
+	<view class="relative pb10 bg-2">
+		<my-header></my-header>
+		<view class="main">
+			<view class="al op" @click="back">
+				<view class="backIco"></view>
+				返回上一页
 			</view>
-			<view class="size35 main"><text>卡过圣诞节是广东省噶倒计时噶很多个哈</text></view>
-			<view class="main sb">
-				<view>
-					<view class="color-7 size40">￥230</view>
-					<view class="color-5">销量:123456</view>
-				</view>
-				<view>
-					
-				</view>
-			</view>
-		</view>
-		
-		<view class="main bg-2 sb al">
-			<view>
-				<text class="vm">选择</text>
-				<text class="size25 mleft40">规格</text>
-			</view>
-			<image src="../../static/img/right.png" class="rightIco" mode="widthFix"></image>
-		</view>
-		
-		<view class="main bg-2">
-			<view class="ju"><text>商品详情</text></view>
-			<view>
-				<label class="label">编号 </label>:
-				<text>127356123</text>
-			</view>
+			<image :src="imgUrl + 'images/' + item.image" class="big-img"></image>
 			
-			<view>
-				<label class="label">粘度 </label>:
-				<text>127356123</text>
-			</view>
-			
-			<view>
-				<label class="label">规格 </label>:
-				<text>127356123</text>
-			</view>
-		</view>
-		
-		<!-- 底部bar -->
-		<view :class="['bottomBar bg-2 sb']">
-			<view class="btn-1 ju al columns op" @click="toHome">
-				<image src="../../static/img/home.png" mode="widthFix" class="wid20"></image>
-				<text class="size25">首页</text>
-			</view>
-			<view class="btn-1 ju al columns bl1 op">
-				<image src="../../static/img/heart.png" mode="widthFix" class="wid20"></image>
-				<text class="size25">收藏</text>
-			</view>
-			<view class="btn-2 bg1 ju al op" @click="addCart">
-				<text>加入购物车</text>
-			</view>
-			<view class="btn-2 bg2 ju al op" @click="pay">
-				<text>立即购买</text>
-			</view>
-		</view>
-		
-		<view :class="['bottomModal bg-2', { bottom110: showModal }]">
-			<view class="b-m-header relative">
-				<image class="modal-img"></image>
-				<view class="sb al p30">
-					<view>
-						<view><text class="size40 color-7">￥233</text></view>
-						<view><text>库存: 55555</text></view>
+			<view class="container">
+				<view class="size33">{{item.name}}</view>
+				<view class="size38" style="padding: 15upx 0;">
+					<text>单价：</text>
+					<text class="color-8">￥{{item.price}}</text>
+				</view>
+				<view >编号：{{item.proNumber}}</view>
+				<view >粘度：{{item.viscosity}}</view>
+				<view >规格：{{item.specification}}</view>
+				
+				
+				<view class="al" style="padding:40upx 0;">
+					<view class="numBox ju al">
+						<view class="num-btn op" @click="addSub(true)">-</view>
+						<input type="text" v-model="num" class="num-inp tc" />
+						<view class="num-btn op" @click="addSub(false)">+</view>
 					</view>
-					<image @click="showModal=false" src="/static/img/close.png" mode="widthFix" class="wid20 op marginr50"></image>
+					<view class="ju" style="width: 50%;">
+						<button class="blackBtn op" style="width: 80%;" @click="changeNum(num,item)">加入购物车</button>
+					</view>
 				</view>
 			</view>
-			<view class="p30">
-				<view ><text>规格</text></view>
-				<view class="clearBoth bb1">
-					<view @click="sku=!sku" :class="['skus color-3', {'sku-act': sku}]"><text>300ML * 24</text></view>
-				</view>
-			</view>
-			<view class="sb p30">
-				<text>数量</text>
-				<addSub :num="Qty" :min="1" :max="10000"></addSub>
-			</view>
+			
+			
+			
+			
 		</view>
-		<view class="mask" v-if="showModal" @click="showModal=false"></view>
+		<swiper class="pro-detail">
+			<swiper-item class="full">
+				123
+			</swiper-item>
+		</swiper>
 		
+
+		
+
+
+		<!-- 底部提交订单 -->
+		<view class="indexBottom al" @click="showChecked">
+			<view class="indexBottomLeft ju al">
+				<image :class="['topBottomIcon']" src="../../static/img/cart3.png" mode="widthFix"></image>
+			</view>
+			<view class="indexBottomCenter">
+				<view>共 {{qty}} 箱</view>
+				<view class="al bottomTotal">总金额:
+					<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{format(total)}}</text>
+				</view>
+			</view>
+			<view class="indexBottomRight">
+				<view class="submit ju op" @click.stop="createOrder">下一步</view>
+			</view>
+		
+		</view>
+		
+		<!-- 底部拖动栏 -->
+		<view class="backarea" v-if="showDrag" @click="showChecked"></view>
+		<view class="drapBox" >
+			<movable-area class="indexArea">
+				<movable-view class="indexView" :y='y' inertia direction="vertical" @change='changeArea' damping='40'>
+					<view class="bottomTitle ju al" >已选产品</view>
+					<view class="noData" v-if="inCart? inCart.length===0 : false">您的购物车空空如也</view>
+					<scroll-view scroll-y="true" class="bottomScroll">
+						<view class="lube al"
+							style="wdth: 96.5%;"
+							v-for="(item, i) in inCart" :key='i' v-show="item.number > 0">
+							<image :src="item.image" mode="aspectFit" class="productImg"></image>
+							<view class="productCenter">
+								<view style="font-weight: bold;">{{item.name}}</view>
+								<view>编号: {{item.proNumber}}</view>
+								<view>粘度: {{item.viscosity}}</view>
+								<view>规格: {{item.specification}}</view>
+							</view>
+							<view class="productRight ju" style="flex-direction: column;">
+								<text style="color: #FF9900;font-weight: bold;">$ {{item.price}}</text>
+								<addSub :num='item.number' @changeNum='changeNum2($event,item)'></addSub>
+							</view>
+						</view>
+						
+					</scroll-view>
+				</movable-view>
+			</movable-area>
+		</view>
 		
 	</view>
 </template>
@@ -221,52 +269,357 @@
 	export default {
 		data () {
 			return {
-				Qty: 1,
-				sku: false,
-				showModal: false,
-				item: {}
+				item: {},
+				id: '',
+				num: 0,
+				qty:0,
+				total: 0,
+				showDrag: false,
+				inCart: [],
+				y: 1000,
 			}
 		},
 		
-		created () {
+		onLoad (val) {
 			// obj.Qty = item.num *1
 			// obj.name = item.name
 			// obj.id = item.ID
 			// obj.price = item.price
 			// obj.commodity = item
+			this.id = val.id
 			this.getData()
 		},
-		mounted () {
-			// this.$refs.p.open()
+		computed: {
+			imgUrl () { return this.$store.state.app.imgUrl },
 		},
 		methods: {
-			toHome () {
-				uni.switchTab({
-					url:"/pages/index/index"
-				})
-			},
-			addCart () {
-				if (!this.showModal) {
-					this.showModal = true
+			// 修改产品数量
+			changeNum (e,item) {
+				let that = this
+				if (item.num == 0) {
+					that.$http({
+						url: "postShoppingCar/",
+						method:"POST",
+						data: {
+							user_id: uni.getStorageSync("userId"),
+							product_id: item.ID,
+							number: e * 1
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "加入购物车失败",
+									icon: "none"
+								})
+							}
+						},
+					})
 				} else {
-					
+					if (e <= 0) {
+						that.$http({
+							url: "deleteShoppingCar/",
+							method:"DELETE",
+							data: {
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					} else {
+						that.$http({
+							url: "putShoppingCar/",
+							method:"PUT",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e * 1,
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					}
 				}
-			},
-			pay () {
-				if (!this.showModal) {
-					this.showModal = true
+				return false
+				// console.log(e, item.num)
+				if (e == 1) {  
+					if (item.num >=1) {
+						console.log("编辑")
+						that.$http({
+							url: "putShoppingCar/",
+							method:"PUT",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e * 1,
+								id: item.cartId
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									// that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "修改数量失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					} else if (item.num < 1) {
+						// console.log("创建")
+						that.$http({
+							url: "postShoppingCar/",
+							method:"POST",
+							data: {
+								user_id: uni.getStorageSync("userId"),
+								product_id: item.ID,
+								number: e
+							},
+							success (res) {
+								console.log(res)
+								if (res.data.code == 200) {
+									that.inCart = res.data.data
+									that.getCart()
+								} else {
+									uni.showToast({
+										title: "加入购物车失败",
+										icon: "none"
+									})
+								}
+							},
+						})
+					}
+				} else if (e <= 0) {
+					console.log("删除")
+					that.$http({
+						url: "deleteShoppingCar/",
+						method:"DELETE",
+						data: {
+							id: item.cartId
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								// that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "修改数量失败",
+									icon: "none"
+								})
+							}
+						},
+					})
 				} else {
-					
+					console.log("编辑")
+					that.$http({
+						url: "putShoppingCar/",
+						method:"PUT",
+						data: {
+							user_id: uni.getStorageSync("userId"),
+							product_id: item.ID,
+							number: e * 1,
+							id: item.cartId
+						},
+						success (res) {
+							console.log(res)
+							if (res.data.code == 200) {
+								// that.inCart = res.data.data
+								that.getCart()
+							} else {
+								uni.showToast({
+									title: "修改数量失败",
+									icon: "none"
+								})
+							}
+						},
+					})
 				}
+				item.num = e
+				
 			},
-			getData () {
-				this.$http({
-					url: "productOne/",
+			// 获取购物车
+			getCart () {
+				let that = this
+				that.$http({
+					url: "getShoppingCar/",
 					data: {
-						id: 142
+						user_id: uni.getStorageSync("userId"),
+						page: 1,
+						offset: 999
 					},
 					success (res) {
 						console.log(res)
+						if (res.data.code == 200) {
+							that.total = 0
+							that.qty = 0
+							res.data.data.forEach(item => {
+								item.image = window.imgUrl + "images/" + item.image
+								that.total += (item.price*item.number)
+								that.qty += item.number
+								
+								if (item.number==0) {
+									that.$http({
+										url: "deleteShoppingCar/",
+										method:"DELETE",
+										data: {
+											id: item.id * 1
+										},
+										success (res) {
+											console.log(res)
+											if (res.data.code == 200) {
+												// that.inCart = res.data.data
+												that.getCart()
+											}
+										},
+									})
+								}
+							})
+							that.inCart = res.data.data
+							
+							
+						} else {
+							that.inCart = []
+							that.total = 0
+							that.qty = 0
+						}
+						that.initProductNum()
+					},
+					fail (e) {
+						console.log('err', e)
+					}
+				})
+			},
+			// 预设产品数量
+			initProductNum () {
+				
+				// this.products.forEach(item => {
+					this.item.num = 0
+					this.inCart.forEach((cart) => {
+						if (this.item.ID == cart.product_id) {
+							this.num = cart.number
+							this.item.num = this.num	
+							this.item.cartId = cart.id * 1
+						}
+					})
+				// })
+				
+			},
+			// 底部拖动事件
+			changeArea (e) {
+				// console.log(e.detail.y)
+				clearTimeout(this.timer)
+				this.timer = setTimeout(() => {
+					if (e.detail.y < 100) {
+						this.showDrag = true
+						this.y = 0
+					} else {
+						this.showDrag = false
+						this.y =1000
+					}
+				},80)
+			},
+			// 底部拖动事件
+			changeArea (e) {
+				// console.log(e.detail.y)
+				clearTimeout(this.timer)
+				this.timer = setTimeout(() => {
+					if (e.detail.y < 100) {
+						this.showDrag = true
+						this.y = 0
+					} else {
+						this.showDrag = false
+						this.y =1000
+					}
+				},80)
+			},
+			// 显示已选择
+			showChecked () {
+				if (!this.showDrag) {
+					// if (this.inCart.length) {
+						this.y = 0
+						this.showDrag = true
+					// }
+				} else {
+					this.y = 1000
+					this.showDrag = false
+				}
+			},
+			createOrder () {
+				if (this.inCart.length) {
+					uni.navigateTo({
+						url: "/pages/createOrder/createOrder"
+					})
+				} else {
+					uni.showToast({
+						title: "您未添加任何产品",
+						icon: "none"
+					})
+				}
+				
+			},
+			changeNum2 (e,cart) {
+				let item = JSON.parse(JSON.stringify(cart))
+				item.num = item.number
+				item.cartId = item.id * 1
+				item.ID = item.product_id
+				this.changeNum(e,item)
+			},
+			addSub (boo) {
+				if (!boo) {
+					// +
+					this.num++
+					if (this.num >1000) {
+						this.num = 1000
+					}
+				} else {
+					// -
+					this.num--
+					if (this.num <0) {
+						this.num = 0
+					}
+				}
+			},
+			back () {
+				uni.navigateBack()
+			},
+			getData () {
+				let that = this
+				this.$http({
+					url: "productOne/",
+					data: {
+						id: that.id
+					},
+					success (res) {
+						console.log(res)
+						that.item = res.data.data
+						that.getCart()
 					}
 				})
 			}
