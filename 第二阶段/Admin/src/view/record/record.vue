@@ -218,7 +218,11 @@
                     <div class="sb">
                         <div>
                             <br>
-
+                            <div class="size12 tLeft2 width50">
+                                <span>送货类型: </span>
+                                <span v-if="detail.delivery_type == 1">送货上门</span>
+                                <span v-if="detail.delivery_type == 2">网点自提</span>
+                            </div>
                             <div class="size12 tLeft2 width50">
                                 <span>赠送: </span>
                                 <span>{{detail.gift ? detail.gift : '无'}}</span>
@@ -506,6 +510,10 @@ export default {
         getUser () {
             this.$axios({
                 url: "",
+                params: {
+                    page: 1,
+                    offset: 9999
+                }
             }).then(res => {
                 res.data.data.forEach(item => {
                     item.ID = String(item.ID)
@@ -532,7 +540,7 @@ export default {
             this.loading = true
             this.total = 0
             this.$axios({
-                url: "getAdminOrder",
+                url: "getAdminOrder/",
                 params: {
                     page: this.page,
                     offset: this.offset,

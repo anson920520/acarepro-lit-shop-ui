@@ -91,6 +91,7 @@ export default {
 	},
 	methods:{
 		login () {
+			console.log(window.baseURL)
 			if (!(this.username) || (!this.password)) {
 				this.$Message.warning("请输入账号和密码")
 			} else {
@@ -99,7 +100,8 @@ export default {
 					duration: 100
 				})
 				this.$axios({
-					url: window.baseURL.replace("api/v1/", '') + "postAdminLogin",
+					url: window.baseURL.replace("api/v1/", '') + "postAdminLogin/",
+					// url: window.baseURL + "postAdminLogin",
 					method:"POST",
 					data: {
 						username: this.username,

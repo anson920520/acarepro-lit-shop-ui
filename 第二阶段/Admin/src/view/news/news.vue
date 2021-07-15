@@ -38,7 +38,7 @@
                 <Tag v-if="row.status==0" color='warning'>隐藏</Tag>
             </template>
             <template slot="detail" slot-scope="{row}">
-                <div class="c1">{{row.detail}}</div>
+                <div class="c1"  v-html="row.detail">{{row.detail}}</div>
             </template>
         </Table>
         <br>

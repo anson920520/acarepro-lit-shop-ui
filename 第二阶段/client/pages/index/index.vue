@@ -1,60 +1,52 @@
 <template>
 	<view class="pb200 bg-1">
 		<my-header></my-header>
-		<!-- <uniPopup ref="pop">
-			<view class="msgMain">
-				<view class="bold ju mt20">通知</view>
-				<view >
-					<view class="msgItem">
-						我司于5月1日-5月5日放假，在假期期间下的订单，于6号正常上班后安排发货，请知悉！
-					</view>
-				</view>
-				<view class="iKnow" @click="iKnow">
-					<text class="op">我知道了</text>
-				</view>
+		<uniPopup ref="pop">
+			<view class="msgMain relative">
+				<image src="../../static/img/close.png" @click="closeAdv" mode="widthFix" class="closeAdv"></image>
+				<swiper class="advLoop" :indicator-dots="true" circular :autoplay="true" :interval="5000" :duration="400">
+					<swiper-item v-for="(item,i) in adv">
+						<view class="full" :style="{'background-image': `url('${item.image}')`}">
+							<view class="tc">{{item.name}}</view>
+							<view class="height80">{{item.detail}}</view>
+						</view>
+					</swiper-item>
+				</swiper>
 			</view>
-		</uniPopup> -->
+		</uniPopup>
 		
 		
 		<swiper class="adv-wrap" :indicator-dots="true" circular :autoplay="true" :interval="5000" :duration="500">
-			<swiper-item v-for="(item,i) in adv" :key='item.name'>
+			<swiper-item v-for="(item,i) in loop" :key='item.name'>
 				<view class="adv-item">
-					<image :src="item.image" mode="aspectFill" class="full-img"></image>
+					<image :src="item.link" mode="aspectFill" class="full-img"></image>
 				</view>
 			</swiper-item>
 		</swiper>
-		<!-- 热销产品 -->
-		<!-- <view class="container1">
-			<view class="tc"><text class="box-title">热销产品</text></view>
-			<view class="sb mb30">
-				<view class="hot-pro op" v-for="(item,i) in hotPro" :key="i" @click="toDetail(item)">
-					<image class="full-img" :src="item.image" mode="aspectFill"></image>
-				</view>
-			</view>
-		</view> -->
-		<!-- 最新新闻 -->
+
 		<!-- 最新宣传素材 -->
 		<view class="container1">
 			<view class="tc"><text class="box-title">最新宣传素材</text></view>
-			<view class="sb mb30">
-				<view class="hot-pro1" v-for="(item,i) in 3" :key="i">
-					<image class="info-img" src="" mode="aspectFill"></image>
-					<view class="c1"><text>宣传标题</text></view>
-					<view class="c4 size23"><text>宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容宣传内容</text></view>
+			<scroll-view scroll-x class="mb30 scrollX">
+				<view class="hot-pro1" v-for="(item,i) in publicity" :key="i" @click="toPubDetail(item)">
+					<image class="info-img" :src="item.preImg" mode="aspectFill"></image>
+					<view class="c1"><text>{{item.name}}</text></view>
+					<view class="c4 size23" v-html="item.detail"></view>
 				</view>
-			</view>
-			<view class="mb30 ju">
+			</scroll-view>
+			<view class="noData" v-if="publicity.length===0">暂无数据</view>
+			<view class="mb30 ju" v-else>
 				<button class="primaryBtn op" @click="toPub" size="mini">查看更多...</button>
 			</view>
 		</view>
 		<view class="container1">
 			<view class="tc"><text class="box-title">最新消息</text></view>
-			<view class="mb30">
+			<scroll-view class="mb30" scroll-y style="height:900upx">
 				<view v-for="(item,i) in news" :key="i" class="sb pri-list">
 					<image :src="item.preImg" mode="aspectFill" class="news-img"></image>
 					<view class="flex10">
 						<view class="news-title">{{item.name}}</view>
-						<view class="news-content size23 c4">{{item.detail}}</view>
+						<view class="news-content size23 c4" v-html="item.detail">{{item.detail}}</view>
 						<view class="flex-end">
 							<button  size="mini" class="primaryBtn op" @click="toNews(item)">阅读更多...</button>
 						</view>
@@ -63,12 +55,12 @@
 					<!-- <view style="flex:7" class="c1">{{item.name}}</view>
 					<view style="flex:3" class="tr">{{item.CreatedAt}}</view> -->
 				</view>
-				
-				<view class="noData size23 ju al op" @click="toNewsList">
+				<view class="noData" v-if="news.length===0">暂无数据</view>
+				<view class="noData size23 ju al op" @click="toNewsList" v-else>
 					查看更多历史消息
 					<image src="../../static/img/right1.png" mode="widthFix" style="width: 30upx;"></image>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 		
 		
@@ -79,22 +71,27 @@
 	export default {
 		data() {
 			return {
-				adv: [],
+				loop: [],
 				news: [],
-				hotPro: []
+				hotPro: [],
+				publicity: [],
+				adv: [],
 			}
 		},
 		onLoad() {
 			this.getAdv()
 			this.getNews()
-			// this.getHot()
+			this.getPub()
+			this.getLoop()
 		},
 		mounted () {
-			// this.$refs.pop.open()
 		},
 		methods: {
+			closeAdv () {
+				this.$refs.pop.close()
+			},
 			toPub () {
-				uni.switchTab({
+				uni.navigateTo({
 					url: "/pages/publicity/publicity"
 				})
 			},
@@ -108,33 +105,52 @@
 					url: "/pages/news/newsDetail?id=" + item.ID
 				})
 			},
-			getHot () {
+			// 获取轮播图
+			getLoop () {
 				let that = this
 				this.$http({
-					url: "getHotProduct/",
+					url: "getCarousel/",
 					data: {
 						page: 1,
-						offset: 3,
+						offset: 99,
 					},
 					success (res) {
 						console.log(res)
-						if (res.data) {
-							res.data.data.forEach(item => {
-								item.image = window.imgUrl + "images/" + item.image
-							})
-							that.hotPro = res.data.data.slice(0,3)
+						if (res.data.code == 200) {
+							
+							that.loop = res.data.data
 						}
-						console.log(that, that.hotPro)
 					}
 				})
 			},
+			// 获取宣素材
+			getPub () {
+				let that = this
+				this.$http({
+					url: "getPublicity/",
+					data: {
+						page: 1,
+						offset: 10,
+					},
+					success (res) {
+						console.log(res)
+						if (res.data.code == 200) {
+							res.data.data.forEach(item => {
+								item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
+							})
+							that.publicity = res.data.data.filter(item => item.status==1)
+						}
+					}
+				})
+			},
+			// 获取新闻
 			getNews () {
 				let that = this
 				this.$http({
 					url: "getClientNews/",
 					data: {
 						page: 1,
-						offset: 3,
+						offset: 10,
 					},
 					success (res) {
 						console.log(res)
@@ -152,6 +168,12 @@
 					url: "/pages/cart/detail?id=" + item.ID
 				})
 			},
+			toPubDetail (item) {
+				uni.navigateTo({
+					url: "/pages/publicity/publicityDetail?id=" + item.ID
+				})
+			},
+			
 			getAdv () {
 				let that = this
 				this.$http({
@@ -164,6 +186,9 @@
 						console.log(res)
 						if (res.data.code == 200) {
 							that.adv = res.data.data.filter(item => item.status==1)
+							if (that.adv.length) {
+								that.$refs.pop.open()
+							}
 						}
 					}
 				})
@@ -179,7 +204,7 @@
 
 <style lang="less" scoped>
 	.adv-wrap {
-		height: 900upx;
+		height: 1080upx;
 		width: 720upx;
 		margin: auto;
 		border-radius: 20upx;
@@ -218,12 +243,21 @@
 	.mb30 {
 		margin-top:30upx;
 	}
+	.scrollX {
+		// border: solid red 1px;
+		width: 100%;
+		white-space: nowrap;
+	}
 	.tr {
 		text-align: right;
 	}
 	.hot-pro1 {
 		width: 29%;
 		margin: 0upx 0upx 0;
+		display: inline-block;
+		margin-right: 6%;
+		vertical-align: top;
+		white-space: pre-wrap;
 	}
 	.info-img {
 		width: 100%;
@@ -236,33 +270,37 @@
 	}
 	.msgMain {
 		background: #FFF;
-		width: 500upx;
+		width: 600upx;
 		border-radius: 20upx;
 		// padding: 20upx;
 	}
-	.msgItem {
-		margin: 30upx;
-		padding-left: 20upx;	
-		position: relative;
-		// &::before {
-		// 	display: block;
-		// 	content: "";
-		// 	width: 10upx;
-		// 	height: 10upx;
-		// 	background: #FF9900;
-		// 	border-radius: 50%;
-		// 	position: absolute;
-		// 	left: 0upx;
-		// 	top: 15upx;
-		// }
+	.advLoop {
+		width: 100%;
+		height:750upx;
 	}
-	.iKnow {
-		border-top: solid #333 1px;
-		text-align: center;
-		padding: 20upx 0;
+	.full {
+		width: 100%;
+		height: 100%;
+		padding: 30upx;
+		background-size:cover;
+		background-position: center;
+		background-repeat: no-repeat;
+		border-radius: 20upx;
 	}
-
-	
+	.height80 {
+		height: 80%;
+		overflow: auto;
+		// border: solid 1px;
+		margin-top: 20upx;
+	}
+	.closeAdv {
+		width: 40upx;
+		height: 40upx;
+		position: absolute;
+		right: -20upx;
+		top: -20upx;
+		z-index: 10;
+	}
 	
 	
 	

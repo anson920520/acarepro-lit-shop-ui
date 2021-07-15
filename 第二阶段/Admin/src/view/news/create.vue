@@ -38,7 +38,7 @@
         <h4 class="ju" v-else>编辑新闻</h4>
         <br>
         <Form ref="addForm" :model="addForm" :rules="rules">
-            <div class="p30 sb">
+            <div class="p30 flex">
                 <div class="flex3">
                     <FormItem label="" prop="news_category_id">
                         <div class="al">
@@ -86,8 +86,7 @@
                         </div>
                     </FormItem>
 
-                </div>
-                <div class="flex3">
+
                     <FormItem label="" prop="shipping">
                         <div class="al">
                             <div class="sb addFormLabel ">
@@ -101,16 +100,7 @@
                         </div>
                     </FormItem>
 
-                    <FormItem label="" prop="detail">
-                        <div class="flex">
-                            <div class="sb addFormLabel ">
-                                <span>详</span>
-                                <span>情</span>
-                            </div>: 
-                            <textarea class="width200" v-model="addForm.detail" ></textarea>
-
-                        </div>
-                    </FormItem>
+                    
                 </div>
                 <div class="flex3">
                     <div class="al">
@@ -134,6 +124,17 @@
                     
                 </div>
             </div>
+            <FormItem label="" prop="detail">
+                <div class="flex">
+                    <div class="sb addFormLabel ">
+                        <span>详</span>
+                        <span>情</span>
+                    </div>: 
+                    <!-- <textarea class="width200" v-model="addForm.detail" ></textarea> -->
+                    <div id="dom"></div>
+
+                </div>
+            </FormItem>
         </Form>
         <br>
         <div class="width70 flex-end">
@@ -146,6 +147,7 @@
 </template>
 
 <script>
+import E from "wangeditor"
 export default {
     data () {
         return {
@@ -161,7 +163,7 @@ export default {
             id: "",
             rules: {
                 name: [ { required: true, message: "　　　　　请输入新闻名称",trigger: 'blur' } ],
-                news_category_id: [ { required: true, message: "　　　　　请选择新闻" } ],
+                news_category_id: [ { required: true, message: "　　　　　请选择新闻分类" } ],
                 start_time: [ { required: true, message: "　　　　　请选择开始时间",trigger: 'blur' } ],
                 end_time: [ { required: true, message: "　　　　　请选择结束时间",trigger: 'blur' } ],
                 detail: [ { required: true, message: "　　　　　请输入详情",trigger: 'blur' } ],
@@ -171,7 +173,8 @@ export default {
             baseURL: "",
             headers: {
                 token: localStorage.getItem("jwt"),
-            }
+            },
+            dom: {}
         }
     },
     created () {
@@ -182,6 +185,16 @@ export default {
             this.getOne()
         }
         this.getCate()
+    },
+    mounted () {
+        let that = this
+        this.dom = new E("#dom")
+        this.dom.config.onchange = (html) => {
+            that.addForm.detail = html
+        }
+        this.dom.config.zIndex = 10
+        this.dom.config.placeholder = "請輸入详情"
+        this.dom.create()
     },
     methods:{ 
         changeTime (e,key) {
@@ -233,6 +246,7 @@ export default {
                     this.addForm.status = res.data.data[0].status + ""
                     this.addForm.detail = res.data.data[0].detail
                     this.addForm.img = JSON.parse(res.data.data[0].image)
+                    this.dom.txt.html(this.addForm.detail)
                     // res.data.forEach(item => {
                     //     if (item.id == this.id) {
                     //         this.addForm.username = item.username

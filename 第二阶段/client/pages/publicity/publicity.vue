@@ -29,7 +29,7 @@
 				<image :src="item.preImg" mode="aspectFill" class="news-img"></image>
 				<view class="flex10">
 					<view class="news-title">{{item.name}}</view>
-					<view class="news-content size23 c4">{{item.detail}}</view>
+					<view class="news-content size23 c4" v-html="item.detail">{{item.detail}}</view>
 					<view class="flex-end">
 						<button  size="mini" class="primaryBtn op" @click="toDetail(item)">阅读更多...</button>
 					</view>
@@ -66,7 +66,9 @@
 		},
 		methods:{
 			toDetail (item) {
-				
+				uni.navigateTo({
+					url: "/pages/publicity/publicityDetail?id=" + item.ID
+				})
 			},
 			getData () {
 				let that = this
@@ -74,7 +76,7 @@
 					title: "loading..."
 				})
 				this.$http({
-					url: "getClientNews/",
+					url: "getPublicity/",
 					data: {
 						page: this.page,
 						offset: this.offset,

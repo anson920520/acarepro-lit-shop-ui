@@ -2,6 +2,7 @@
 	export default {
 		onLaunch: function() {
 			console.log('App Launch')
+			this.$store.dispatch("valiToken")
 		},
 		onShow: function() {
 			console.log('App Show')
@@ -71,5 +72,12 @@
 		height: 120upx;
 		margin-top: 20upx;
 		margin-bottom: 25upx;
+	}
+	
+	
+	.uni-checkbox,.uni-checkbox-input {
+		width: 15px !important;
+		height: 15px !important; 
+		border: solid #666 1px !important;
 	}
 </style>

@@ -126,6 +126,11 @@ export default {
                     children: []
                 },
                 {
+                    path:"/index/loop",
+                    name: "轮播图管理",
+                    children: []
+                },
+                {
                     path:"/index/adv",
                     name: "广告管理",
                     children: []
@@ -143,6 +148,23 @@ export default {
                         {
                             path:"/index/news",
                             name: "新闻管理",
+                            children: []
+                        },
+                        
+                    ]
+                },
+                {
+                    path:"/",
+                    name: "宣传素材",
+                    children: [
+                        {
+                            path:"/index/publicityCategory",
+                            name: "宣传素材分类管理",
+                            children: []
+                        },
+                        {
+                            path:"/index/publicity",
+                            name: "宣传素材管理",
                             children: []
                         },
                         

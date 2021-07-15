@@ -1,25 +1,31 @@
 <template>
-	<view class="all-warpper bg-2">
+	<view class="all-warpper">
+		<my-header></my-header>
 		<view class="Login_one_main">
 			<image class="Perfect_user_logo" src="../../static/img/logo.png" mode="widthFix"></image>
-			<view class="loginText">巴达尔资讯平台</view>
-			<view class="Input-warpper" style="z-index: 10">
+			<view class="loginText bold">会员登录</view>
+			<view class="Input-warpper">
 				<view class="Input">
-					<text class="Input-text">账号：</text>
 					<input class="Input-input" 
 						type="text" 
 						v-model="UserName" 
 						placeholder="请输入账号" 
 						placeholder-style="color: #cccccc">
 				</view>
-				<view class="Input" style="border-top: #000 solid 1upx;">
-					<text class="Input-text">密码：</text>
+				<view class="Input" >
 					<input class="Input-input" 
 						
 						v-model="password"
 						type="password" placeholder="请输入密码" 
 						placeholder-style="color: #cccccc">
 				</view>
+			</view>
+			
+			<view class="al ju size25 color-2">
+				<checkbox-group @change="changeC">
+					<checkbox value="1" checked>保持登录</checkbox>
+				</checkbox-group>
+				
 			</view>
 			<button class="Sub" type="primary"
 				id="GR_LoGin_Btn"
@@ -36,7 +42,8 @@
 			return {
 				UserName: '',
 				password: "",
-				logging: true
+				logging: true,
+				keep: ['1'],
 			};
 		},
 		onLoad(val) {
@@ -44,6 +51,10 @@
 		}, 
 		
 		methods:{
+			changeC (e) {
+				// console.log(e)
+				this.keep = e.detail.value
+			},
 			autoLogin () {
 				if (uni.getStorageSync('user') && uni.getStorageSync("pwd")) {
 					this.UserName = uni.getStorageSync('user')
@@ -75,13 +86,21 @@
 						success: res => {
 							console.log(res)
 							if (res.data.message == "login successfully") {
-								uni.setStorageSync("user", that.UserName)
-								uni.setStorageSync("pwd", that.password)
+								if (that.keep.length) {
+									uni.setStorageSync("user", that.UserName)
+									uni.setStorageSync("pwd", that.password)
+								} else {
+									uni.removeStorageSync("user")
+									uni.removeStorageSync("pwd")
+								}
+								
 								uni.setStorageSync("userId", res.data.detail.ID)
 								uni.setStorageSync("sale", res.data.detail.sale)
 								uni.setStorageSync("company", res.data.detail.company)
 								uni.setStorageSync("token", res.data.token)
 								uni.setStorageSync("detail",res.data.detail) 
+								
+								that.$store.commit("setAppData", { key: "login", value: true })
 								that.toHome()
 							} 
 							else if (res.data.message == "Wrong password") {
@@ -121,7 +140,7 @@
 				// this.toHome()
 			},
 			toHome(){
-				uni.switchTab({
+				uni.navigateTo({
 					url: '/pages/index/index'
 				})
 			}
@@ -133,7 +152,12 @@
 	.all-warpper {
 		height: 100vh;
 		display: flex;
+		// background-image: url("@/static/img/lbg.jpg");
+		background: #E7D529;
+		background-size: cover;
+		background-position: bottom;
 		// border: solid red 3px;
+		
 	}
 	.Login_one_main {
 		height: 80vh;
@@ -141,30 +165,34 @@
 		position: fixed;
 		left: 50%;
 		top: 50%;
+		width: 65%;
+		// border: solid 1px;
 		transform: translateX(-50%) translateY(-50%);
 	}
 	.Input-warpper {
-		border: 1upx solid #000;
-		width: 625upx;
-		border-radius: 15upx;
+		width: 100%;
 	}
 	.Input {
-		height: 90upx;width: 100%;z-index: 10;
+		height: 80upx;width: 100%;z-index: 10;
+		margin: 30upx 0;
+		border: solid #666 1px;
+		border-radius: 10upx;
+		background: #FFF;
 		&-input {
 			display: inline-block;
 			vertical-align: middle;
 			font-size: 30upx;
 			// position: absolute;
 			// top: 50%;transform: translateY(-50%);left: 170upx;
-			width: 400upx;
+			width: 90%;
+			height: 100%;
+			padding: 0 20upx;
 		}
 		&-text {
 			font-size: 30upx;font-weight: 600;margin: 0 30upx;line-height: 90upx;
 		}
 	}
-	.Input:first-child {
-		border-radius: 10upx 10upx 0 0; 
-	}
+	
 	.Perfect_user_logo {
 		width: 320upx;
 		// height: 200upx;
@@ -172,22 +200,23 @@
 		margin: 30upx auto 20upx;
 	}
 	.loginText {
-		font-size: 55upx;
+		font-size: 30upx;
 		text-align: center;
 		// font-weight: bold;
-		margin: 40upx;
+		margin: 120upx 0 40upx;
 	}
 	.Sub {
-		width: 60%;
+		width:100%;
 		height: 85upx;
 		line-height: 85upx;
 		font-size: 35upx;margin-top: 125upx;
-		background: #E5C448 !important;
+		background: #EE870E !important;
 		color: black;
 		background-size: cover;
-		margin:100upx auto !important;
-		border: solid 1upx black;
+		margin:40upx auto !important;
+		border: solid #666 1px;
 		position: relative;
+		color: #fff;
 	}
 	.Sub view {
 		width: 40upx;

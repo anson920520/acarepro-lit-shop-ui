@@ -36,7 +36,7 @@
 	background: #000;
 	position: fixed;
 	left: 0;
-	bottom: 0;
+	bottom: 50px;
 	justify-content: space-between;
 	padding:0 20upx;
 	box-sizing: border-box;
@@ -53,11 +53,38 @@
 .mt20 {
 	margin-top: 30upx;
 }
+.inp {
+	background: #FFF;
+	padding: 10upx;
+	border-radius: 10upx;
+}
+.sanjiao {
+	width: 0;
+	height: 0;
+	border: solid 15upx transparent;
+	border-top: solid 15upx #000;
+	border-bottom: 0;
+	position: absolute;
+	top: 50%;
+	right: 29upx;
+	transform: translateY(-50%);
+}
 </style>
 
 <template>
 	<view class="createOrder">
-		<text style="font-weight: bold; padding: 20upx 0;display: block;">已选产品</text>
+		<my-header></my-header>
+		<text style="font-weight: bold; padding: 20upx 0;display: block;">送货类型：</text>
+		
+		<picker mode="selector" :range="list" range-key="name" @change="chooseType" style="margin-bottom: 50upx;">
+			<view class="relative">
+				<view class="sanjiao"></view>
+				<input class="inp" disabled placeholder="点击选择送货方式" v-model="type.name" />
+			</view>
+		</picker>
+		<!-- <view ><text>()</text></view> -->
+		
+		<text style="font-weight: bold; padding: 20upx 0;display: block;">已选产品：</text>
 		<view class="proListWrap">
 			<view class="proList ju" v-for="(item,i) in inCart" :key='i' v-show="item.number>0">
 				<!-- <image class="leftImg" src="../../static/logo.png" mode="aspectFill"></image> --> 
@@ -100,7 +127,14 @@
 			return {
 				total: 0,
 				discount: [],
-				inCart: []
+				inCart: [],
+				list: [
+					{ id: 1, name: "送货上门" },
+					{ id: 2, name: "网点自提" },
+				],
+				type: {
+					name: ''
+				},
 			};
 		},
 		computed: {
@@ -110,6 +144,9 @@
 			this.getCart()
 		},
 		methods: {
+			chooseType (e) {
+				this.type = this.list[e.detail.value]
+			},
 			// 获取购物车
 			getCart () {
 				let that = this
@@ -141,6 +178,13 @@
 			},
 			wxPay () {
 				let that = this
+				if (!that.type.id) {
+					uni.showToast({
+						title: "请选择送货类型",
+						icon: "none"
+					})
+					return false
+				}
 				let arr = []
 				this.inCart.forEach(item => {
 					let obj = {}
@@ -167,7 +211,8 @@
 					sale: uni.getStorageSync('sale'),
 					deliveryCost: 0,
 					giftAdditives: 0,
-					rebate: 0
+					rebate: 0,
+					delivery_type: that.type.id
 				}
 				// console.log(Data)
 				// return false

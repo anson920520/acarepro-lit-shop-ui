@@ -40,7 +40,7 @@
 		},
 		methods: {
 			changePage (url) {
-				uni.switchTab({
+				uni.navigateTo({
 					url: "/" + url
 				})
 			}

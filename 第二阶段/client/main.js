@@ -26,8 +26,10 @@ import Confirm from "@/components/confirm.vue"
 import myHeader from "@/components/myHeader.vue"
 import pageNav from "@/components/pageNav.vue"
 import tabBar from "@/components/tabBar.vue"
+import uniDrawer from "@/components/uni-drawer/uni-drawer.vue"
 import uniPopup from "@/components/uni-popup/uni-popup.vue"
 
+Vue.component("uniDrawer", uniDrawer)
 Vue.component("tabBar", tabBar)
 Vue.component("pageNav", pageNav)
 Vue.component("myHeader", myHeader)

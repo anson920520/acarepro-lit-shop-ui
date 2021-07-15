@@ -101,6 +101,41 @@
                             </div>
                         </FormItem>
 
+                        
+
+                        <FormItem label="" prop="video_link">
+                            <div class="al">
+                                <div class="sb addFormLabel ">
+                                    <span>影</span>
+                                    <span>片</span>
+                                    <span>链</span>
+                                    <span>接</span>
+                                </div>: 
+                                <input class="input" v-model="addForm.video_link" placeholder=" (选填)" />
+                            </div>
+                        </FormItem>
+
+                        <FormItem label="" prop="weight">
+                            <div class="al">
+                                <div class="sb addFormLabel ">
+                                    <span>重</span>
+                                    <span>量</span>
+                                </div>: 
+                                <input class="input" type="number" v-model="addForm.weight" placeholder="" />
+                            </div>
+                        </FormItem>
+
+                        <FormItem label="" prop="unit">
+                            <div class="al">
+                                <div class="sb addFormLabel ">
+                                    <span>单</span>
+                                    <span>位</span>
+                                </div>: 
+                                <input class="input" v-model="addForm.unit" placeholder="" />
+                            </div>
+                        </FormItem>
+                    </div>
+                    <div class="flex3" style="flex:4">
                         <FormItem label="" prop="proNumber">
                             <div class="al">
                                 <div class="sb addFormLabel ">
@@ -112,8 +147,6 @@
                                 <input class="input" v-model="addForm.proNumber" />
                             </div>
                         </FormItem>
-                    </div>
-                    <div class="flex3" style="flex:4">
                         <FormItem label="" prop="viscosity">
                             <div class="al">
                                 <div class="sb addFormLabel ">
@@ -153,6 +186,29 @@
                                         <option value="瓶">瓶</option>
                                         <option value="桶">桶</option>
                                     </select>
+                                </div>
+                            </div>
+                        </FormItem>
+
+                        <FormItem>
+                            <div class="al">
+                                <div class="sb addFormLabel ">
+                                    <span>介</span>
+                                    <span>绍</span>
+                                    <span>图</span>
+                                    <span>片</span>
+                                </div>: 
+                                <Upload :action="baseURL + 'uploadImageNews/'" multiple :on-success="uploadSuccess1" name="file" :headers="headers" :show-upload-list="false">
+                                    <Button class="blueBtn">上传圖片</Button>
+                                </Upload>
+                            </div>
+                            <br>
+                            <div class="clearBoth" style="width: 80%;">
+                                <div class="imgList" 
+                                    :style="{'background-image': `url(${item})`}"
+                                    draggable="true" @dragover="dragover" @dragstart="dragstart(i)" @drop="drop(i, 'addForm')"
+                                    v-for="(item,i) in addForm.img" :key="item">
+                                    <div class="delImg1" @click="delImg(i,'addForm')"><div></div></div>
                                 </div>
                             </div>
                         </FormItem>
@@ -205,19 +261,47 @@ export default {
                     val1: "", val2: "升", val3: "", val4: "瓶"
                 },
                 status: "1",
+                video_link: "",
+                img: [],
+                weight: "",
+                unit: "kg"
             },
             item: {},
             id: "",
             src: "",
             f: null,    //图片文件
             categories: [],
+            baseURL: "",
+            headers: {
+                token: localStorage.getItem("jwt"),
+            }
         }
     },
     created () {
+        this.baseURL = window.baseURL
         this.getOne()
         this.getCate()
     },
     methods:{
+        uploadSuccess1 (e) {
+            console.log(e)
+            if (e.data) {
+                this['addForm'].img.push( window.imgUrl + 'news/' + e.data)
+            }
+        },
+        drop (i,key) {
+            if (this.startImg != -1) {
+                let one = this[key].img[this.startImg]
+                let two = this[key].img[i]
+                this[key].img.splice(this.startImg,1,two)
+                this[key].img.splice(i,1,one)
+            }
+        },
+        dragstart (i) { this.startImg = i },
+        dragover (e) { e.preventDefault() },
+        delImg (i,key) {
+            this[key].img.splice(i,1)
+        },
         getCate () {
             this.loading=true
             this.$axios({
@@ -263,6 +347,8 @@ export default {
                     proNumber: that.addForm.proNumber,
                     specification: that.addForm.specification,
                     status: that.addForm.status,
+                    img: that.addForm.img,
+                    video_link: that.addForm.video_link
                 }
                 if (flag) {
                     let data = {
@@ -271,6 +357,8 @@ export default {
                         "price": that.addForm.price * 1,
                         image: that.addForm.image,
                         categoryId: that.addForm.categoryId,
+                        weight: that.addForm.weight * 1,
+                        unit: that.addForm.unit,
                     }
                     that.$axios({
                         url: "product/edit/" + this.id,
@@ -311,6 +399,10 @@ export default {
                 this.addForm.viscosity = item.desc.viscosity
                 this.addForm.status = item.desc.status
                 this.addForm.categoryId = item.categoryId
+                this.addForm.img = item.img
+                this.addForm.video_link = item.video_link
+                this.addForm.unit = item.unit
+                this.addForm.weight = item.weight + ""
                 if (item.image) {
                     this.src = window.imgUrl + "images/" + item.image
                 }
@@ -326,6 +418,8 @@ export default {
                     proNumber: that.addForm.proNumber,
                     specification: that.addForm.specification,
                     status: "1",
+                    img: that.addForm.img,
+                    video_link: that.addForm.video_link
                 }
                 if (flag) {
                     if (!this.src) {
@@ -338,6 +432,8 @@ export default {
                         "price": that.addForm.price * 1,
                         image: "0",
                         categoryId: that.addForm.categoryId,
+                        weight: that.addForm.weight * 1,
+                        unit: that.addForm.unit,
                     }
                     console.log(data)
                     // return false

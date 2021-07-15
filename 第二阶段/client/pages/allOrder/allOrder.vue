@@ -1,7 +1,7 @@
 <style lang="scss" scoped>
 .myTitle{
 	font-size: 35upx;
-	color: #888888;
+	color: #000;
 	padding: 20upx 0;
 }
 .allOrder {
@@ -88,12 +88,12 @@
 
 <template>
 	<view class="allOrder bg-2 height100" >
-		
+		<my-header></my-header>
 		<view v-if="sliceData.length===0">
 			<view class="noData" >暂无订单</view>
 		</view>
 		<view class="allOrderTop" v-else>
-			<view class="myTitle ju" >我的订单</view>
+			<view class="myTitle ju bold" >巴达尔资讯平台</view>
 		</view>
 		<view class="orderWrap">
 			<view class="orderList" v-for="(item, i) in sliceData" :key='i' :id="'order' + i" @click="longtab(i)">
@@ -105,11 +105,15 @@
 						<view v-else-if="item.status==4" style="color: blue;">待收货</view>
 						<view v-else-if="item.status==1" style="color: green">已收货</view>
 					</view>
-					<view class="orderInfo">用户: {{item.userName}}</view>
-					<view class="orderInfo">订单创建时间: {{item.CreatedAt}}</view>
-					<view class="orderInfo" v-if="item.logistics_company">物流信息: {{item.logistics_company}}  {{item.logistics_num}}</view>
-					<view class="orderInfo" v-else>物流信息: 暂无物流信息</view>
-					<view class="orderInfo">发货时间: {{item.delivery_time ? item.delivery_time :"暂无发货时间"}}</view>
+					<view class="orderInfo">用户：{{item.userName}}</view>
+					<view class="orderInfo">订单创建时间：{{item.CreatedAt}}</view>
+					<view class="orderInfo" v-if="item.logistics_company">物流信息：{{item.logistics_company}}  {{item.logistics_num}}</view>
+					<view class="orderInfo" v-else>物流信息：暂无物流信息</view>
+					<view class="orderInfo">发货时间：{{item.delivery_time ? item.delivery_time :"暂无发货时间"}}</view>
+					<view class="orderInfo">送货类型：  
+						<text v-if="item.delivery_type==1"> 送货上门</text>
+						<text v-if="item.delivery_type==2"> 网点自提</text>
+					</view>
 					<view class="table">
 						<!-- 表格头 -->
 						<view class="tableTr al" style="font-weight: bold;border-bottom: #333333 solid 1px;">
@@ -186,7 +190,17 @@
 			};
 		},
 		onLoad () {
-			this.getData()
+			let that = this
+			this.$store.dispatch("valiToken", {
+				errorFn () {
+					uni.redirectTo({
+						url: "/pages/login/login"
+					})
+				},
+				successFn () {
+					that.getData()
+				}
+			})
 		},
 		onReachBottom () {
 			this.offect += 5

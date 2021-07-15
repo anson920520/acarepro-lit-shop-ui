@@ -173,6 +173,60 @@ export default [
                 },
                 component: () => import("@/view/adv/create.vue")
             },
+
+            {
+                path:"/index/publicityCategory",
+                name: "publicityCategory",
+                meta: {
+                    name: "宣传素材分类管理"
+                },
+                component: () => import("@/view/publicityCategory/publicityCategory.vue")
+            },
+            {
+                path:"/index/publicityCategory/create",
+                name: "publicityCategoryCreate",
+                meta: {
+                    name: "新增宣传素材分类"
+                },
+                component: () => import("@/view/publicityCategory/create.vue")
+            },
+            {
+                path:"/index/publicity",
+                name: "publicity",
+                meta: {
+                    name: "宣传素材管理"
+                },
+                component: () => import("@/view/publicity/publicity.vue")
+            },
+            {
+                path:"/index/publicity/create",
+                name: "publicityCreate",
+                meta: {
+                    name: "新增宣传素材"
+                },
+                component: () => import("@/view/publicity/create.vue")
+            },
+
+            {
+                path:"/index/loop",
+                name: "loop",
+                meta: {
+                    name: "轮播图管理"
+                },
+                component: () => import("@/view/loop/loop.vue")
+            },
+            {
+                path:"/index/loop/create",
+                name: "loopCreate",
+                meta: {
+                    name: "新增轮播图"
+                },
+                component: () => import("@/view/loop/create.vue")
+            },
+
+
+
+
         ]
     },
     

@@ -38,7 +38,7 @@
 					})
 				
 				} else {
-					uni.switchTab({
+					uni.navigateTo({
 						url: "/" + url
 					})
 				}

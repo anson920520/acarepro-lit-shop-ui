@@ -1,6 +1,7 @@
 <template>
-	<view>
-		<view class="">
+	<view class="bg-1">
+		<my-header></my-header>
+		<view class="color-2">
 			<image class="avag" src="../../static/img/avag.png" mode="aspectFill"></image>
 			<view class="ju lineh1"><text>{{detail.company}}</text></view>
 			<view class="ju lineh1"><text>{{detail.principal}} 　{{detail.phone}}</text></view>
@@ -46,11 +47,26 @@
 			}
 		},
 		onLoad () {
-			let detail = uni.getStorageSync("detail")
-			if (detail) {
-				this.detail = detail
-				console.log(detail)
-			}
+			let that = this
+			this.$store.dispatch("valiToken", {
+				errorFn () {
+					uni.redirectTo({
+						url: "/pages/login/login"
+					})
+				},
+				successFn () {
+					let detail = uni.getStorageSync("detail")
+					if (detail) {
+						that.detail = detail
+					}
+				}
+			})
+		},
+		computed: {
+			login () { return this.$store.state.app.login },
+		},
+		watch: {
+			
 		},
 		methods:{
 			noOpen() {
@@ -101,6 +117,8 @@
 	.margint20 {
 		margin-top: 60upx;
 		padding-bottom: 200upx;
+		z-index: 100;
+		position: relative;	
 	}
 	.r-icon {
 		width: 50upx;

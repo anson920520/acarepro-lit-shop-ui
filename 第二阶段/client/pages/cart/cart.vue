@@ -106,15 +106,12 @@
 	z-index:100;
 }
 .indexBottomLeft {
-	flex:0.8;
-	// width: 100upx;
-	// height: 100upx;
-	// background: white;
+	flex:1.5;
 	margin-left: 20upx;
 	border-radius: 10upx;
 }
 .indexBottomCenter {
-	flex:6;
+	flex:5;
 	padding-right: 20upx;
 	font-size: 25upx;
 	text-align: right;
@@ -123,8 +120,17 @@
 	flex:3;
 }
 .topBottomIcon {
-	width: 100%;
-	height: 100%;
+	width: 60upx;
+	height: 60upx;
+}
+.dot {
+	min-width: 30upx;
+	height: 30upx;
+	padding: 5upx;
+	background: red;
+	color: #FFF;
+	text-align: center;
+	border-radius: 20upx;
 }
 .bottomTotal {
 	justify-content: flex-end;
@@ -251,7 +257,7 @@
 .clearable {
 	width: 20upx;
 	height: 20upx;
-	position: absolute;
+	position: absolute !important;
 	left: 90%;
 	top: 20upx;
 	z-index: 10;
@@ -269,10 +275,11 @@
 					
 					<view class="ju s-wrap">
 						<view class="relative" style="width: 70%;">
-							<image src="../../static/img/close.png" mode="widthFix" 
+							
+							<input type="text" placeholder="输入产品名称......" v-model="keyword" class="search-inp" />
+							<image src="../../static/img/close.png" mode="widthFix"
 								@click="keyword=''"
 								class="clearable op" v-show="keyword"></image>
-							<input type="text" placeholder="输入产品名称......" v-model="keyword" class="search-inp" />
 						</view>
 						<button class="blackBtn ju al op" style="width: 150upx;" size="mini" @click="searchFn">搜索</button>
 					</view>
@@ -368,11 +375,12 @@
 				
 				<!-- 底部提交订单 -->
 				<view class="indexBottom al" @click="showChecked">
-					<view class="indexBottomLeft ju al">
+					<view class="indexBottomLeft sb al">
 						<image :class="['topBottomIcon']" src="../../static/img/cart3.png" mode="widthFix"></image>
+						<view class="dot size22 al ju">{{qty}}</view>
 					</view>
 					<view class="indexBottomCenter">
-						<view>共 {{qty}} 箱</view>
+						<view>总共 {{qty}} 件产品</view>
 						<view class="al bottomTotal">总金额:
 							<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{format(total)}}</text>
 						</view>
@@ -438,9 +446,9 @@
 				showRes: false,
 			};
 		},
-		onShow () {
+		onLoad () {
 			this.getCategory()
-			this.getCart()
+			
 			
 			// this.keyword = "金格"
 			// this.searchFn()
@@ -454,10 +462,19 @@
 					this.products = []
 					this.showRes = false
 				}
+			},
+			login: {
+				handler (val) {
+					if (val) {
+						this.getCart()
+					}
+				},
+				immediate: true,
 			}
 		},
 		computed: {
 			imgUrl () { return this.$store.state.app.imgUrl },
+			login () { return this.$store.state.app.login },
 		},
 		methods:{
 			searchFn () {

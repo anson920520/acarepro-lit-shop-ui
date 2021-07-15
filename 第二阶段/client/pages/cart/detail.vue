@@ -38,6 +38,7 @@
 		width: 100%;
 		height: 650upx;
 		border: solid #CCC 1px;
+		padding-bottom: 300upx;
 	}
 	.full {
 		width: 100%;
@@ -57,15 +58,12 @@
 		z-index:100;
 	}
 	.indexBottomLeft {
-		flex:0.8;
-		// width: 100upx;
-		// height: 100upx;
-		// background: white;
+		flex:1.5;
 		margin-left: 20upx;
 		border-radius: 10upx;
 	}
 	.indexBottomCenter {
-		flex:6;
+		flex:5;
 		padding-right: 20upx;
 		font-size: 25upx;
 		text-align: right;
@@ -74,8 +72,17 @@
 		flex:3;
 	}
 	.topBottomIcon {
-		width: 100%;
-		height: 100%;
+		width: 60upx;
+		height: 60upx;
+	}
+	.dot {
+		min-width: 30upx;
+		height: 30upx;
+		padding: 5upx;
+		background: red;
+		color: #FFF;
+		text-align: center;
+		border-radius: 20upx;
 	}
 	.bottomTotal {
 		justify-content: flex-end;
@@ -188,6 +195,7 @@
 				<view >编号：{{item.proNumber}}</view>
 				<view >粘度：{{item.viscosity}}</view>
 				<view >规格：{{item.specification}}</view>
+				<view >重量：{{item.weight}}{{item.unit}}</view>
 				
 				
 				<view class="al" style="padding:40upx 0;">
@@ -206,9 +214,14 @@
 			
 			
 		</view>
-		<swiper class="pro-detail">
-			<swiper-item class="full">
-				123
+		<swiper class="pro-detail" :indicator-dots="true" circular :autoplay="false" 
+			v-if="item.img.length && item.video_link"
+			:interval="5000" :duration="400">
+			<swiper-item class="full" v-if="item.video_link">
+				<iframe :src="item.video_link" class="full"></iframe>
+			</swiper-item>
+			<swiper-item v-for="(img,j) in item.img">
+				<image :src="img" mode="aspectFill" class="full"></image>
 			</swiper-item>
 		</swiper>
 		
@@ -218,8 +231,9 @@
 
 		<!-- 底部提交订单 -->
 		<view class="indexBottom al" @click="showChecked">
-			<view class="indexBottomLeft ju al">
+			<view class="indexBottomLeft sb al">
 				<image :class="['topBottomIcon']" src="../../static/img/cart3.png" mode="widthFix"></image>
+				<view class="dot size22 al ju">{{qty}}</view>
 			</view>
 			<view class="indexBottomCenter">
 				<view>共 {{qty}} 箱</view>
@@ -269,7 +283,9 @@
 	export default {
 		data () {
 			return {
-				item: {},
+				item: {
+					img: []
+				},
 				id: '',
 				num: 0,
 				qty:0,
