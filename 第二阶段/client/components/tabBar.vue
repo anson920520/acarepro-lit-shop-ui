@@ -52,7 +52,7 @@
 	.tab {
 		border-top: solid #CCC 1px;
 		width: 100%;
-		height: 50px;
+		height: 100upx;
 		position: fixed;
 		z-index: 999;
 		left: 0;

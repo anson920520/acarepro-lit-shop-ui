@@ -1,11 +1,13 @@
 function http (options) {
-	let baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/c1/"
+	//let baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/c1/"   //  /ACP/
 	// let baseURL = "/api/"
 	// let baseURL = "http://192.168.1.115:5005/api/c1/"
-	// let baseURL = "http://139.9.194.151:9005/api/c1/"
+	let baseURL = "http://139.9.194.151:9005/api/c1/"
 	
 	
 	let imgUrl = "https://acarepro.online/IMGPATH/"
+	// let imgUrl = "http://139.9.194.151:7111/"
+
 	
 	window.baseURL = baseURL
 	window.imgUrl = imgUrl

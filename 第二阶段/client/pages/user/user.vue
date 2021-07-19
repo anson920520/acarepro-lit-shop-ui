@@ -1,7 +1,7 @@
 <template>
-	<view class="bg-1">
+	<view class="user-bg">
 		<my-header></my-header>
-		<view class="color-2">
+		<view class="">
 			<image class="avag" src="../../static/img/avag.png" mode="aspectFill"></image>
 			<view class="ju lineh1"><text>{{detail.company}}</text></view>
 			<view class="ju lineh1"><text>{{detail.principal}} 　{{detail.phone}}</text></view>
@@ -123,5 +123,8 @@
 	.r-icon {
 		width: 50upx;
 		height: 50upx;
+	}
+	.user-bg {
+		background: #FFCC32;
 	}
 </style>

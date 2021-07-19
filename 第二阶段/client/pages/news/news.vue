@@ -14,10 +14,13 @@
 	width: 50upx;
 	height: 50upx;
 }
+.padding-bottom200 {
+	padding-bottom: 200upx;
+}
 </style>
 
 <template>
-	<view class="height100vh bg-2">
+	<view class="height100vh bg-2 padding-bottom200">
 		<my-header></my-header>
 		<view class="p30">
 			<page-nav></page-nav>

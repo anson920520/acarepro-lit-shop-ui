@@ -2,7 +2,7 @@
 	<view class="h-wrap">
 		<view class="bg-1 my-header">
 			<image src="../static/img/logo1.png" mode="aspectFill" class="h-logo" @click="toHome"></image>
-			<image src="../static/img/menu.png" mode="aspectFill" class="menuIcon op" @click="showD"></image>
+			<image v-if="!path.includes('login')" src="../static/img/menu.png" mode="aspectFill" class="menuIcon op" @click="showD"></image>
 		</view>
 		<uniDrawer ref="draw" mode="right">
 			<image src="../static/img/avag.png" mode="aspectFill" class="ava"></image>
@@ -17,7 +17,7 @@
 				<view class="p30" @click="logout"><text>登出</text></view>
 			</view>
 		</uniDrawer>
-		<tabBar></tabBar>
+		<tabBar v-if="!path.includes('login')"></tabBar>
 	</view>
 	
 </template>
@@ -27,11 +27,15 @@
 		name:"myHeader",
 		data() {
 			return {
-				detail: {}
+				detail: {},
+				path: "",
 			};
 		},
 		mounted () {
-			
+			let routes = getCurrentPages(); // 获取当前打开过的页面路由数组
+			let curRoute = routes[routes.length - 1].route //获取当前页面路由
+			// console.log(curRoute)
+			this.path = curRoute
 		},
 		computed: {
 			login () { return this.$store.state.app.login }
@@ -66,9 +70,12 @@
 				})
 			},
 			toHome () {
-				uni.navigateTo({
-					url: "/pages/index/index"
-				})
+				if (this.login) {
+					uni.navigateTo({
+						url: "/pages/index/index"
+					})
+				}
+				
 			},
 			changePage1 (url) {
 				this.$refs.draw.close()

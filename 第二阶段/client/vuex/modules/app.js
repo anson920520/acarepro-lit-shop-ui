@@ -5,6 +5,7 @@ export default {
         lang: "zh-TW",
 		imgUrl: "https://acarepro.online/IMGPATH/",
 		login: false,
+		showAdv: true,
     },
     mutations: {
         setAppData (state, data) {

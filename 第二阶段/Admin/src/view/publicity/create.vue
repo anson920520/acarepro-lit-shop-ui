@@ -62,7 +62,7 @@
                         </div>
                     </FormItem>
 
-                    <FormItem label="" prop="start_time">
+                    <!-- <FormItem label="" prop="start_time">
                         <div class="al">
                             <div class="sb addFormLabel ">
                                 <span>开</span>
@@ -84,7 +84,7 @@
                             </div>: 
                             <DatePicker class="input noBorder" format="yyyy-MM-dd" :value='addForm.end_time' @on-change="changeTime($event,'end_time')"></DatePicker>
                         </div>
-                    </FormItem>
+                    </FormItem> -->
 
                     <FormItem label="" prop="shipping">
                         <div class="al">

@@ -254,7 +254,12 @@
                     <br v-else>
                 </div>
             </div>
+            
         </div>
+        <div class="ju">
+            <Button v-if="!noMore" class="blueBtn" @click="getMore">加载更多</Button>
+            <div class="noData" v-else>没有更多</div>
+        </div>  
 
         <!-- 详情Modal -->
         <Modal v-model="show" :width="600">
@@ -326,8 +331,12 @@
                         <div>
                             <br>
                             <div class="size12 tLeft2 width50">
+                                <span>重量: </span>
+                                <span >{{detail.weight}}{{detail.unit}}</span>
+                            </div>
+                            <div class="size12 tLeft2 width50">
                                 <span>送货类型: </span>
-                                <span v-if="detail.delivery_type == 1">送货上门</span>
+                                <span v-if="detail.delivery_type == 1">送货到门店</span>
                                 <span v-if="detail.delivery_type == 2">网点自提</span>
                             </div>
                             <div class="size12 tLeft2 width50">
@@ -366,11 +375,14 @@
                             </div>
                             <br>
                         </div>
-                        <div class="al totalWrap">
-                            <span>总金额: </span>
-                            <div>
-                                <div class="total"> ￥{{format(detail.Total)}} </div>
+                        <div class="totalWrap">
+                            <div class="al">
+                                <span>总金额: </span>
+                                <div>
+                                    <div class="total"> ￥{{format(detail.Total)}} </div>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                     
@@ -444,7 +456,9 @@ export default {
             imgUrl: '',
             src: "",    // big Img
             page: 1,
-            offset: 99999
+            offset: 20,
+            count: 0,
+            noMore: false,
         }
     },
     created () {
@@ -743,6 +757,10 @@ export default {
             
             
         },
+        getMore () {
+            this.page++
+            this.getData()
+        },
         // format (n) {
         //     n = Number(n)
         //     var str = n.toString();
@@ -756,11 +774,13 @@ export default {
                 content: '加载中...',
                 duration:100
             })
+
             this.$axios({
                 url: "getAdminOrder/",
                 params: {
                     page: this.page,
                     offset: this.offset,
+                    status: "(0,2,3,4)"
                 }
             }).then(res => {
                 console.log(res)
@@ -775,7 +795,11 @@ export default {
                         }
                         item.CreatedAt = new Date(item.CreatedAt).toLocaleDateString()
                     })
-                    this.dataList = res.data.data.filter(item => item.status != 1)
+                    this.dataList = this.dataList.concat(res.data.data)
+                    this.count = res.data.all_count[0]
+                    if (this.dataList.length >= this.count ) {
+                        this.noMore = true
+                    }
                 }
             }).catch(e => {
                 console.log(e)

@@ -127,7 +127,7 @@
             <Button class="blueBtn" @click="filterData">搜寻订单记录</Button>
         </div>
         <br>
-        <Table :loading="loading" :columns="columns" :data="dataList" @on-row-click="showDetail">
+        <Table :loading="loading" :columns="columns" :data="dataList" @on-row-click="showDetail" border>
             <template slot="status" slot-scope="{row}">
                 <span v-if="row.status==0" style="color:#10103d;">正在处理</span>
                 <span v-if="row.status==1" style="color:green;">已收货</span>
@@ -219,8 +219,12 @@
                         <div>
                             <br>
                             <div class="size12 tLeft2 width50">
+                                <span>重量: </span>
+                                <span >{{detail.weight}}{{detail.unit}}</span>
+                            </div>
+                            <div class="size12 tLeft2 width50">
                                 <span>送货类型: </span>
-                                <span v-if="detail.delivery_type == 1">送货上门</span>
+                                <span v-if="detail.delivery_type == 1">送货到门店</span>
                                 <span v-if="detail.delivery_type == 2">网点自提</span>
                             </div>
                             <div class="size12 tLeft2 width50">
@@ -259,11 +263,14 @@
                             </div>
                             <br>
                         </div>
-                        <div class="al totalWrap">
-                            <span>总金额: </span>
-                            <div>
-                                <div class="total"> ￥{{format(detail.Total)}} </div>
+                        <div class="totalWrap">
+                            <div class="al">
+                                <span>总金额: </span>
+                                <div>
+                                    <div class="total"> ￥{{format(detail.Total)}} </div>
+                                </div>
                             </div>
+                            
                         </div>
                     </div>
                     

@@ -15,7 +15,7 @@
             <Button class="blueBtn" @click="toAdd" v-if="role==1">新增宣传素材</Button>
         </div>
         <br>
-        <Table :columns="columns" :data="dataList" :loading="loading">
+        <Table :columns="columns" :data="dataList" :loading="loading" border>
             <template slot="action" slot-scope="{row}">
                 <Dropdown @on-click="action($event, row)">
                     <a href="javascript:void(0)">
@@ -55,8 +55,8 @@ export default {
             columns: [
                 { title: "分类",slot: "cate", align: 'center' },
                 { title: "标题",key: "name", align: 'center' },
-                { title: "开始时间",key: "start_time", align: 'center' },
-                { title: "结束时间",key: "end_time", align: 'center' },
+                // { title: "开始时间",key: "start_time", align: 'center' },
+                // { title: "结束时间",key: "end_time", align: 'center' },
                 { title: "状态",slot: "status", align: 'center' },
                 { title: "详情",slot: "detail", align: 'center' },
                 { title: "操作", slot: "action", align: 'center' }

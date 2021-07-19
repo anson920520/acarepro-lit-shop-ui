@@ -236,7 +236,7 @@
 				<view class="dot size22 al ju">{{qty}}</view>
 			</view>
 			<view class="indexBottomCenter">
-				<view>共 {{qty}} 箱</view>
+				<view style="color: #FF9900;">总共 {{qty}} 件产品</view>
 				<view class="al bottomTotal">总金额:
 					<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{format(total)}}</text>
 				</view>
@@ -293,6 +293,7 @@
 				showDrag: false,
 				inCart: [],
 				y: 1000,
+				imgUrl: "",
 			}
 		},
 		
@@ -302,11 +303,12 @@
 			// obj.id = item.ID
 			// obj.price = item.price
 			// obj.commodity = item
+			this.imgUrl = window.imgUrl
 			this.id = val.id
 			this.getData()
 		},
 		computed: {
-			imgUrl () { return this.$store.state.app.imgUrl },
+			
 		},
 		methods: {
 			// 修改产品数量
@@ -628,7 +630,7 @@
 			getData () {
 				let that = this
 				this.$http({
-					url: "productOne/",
+					url: "productOne",
 					data: {
 						id: that.id
 					},

@@ -79,10 +79,16 @@
 			}
 		},
 		onLoad() {
-			this.getAdv()
+			if (this.showAdv) {
+				this.$store.commit("setAppData", { key: "showAdv", value: false })
+				this.getAdv()
+			}
 			this.getNews()
 			this.getPub()
 			this.getLoop()
+		},
+		computed: {
+			showAdv () { return this.$store.state.app.showAdv }
 		},
 		mounted () {
 		},

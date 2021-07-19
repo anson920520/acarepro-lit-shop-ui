@@ -72,51 +72,55 @@
 </style>
 
 <template>
-	<view class="createOrder">
+	<view>
 		<my-header></my-header>
-		<text style="font-weight: bold; padding: 20upx 0;display: block;">送货类型：</text>
-		
-		<picker mode="selector" :range="list" range-key="name" @change="chooseType" style="margin-bottom: 50upx;">
-			<view class="relative">
-				<view class="sanjiao"></view>
-				<input class="inp" disabled placeholder="点击选择送货方式" v-model="type.name" />
-			</view>
-		</picker>
-		<!-- <view ><text>()</text></view> -->
-		
-		<text style="font-weight: bold; padding: 20upx 0;display: block;">已选产品：</text>
-		<view class="proListWrap">
-			<view class="proList ju" v-for="(item,i) in inCart" :key='i' v-show="item.number>0">
-				<!-- <image class="leftImg" src="../../static/logo.png" mode="aspectFill"></image> --> 
-				<image :lazy-load="true" :src="item.image" mode="aspectFit" class="leftImg"></image>
-				<view class="proCenter">
-					<view class="proText" style="font-weight: bold;">{{item.name}}</view>
-					<view class="proText">编号: {{item.proNumber}}</view>
-					<view class="proText">粘度: {{item.viscosity}}</view>
-					<view class="proText">规格: {{item.specification}}</view>
-					<view class="proText">数量: {{item.number}}</view>
+		<view class="createOrder">
+			
+			<text style="font-weight: bold; padding: 20upx 0;display: block;">送货类型：</text>
+			
+			<picker mode="selector" :range="list" range-key="name" @change="chooseType" style="margin-bottom: 50upx;">
+				<view class="relative">
+					<view class="sanjiao"></view>
+					<input class="inp" disabled placeholder="点击选择送货方式" v-model="type.name" />
 				</view>
-				<view class="al ju " style="font-size: 25upx;">小计:
-					<text style="color:#1E8449">￥{{format(item.price * item.number)}}</text>
+			</picker>
+			<!-- <view ><text>()</text></view> -->
+			
+			<text style="font-weight: bold; padding: 20upx 0;display: block;">已选产品：</text>
+			<view class="proListWrap">
+				<view class="proList ju" v-for="(item,i) in inCart" :key='i' v-show="item.number>0">
+					<!-- <image class="leftImg" src="../../static/logo.png" mode="aspectFill"></image> --> 
+					<image :lazy-load="true" :src="item.image" mode="aspectFit" class="leftImg"></image>
+					<view class="proCenter">
+						<view class="proText" style="font-weight: bold;">{{item.name}}</view>
+						<view class="proText">编号: {{item.proNumber}}</view>
+						<view class="proText">粘度: {{item.viscosity}}</view>
+						<view class="proText">规格: {{item.specification}}</view>
+						<view class="proText">数量: {{item.number}}</view>
+					</view>
+					<view class="al ju " style="font-size: 25upx;">小计:
+						<text style="color:#1E8449">￥{{format(item.price * item.number)}}</text>
+					</view>
 				</view>
 			</view>
-		</view>
-		
-		<view class="proListWrap mt20 sb" v-for="(item,i) in discount" :key="i">
-			<text class="colorYellow">{{item.name}}</text>
-			<text>赠送 {{item.number}} 箱</text>
-		</view>
-		
-		<view class="payBox al">
-			<view></view>
-			<view class="payMain">
-				共计:
-				<text style="font-weight: bold;color: #FF9900;">￥{{format(total)}}</text>
-				
+			
+			<view class="proListWrap mt20 sb" v-for="(item,i) in discount" :key="i">
+				<text class="colorYellow">{{item.name}}</text>
+				<text>赠送 {{item.number}} 箱</text>
 			</view>
-			<view class="payBtnWrap">
-				<button type="warn" class="subBtn" @click="wxPay">提交订单</button>
+			
+			<view class="payBox al">
+				<view></view>
+				<view class="payMain">
+					共计:
+					<text style="font-weight: bold;color: #FF9900;">￥{{format(total)}}</text>
+					
+				</view>
+				<view class="payBtnWrap">
+					<button type="warn" class="subBtn" @click="wxPay">提交订单</button>
+				</view>
 			</view>
+		
 		</view>
 	</view>
 </template>
@@ -129,7 +133,7 @@
 				discount: [],
 				inCart: [],
 				list: [
-					{ id: 1, name: "送货上门" },
+					{ id: 1, name: "送货到门店" },
 					{ id: 2, name: "网点自提" },
 				],
 				type: {

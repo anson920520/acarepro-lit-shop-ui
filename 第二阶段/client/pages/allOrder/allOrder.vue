@@ -111,9 +111,10 @@
 					<view class="orderInfo" v-else>物流信息：暂无物流信息</view>
 					<view class="orderInfo">发货时间：{{item.delivery_time ? item.delivery_time :"暂无发货时间"}}</view>
 					<view class="orderInfo">送货类型：  
-						<text v-if="item.delivery_type==1"> 送货上门</text>
+						<text v-if="item.delivery_type==1"> 送货到门店</text>
 						<text v-if="item.delivery_type==2"> 网点自提</text>
 					</view>
+					<view class="orderInfo">重量：{{item.weight }}{{item.unit}}</view>
 					<view class="table">
 						<!-- 表格头 -->
 						<view class="tableTr al" style="font-weight: bold;border-bottom: #333333 solid 1px;">

@@ -10,7 +10,7 @@
         </div>
         <br>
 
-        <Table :columns="columns" :data="dataList" :loading="loading">
+        <Table :columns="columns" :data="dataList" :loading="loading" border>
             <template slot="action" slot-scope="{row}">
                 <Dropdown @on-click="action($event, row)">
                     <a href="javascript:void(0)">

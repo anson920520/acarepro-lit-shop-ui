@@ -35,7 +35,7 @@
             <Button class="blueBtn" @click="toAdd" v-if="role==1">新增产品</Button>
         </div>
         <br>
-        <Table :columns="columns" :data="dataList" :loading="loading">
+        <Table :columns="columns" :data="dataList" :loading="loading" border>
             <template slot="action" slot-scope="{row}">
                 <Dropdown @on-click="action($event, row)">
                     <a href="javascript:void(0)">

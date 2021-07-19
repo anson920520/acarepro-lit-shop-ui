@@ -232,7 +232,7 @@
 	box-sizing: border-box;
 	margin-bottom: 200upx;
 	// border: solid 1px;
-	height: calc(100% - 130upx) !important;
+	height: calc(100% - 235upx) !important;
 }
 .container {
 	width: 680upx;
@@ -380,7 +380,7 @@
 						<view class="dot size22 al ju">{{qty}}</view>
 					</view>
 					<view class="indexBottomCenter">
-						<view>总共 {{qty}} 件产品</view>
+						<view style="color: #FF9900;">总共 {{qty}} 件产品</view>
 						<view class="al bottomTotal">总金额:
 							<text style="color: #FF9900;font-weight: bold;font-size: 40upx;">￥{{format(total)}}</text>
 						</view>
@@ -444,11 +444,12 @@
 				qty: 0,
 				total: 0,
 				showRes: false,
+				imgUrl: ""
 			};
 		},
 		onLoad () {
 			this.getCategory()
-			
+			this.imgUrl = window.imgUrl
 			
 			// this.keyword = "金格"
 			// this.searchFn()
@@ -473,7 +474,6 @@
 			}
 		},
 		computed: {
-			imgUrl () { return this.$store.state.app.imgUrl },
 			login () { return this.$store.state.app.login },
 		},
 		methods:{

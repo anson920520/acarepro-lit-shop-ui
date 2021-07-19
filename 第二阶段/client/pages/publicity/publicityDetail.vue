@@ -19,20 +19,18 @@
 		</view>
 		
 		
-		<view class="container" style="min-height:300upx;">
+		<view class="container" style="min-height:0upx;">
 			<view class="size35 bold">
 				<text>{{detail.name}}</text>
 			</view>
-			<view class="flex-end size20 color-5 pad30">
-				<text>{{detail.CreatedAt}}</text>
-			</view>
-			<view class="news-content" v-html="detail.detail">
+			
+			<view class="news-content1" v-html="detail.detail">
 				<text>{{detail.detail}}</text>
 			</view>
 		</view>
 		
 		<!-- <button class="primaryBtn" size="mini"> -->
-			<a class="primaryBtn download op" :href="detail.file" target="_blank">下载素材</a>
+			<a class="primaryBtn download op size33" :href="detail.file" target="_blank">下载素材</a>
 			<view style="padding: 30upx 50upx;" class="tc size23 color-7">如需下载素材，请点击页面右上角， 点击“在浏览器打开”后， 方可下载。</view>
 		<!-- </button> -->
 		
@@ -100,7 +98,7 @@
 	}
 	.container {
 		margin: 30upx auto;
-		width: 690upx;
+		width: 660upx;
 		// padding: 30upx;
 		background: #FFF;
 		// border-radius: 20upx;
@@ -121,5 +119,8 @@
 		padding: 10upx;
 		text-align: center;
 		border-radius: 10upx;
+	}
+	.news-content1 {
+		margin-bottom: 90upx;
 	}
 </style>

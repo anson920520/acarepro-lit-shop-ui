@@ -152,8 +152,8 @@
 	.all-warpper {
 		height: 100vh;
 		display: flex;
-		// background-image: url("@/static/img/lbg.jpg");
-		background: #E7D529;
+		background-image: url("@/static/img/lbg.jpg");
+		// background: #E7D529;
 		background-size: cover;
 		background-position: bottom;
 		// border: solid red 3px;
