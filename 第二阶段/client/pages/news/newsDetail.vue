@@ -23,10 +23,7 @@
 			<view class="size35 bold">
 				<text>{{detail.name}}</text>
 			</view>
-			<view class="flex-end size20 color-5 pad30">
-				<text>{{detail.CreatedAt}}</text>
-			</view>
-			<view class="news-content" v-html="detail.detail">
+			<view class="news-content1" v-html="detail.detail">
 			</view>
 		</view>
 	</view>
@@ -92,7 +89,7 @@
 	}
 	.container {
 		margin: 30upx auto;
-		width: 690upx;
+		width: 660upx;
 		// padding: 30upx;
 		background: #FFF;
 		// border-radius: 20upx;
@@ -106,4 +103,5 @@
 		border-right: solid #000 15upx;
 		margin-right: 15upx;
 	}
+
 </style>

@@ -4,7 +4,7 @@
 	padding:  40upx 40upx 0upx;
 }
 .container {
-	width: 690upx;
+	width: 660upx;
 	margin: 0upx auto 50upx;
 	border-radius: 20upx;
 	background: #FFF;

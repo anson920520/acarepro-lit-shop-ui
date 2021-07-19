@@ -16,6 +16,10 @@
 					</view>
 				</swiper-item>
 			</swiper>
+			<view class="tc size22 atten">
+				<text class="attention">!</text>
+				<text>长按预览图然后选择储存到手机即可下载图片。</text>
+			</view>
 		</view>
 		
 		
@@ -122,5 +126,20 @@
 	}
 	.news-content1 {
 		margin-bottom: 90upx;
+		margin-top: 20upx;
+	}
+	.attention {
+		display: inline-block;
+		vertical-align: middle;
+		width: 35upx;
+		height: 35upx;
+		line-height: 35upx;
+		border: solid #FFCC32 1px;
+		border-radius: 50%;
+		margin-right: 10upx;
+	}
+	.atten {
+		color: #FFCC32;
+		margin-top: 15upx;
 	}
 </style>
