@@ -1,6 +1,7 @@
 <template>
 	<view class="all-warpper">
 		<my-header></my-header>
+		<image src="../../static/img/lbg.png" mode="aspectFill" class="bg"></image>
 		<view class="Login_one_main">
 			<image class="Perfect_user_logo" src="../../static/img/logo.png" mode="widthFix"></image>
 			<view class="loginText bold">会员登录</view>
@@ -149,10 +150,18 @@
 </script>
 
 <style lang="scss">
+	.bg {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		left: 0;
+		top: 0;
+		z-index: 1;
+	}
 	.all-warpper {
 		height: 100vh;
 		display: flex;
-		background-image: url("@/static/img/lbg.jpg");
+		// background-image: url("@/static/img/lbg.jpg");
 		// background: #E7D529;
 		background-size: cover;
 		background-position: bottom;
@@ -166,6 +175,7 @@
 		left: 50%;
 		top: 50%;
 		width: 65%;
+		z-index: 10;
 		// border: solid 1px;
 		transform: translateX(-50%) translateY(-50%);
 	}

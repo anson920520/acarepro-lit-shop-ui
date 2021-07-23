@@ -128,7 +128,7 @@ export default {
         del (item) {
             let that = this
             let Form = new FormData()
-            Form.append("id", item.ID)
+            Form.append("id", item.id)
             that.$Modal.confirm({
                 title: "提示!",
                 content: "确定删除这条信息?",

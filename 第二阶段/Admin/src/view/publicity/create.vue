@@ -264,8 +264,7 @@ export default {
                 if (res.data.data[0]) {
                     this.addForm.name = res.data.data[0].name
                     this.addForm.publicity_category_id = res.data.data[0].publicity_category_id
-                    this.addForm.start_time = res.data.data[0].start_time.split("T")[0]
-                    this.addForm.end_time = res.data.data[0].end_time.split("T")[0]
+
                     this.addForm.status = res.data.data[0].status + ""
                     this.addForm.detail = res.data.data[0].detail
                     this.addForm.file = res.data.data[0].file
