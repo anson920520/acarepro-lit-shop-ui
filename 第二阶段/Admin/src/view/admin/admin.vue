@@ -5,8 +5,13 @@
 <template>
    <div>
         <h4 class="ju">管理员账户</h4>
-        <div v-if="role==1">
-            <Button class="blueBtn" @click="addUser">创建管理员</Button>
+        <div class="sb">
+            <div>
+                <Button v-if="role==1" class="blueBtn" @click="addUser">创建管理员</Button>
+            </div>
+            <div>
+                <Button type="success" class="resetAll" @click="resetAll">重新整理</Button>
+            </div>
         </div>
         <br>
 
@@ -66,6 +71,18 @@ export default {
         role () { return this.$store.state.role }
     },
     methods:{
+        
+        resetAll () {
+            let that = this
+            this.$Modal.confirm({
+                title:"提示",
+                content:"确定重新整理全部数据?",
+                onOk() {
+                    that.page = 1
+                    that.getData()
+                }
+            })
+        },
         chnagePage (e) {
             this.page = e
             this.getData()

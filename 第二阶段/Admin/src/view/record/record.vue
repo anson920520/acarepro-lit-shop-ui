@@ -123,8 +123,11 @@
                 </div>
             </div>
             
-
-            <Button class="blueBtn" @click="filterData">搜寻订单记录</Button>
+            <div class="al">
+                <Button class="blueBtn" @click="filterData">搜寻订单记录</Button>
+                <Button type="success" class="resetAll" @click="resetAll">重新整理</Button>
+            </div>
+            
         </div>
         <br>
         <Table :loading="loading" :columns="columns" :data="dataList" @on-row-click="showDetail" border>
@@ -337,6 +340,19 @@ export default {
     },
     
     methods:{
+        resetAll () {
+            let that = this
+            this.$Modal.confirm({
+                title:"提示",
+                content:"确定重新整理全部数据?",
+                onOk() {
+                    that.page = 1
+                    that.getData()
+                    that.getUser()
+                    that.getAccount()
+                }
+            })
+        },
         chnagePage (e) {
             this.page = e
             this.getData()

@@ -10,7 +10,11 @@
                 <Input type="text" clearable @on-clear='getData' v-model="keyword" placeholder="输入公司名称搜索" style="width: 200px;margin-right: 10px;" />
                 <Button class="blueBtn" @click="getData">搜索</Button>
             </div>
-            <Button class="blueBtn" v-if="role==1" @click="addUser">创建新用户</Button>
+            <div class="sb">
+                <Button class="blueBtn" v-if="role==1" @click="addUser">创建新用户</Button>
+                <Button type="success" class="resetAll" @click="resetAll">重新整理</Button>
+            </div>
+            
         </div>
         <br>
 
@@ -70,6 +74,17 @@ export default {
         this.getData()
     },
     methods:{
+        resetAll () {
+            let that = this
+            this.$Modal.confirm({
+                title:"提示",
+                content:"确定重新整理全部数据?",
+                onOk() {
+                    that.page = 1
+                    that.getData()
+                }
+            })
+        },
         chnagePage (e) {
             this.page = e
             this.getData()

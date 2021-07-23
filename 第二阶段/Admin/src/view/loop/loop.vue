@@ -11,8 +11,11 @@
         <br>
         <div class="sb">
             <div></div>
-
-            <Button class="blueBtn" @click="toAdd" v-if="role==1">新增轮播图</Button>
+            <div class="al">
+                <Button class="blueBtn" @click="toAdd" v-if="role==1">新增轮播图</Button>
+                <Button type="success" class="resetAll" @click="resetAll">重新整理</Button>
+            </div>
+            
         </div>
         <br>
         <Table :columns="columns" :data="dataList" :loading="loading" border>
@@ -71,6 +74,17 @@ export default {
         role () { return this.$store.state.role }
     },
     methods:{
+        resetAll () {
+            let that = this
+            this.$Modal.confirm({
+                title:"提示",
+                content:"确定重新整理全部数据?",
+                onOk() {
+                    that.page = 1
+                    that.getData()
+                }
+            })
+        },
         chnagePage (e) {
             this.page = e
             this.getData()
