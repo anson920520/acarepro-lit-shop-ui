@@ -191,7 +191,8 @@
 						<view class="flex5 al">
 							<view class="label sb"><text>返</text><text>利</text><text>物</text><text>资</text></view>:
 							<input class="priBorder numInp" type="number" v-model="rebate" v-if="item.status==0" />
-							<text v-else style="padding-left: 25upx;">{{rebate}}%</text>
+							<text v-else style="padding-left: 25upx;">{{rebate}}</text>
+							<text>%</text>
 						</view>
 						<view class="flex5">
 							<view class="flex5 al">
@@ -249,9 +250,10 @@
 		watch: {
 			rebate (val) {
 				// console.log(val)
-				if (Number(val) > 5) {
-					this.rebate = 5
-				}
+				// if (Number(val) > 5) {
+				// 	console.log(213)
+				// 	this.rebate = 5
+				// }
 			}
 		},
 		methods: {
@@ -272,6 +274,18 @@
 			sub () {
 				
 				let that = this
+				
+				let num = Number(this.rebate)
+				if ((num < 0) || (num > 5)) {
+					uni.showToast({
+						title: "返利物资请输入 0 到 5 之间的数字",
+						icon: "none"
+					})
+					return false
+				}
+				
+				
+				
 				uni.showLoading({
 					title: "正在储存",
 				})

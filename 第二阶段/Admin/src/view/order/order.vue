@@ -249,7 +249,7 @@
                         <div v-if="item.logistics_num" class="disabled">已发货</div>
                         <div v-else class="op" @click.stop.prevent="send(item)">发货</div>
 
-                        <div class="op" @click.stop.prevent="del(item)">删除</div>
+                        <div class="op" @click.stop.prevent="del(item,i)">删除</div>
                     </div>
                     <br v-else>
                 </div>
@@ -634,7 +634,7 @@ export default {
             this.sendItem = item
         },
         // 删除
-        del (item) {
+        del (item,i) {
             let that = this
             that.$Modal.confirm({
                 title: "提示!",
@@ -644,10 +644,12 @@ export default {
                         url: "order/delete/" + item.ID,
                         method:'DELETE',
                     }).then(res => {
-                        that.getData()
+                        console.log("删除订单",res)
+                        // that.getData()
+                        that.dataList.splice(i,1)
                     }).catch(e => {
                         console.log(e)
-                        that.getData()
+                        // that.getData()
                     })
                 }
             })

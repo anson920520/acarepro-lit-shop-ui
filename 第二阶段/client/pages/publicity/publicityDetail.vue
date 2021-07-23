@@ -34,8 +34,8 @@
 		</view>
 		
 		<!-- <button class="primaryBtn" size="mini"> -->
-			<a class="primaryBtn download op size33" :href="detail.file" target="_blank">下载素材</a>
-			<view style="padding: 30upx 50upx;" class="tc size23 color-7">如需下载素材，请点击页面右上角， 点击“在浏览器打开”后， 方可下载。</view>
+			<a v-if="detail.file" class="primaryBtn download op size33" :href="detail.file" target="_blank">下载素材</a>
+			<view v-if="detail.file" style="padding: 30upx 50upx;" class="tc size23 color-7">如需下载素材，请点击页面右上角， 点击“在浏览器打开”后， 方可下载。</view>
 		<!-- </button> -->
 		
 		
