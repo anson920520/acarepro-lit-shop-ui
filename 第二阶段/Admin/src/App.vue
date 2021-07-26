@@ -88,6 +88,16 @@
 .resetAll {
     margin-left: 5px;
 }
+.primaryBtn {
+    background: #10103d;
+    border: none;
+    outline: none;
+    color: #FFF;
+    padding: 5px 15px;
+    border-radius: 3px;
+}
+
+
 
 </style>
 

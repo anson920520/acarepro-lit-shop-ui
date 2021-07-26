@@ -200,17 +200,20 @@ export default {
             // console.log(f)
             if (f.type.includes("jp") || f.type.includes("png")) {
                 // this.addForm.image = URL.createObjectURL(f)
-                let data = new FormData()
-                data.append("file", f),
-                data.append("id", this.id),
-                this.$axios({
-                    url: "uploadImageNews/",
-                    data,
-                    method:"POST"
-                }).then(res => {
-                    console.log(res)
-                    this.addForm.image = window.imgUrl + "news/" + res.data.data
+                this.dealImg(f, img => {
+                    let data = new FormData()
+                    data.append("file", img),
+                    data.append("id", this.id),
+                    this.$axios({
+                        url: "uploadImageNews/",
+                        data,
+                        method:"POST"
+                    }).then(res => {
+                        console.log(res)
+                        this.addForm.image = window.imgUrl + "news/" + res.data.data
+                    })
                 })
+                
 
             } else {
                 this.$Message.warning("请上传图片文件")

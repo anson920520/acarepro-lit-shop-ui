@@ -108,20 +108,24 @@
                             <span>图</span>
                             <span>片</span>
                         </div>: 
-                        <Upload :action="baseURL + 'uploadImageNews/'" multiple :on-success="uploadSuccess1" name="file" :headers="headers" :show-upload-list="false">
+                        <!-- <Upload :action="baseURL + 'uploadImageNews/'" multiple :on-success="uploadSuccess1" name="file" :headers="headers" :show-upload-list="false">
                             <Button class="blueBtn">上传圖片</Button>
-                        </Upload>
+                        </Upload> -->
+                        <label for="img" @change="zip">
+                            <input type="file" multiple id="img" v-show="false">
+                            <div class="primaryBtn cursor op">上传图片</div>
+                        </label>
                     </div>
                     <br>
                     <div class="clearBoth" style="width: 80%;">
                         <div class="imgList" 
                             :style="{'background-image': `url(${item})`}"
                             draggable="true" @dragover="dragover" @dragstart="dragstart(i)" @drop="drop(i, 'addForm')"
-                            v-for="(item,i) in addForm.img" :key="item">
+                            v-for="(item,i) in addForm.img" :key="i">
                             <div class="delImg1" @click="delImg(i,'addForm')"><div></div></div>
                         </div>
                     </div>
-                    
+                    <br>
                 </div>
             </div>
             <FormItem label="" prop="detail">
@@ -206,6 +210,23 @@ export default {
                 this['addForm'].img.push( window.imgUrl + 'news/' + e.data)
             }
         },
+        zip (e) {
+            let that = this
+            e.target.files.forEach(file => {
+                this.dealImg(file, img => {
+                    let Form = new FormData()
+                    Form.append("file", img)
+                    that.$axios({
+                        url: "uploadImageNews/",
+                        method:"POST",
+                        data: Form
+                    }).then(res => {
+                        console.log(res)
+                        that['addForm'].img.push( window.imgUrl + 'news/' + res.data.data)
+                    })
+                })
+            })
+        },
         drop (i,key) {
             if (this.startImg != -1) {
                 let one = this[key].img[this.startImg]
@@ -265,7 +286,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "putNews/",
@@ -302,7 +323,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "postNews/",

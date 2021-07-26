@@ -62,29 +62,7 @@
                         </div>
                     </FormItem>
 
-                    <!-- <FormItem label="" prop="start_time">
-                        <div class="al">
-                            <div class="sb addFormLabel ">
-                                <span>开</span>
-                                <span>始</span>
-                                <span>时</span>
-                                <span>间</span>
-                            </div>: 
-                            <DatePicker class="input noBorder" format="yyyy-MM-dd" :value='addForm.start_time' @on-change="changeTime($event,'start_time')"></DatePicker>
-                        </div>
-                    </FormItem>
-
-                    <FormItem label="" prop="end_time">
-                        <div class="al">
-                            <div class="sb addFormLabel ">
-                                <span>结</span>
-                                <span>束</span>
-                                <span>时</span>
-                                <span>间</span>
-                            </div>: 
-                            <DatePicker class="input noBorder" format="yyyy-MM-dd" :value='addForm.end_time' @on-change="changeTime($event,'end_time')"></DatePicker>
-                        </div>
-                    </FormItem> -->
+      
 
                     <FormItem label="" prop="shipping">
                         <div class="al">
@@ -122,20 +100,27 @@
                             <span>图</span>
                             <span>片</span>
                         </div>: 
-                        <Upload :action="baseURL + 'uploadImageNews/'" multiple :on-success="uploadSuccess1" name="file" :headers="headers" :show-upload-list="false">
+                        <!-- <Upload :action="baseURL + 'uploadImageNews/'" multiple 
+                            :on-success="uploadSuccess1" name="file" 
+                            :before-upload="handleUpload"
+                            :headers="headers" :show-upload-list="false">
                             <Button class="blueBtn">上传圖片</Button>
-                        </Upload>
+                        </Upload> -->
+                        <label for="img" @change="zip">
+                            <input type="file" multiple id="img" v-show="false">
+                            <div class="primaryBtn cursor op">上传图片</div>
+                        </label>
                     </div>
                     <br>
                     <div class="clearBoth" style="width: 80%;">
                         <div class="imgList" 
                             :style="{'background-image': `url(${item})`}"
                             draggable="true" @dragover="dragover" @dragstart="dragstart(i)" @drop="drop(i, 'addForm')"
-                            v-for="(item,i) in addForm.img" :key="item">
+                            v-for="(item,i) in addForm.img" :key="i">
                             <div class="delImg1" @click="delImg(i,'addForm')"><div></div></div>
                         </div>
                     </div>
-                    
+                    <br>
                 </div>
             </div>
             <FormItem label="" prop="detail">
@@ -223,6 +208,23 @@ export default {
                 this['addForm'].file=  window.imgUrl + 'file/' + e.data
             }
         },
+        zip (e) {
+            let that = this
+            e.target.files.forEach(file => {
+                this.dealImg(file, img => {
+                    let Form = new FormData()
+                    Form.append("file", img)
+                    that.$axios({
+                        url: "uploadImageNews/",
+                        method:"POST",
+                        data: Form
+                    }).then(res => {
+                        console.log(res)
+                        that['addForm'].img.push( window.imgUrl + 'news/' + res.data.data)
+                    })
+                })
+            })
+        },
         uploadSuccess1 (e) {
             console.log(e)
             if (e.data) {
@@ -288,7 +290,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "putPublicity/",
@@ -326,7 +328,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "postPublicity/",

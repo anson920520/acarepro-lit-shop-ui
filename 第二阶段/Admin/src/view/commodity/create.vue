@@ -328,16 +328,19 @@ export default {
             }
         },
         POSTImg (id) {
-            let data = new FormData()
-            data.append("file", this.f),
-            data.append("id", id),
-            this.$axios({
-                url: "image",
-                data,
-                method:"POST"
-            }).then(res => {
-                console.log(res)
+            this.dealImg(this.f, img => {
+                let data = new FormData()
+                data.append("file", img),
+                data.append("id", id),
+                this.$axios({
+                    url: "image",
+                    data,
+                    method:"POST"
+                }).then(res => {
+                    console.log(res)
+                })
             })
+            
         },
         okEdit () {
             let that = this
