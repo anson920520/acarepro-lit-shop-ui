@@ -65,7 +65,21 @@ export default {
         if (this.role == 2) {
             this.columns.pop()
         }
-        this.getData()
+        // this.getData()
+    },
+    watch: {
+        "$route": {
+            handler (val) {
+                if (val.query.page) {
+                    this.page = val.query.page * 1
+                    this.getData()
+                } else {
+                    console.log(val)
+                    this.$router.push(val.path + "?page=1")
+                }
+            },
+            immediate: true
+        },
     },
     computed: {
         role () { return this.$store.state.role }
@@ -83,8 +97,8 @@ export default {
             })
         },
         chnagePage (e) {
-            this.page = e
-            this.getData()
+            this.$router.push(this.$route.path + "?page=" + e)
+            document.getElementsByClassName("Main")[0].scrollTop = 0
         },
         toAdd () {
             this.$router.push("/index/sale/create")

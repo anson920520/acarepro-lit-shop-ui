@@ -2,7 +2,7 @@
 @import url("~@/assets/css/color.less");
 .loginBg {
 	height: 100vh;
-	background-image: url('~@/assets/img/bg2.png');
+	background-image: url('~@/assets/img/bg.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: right top;

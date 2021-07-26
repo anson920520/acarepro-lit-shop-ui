@@ -133,8 +133,8 @@
 				discount: [],
 				inCart: [],
 				list: [
-					{ id: 1, name: "送货到门店" },
 					{ id: 2, name: "网点自提" },
+					{ id: 1, name: "送货到门店" },
 				],
 				type: {
 					name: ''

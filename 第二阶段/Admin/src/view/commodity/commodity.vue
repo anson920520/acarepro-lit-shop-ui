@@ -88,7 +88,21 @@ export default {
             this.columns.pop()
             this.columns.pop()
         }
-        this.getCate()
+        // this.getCate()
+    },
+    watch: {
+        "$route": {
+            handler (val) {
+                if (val.query.page) {
+                    this.act = val.query.page * 1
+                    this.getCate()
+                } else {
+                    console.log(val)
+                    this.$router.push(val.path + "?page=0")
+                }
+            },
+            immediate: true
+        }
     },
     methods:{
         resetAll () {
@@ -119,8 +133,9 @@ export default {
             })
         },
         changeCate (i) {
-            this.act = i
-            this.getData(this.categories[this.act])
+            // this.act = i
+            // this.getData(this.categories[this.act])
+            this.$router.push(this.$route.path + "?page=" + i)
         },
         getCate () {
             this.loading=true
