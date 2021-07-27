@@ -447,7 +447,7 @@
 				imgUrl: ""
 			};
 		},
-		onLoad () {
+		onShow () {
 			this.getCategory()
 			this.imgUrl = window.imgUrl
 			

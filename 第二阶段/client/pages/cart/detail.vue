@@ -174,6 +174,9 @@
 		// height:50upx;
 		// border: solid red 1px;
 	} 
+	.pb10 {
+		padding-bottom: 200upx;
+	}
 </style>
 
 <template>
