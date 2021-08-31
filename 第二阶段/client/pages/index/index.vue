@@ -8,7 +8,7 @@
 					<swiper-item v-for="(item,i) in adv">
 						<view class="full" :style="{'background-image': `url('${item.image}')`}">
 							<view class="tc">{{item.name}}</view>
-							<view class="height80">{{item.detail}}</view>
+							<view class="height80" v-html="item.detail"></view>
 						</view>
 					</swiper-item>
 				</swiper>
@@ -192,6 +192,9 @@
 						console.log(res)
 						if (res.data.code == 200) {
 							that.adv = res.data.data.filter(item => item.status==1)
+							that.adv.sort((a,b) => {
+								return b.rank - a.rank
+							})
 							if (that.adv.length) {
 								that.$refs.pop.open()
 							}

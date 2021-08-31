@@ -12,7 +12,9 @@ import router from "@/router/router.js"
 
 // 自定义组件
 import myMenu from "@/components/menu/menu.vue"
+import Editor from "@/components/editor/editor.vue"
 
+Vue.component("Editor", Editor)
 Vue.component("myMenu", myMenu)
 
 // iView

@@ -286,7 +286,7 @@ export default {
                 this.$axios({
                     url: "category"
                 }).then(res => {
-                    this.categories = res.data
+                    this.categories = res.data.data
                     resolve()
                 }).catch(e => {
                     console.log(e)
@@ -301,6 +301,7 @@ export default {
                 this.categories.forEach(cate => {
                     cate.commodity = []
                     res.data.forEach(pro => {
+                        window.initPro(pro)
                         pro.num = 0
                         if (pro.categoryId == cate.ID) {
                             cate.commodity.push(pro)

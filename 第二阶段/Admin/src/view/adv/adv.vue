@@ -18,7 +18,7 @@
             
         </div>
         <br>
-        <Table :columns="columns" :data="dataList" :loading="loading" border>
+        <Table :columns="columns" :data="dataList" :loading="loading" border draggable @on-drag-drop="drap">
             <template slot="action" slot-scope="{row}">
                 <Dropdown @on-click="action($event, row)">
                     <a href="javascript:void(0)">
@@ -36,7 +36,7 @@
                 <Tag v-if="row.status==0" color='warning'>隐藏</Tag>
             </template>
             <template slot="detail" slot-scope="{row}">
-                <div class="c1">{{row.detail}}</div>
+                <div class="c1" v-html="row.detail">{{row.detail}}</div>
             </template>
         </Table>
         <br>
@@ -89,6 +89,36 @@ export default {
         role () { return this.$store.state.role }
     },
     methods:{
+        drap (s,e) {
+            if (e == s) {
+                return false
+            }
+            console.log(s,e)
+            let sRank = this.dataList[s].rank
+            let eRank = this.dataList[e].rank
+            this.dataList[s].rank = eRank
+            this.dataList[e].rank = sRank
+            this.dataList.sort((a,b) => {
+                return b.rank - a.rank
+            })
+            
+            this.editFn(this.dataList[s])
+            this.editFn(this.dataList[e])
+        },
+        editFn (item) {
+            this.$axios({
+                url: "putAdvertisement/",
+                method:"PUT",
+                data: {
+                    id: item.ID,
+                    name: item.name,
+                    detail: item.detail,
+                    status: item.status,
+                    image: item.image,
+                    rank: Number(item.rank)
+                },
+            })
+        },
         resetAll () {
             let that = this
             this.$Modal.confirm({
@@ -117,6 +147,9 @@ export default {
                 }
             }).then(res => {
                 if (res.data.code == 200) {
+                    res.data.data.sort((a,b) => {
+                        return b.rank - a.rank
+                    })
                     this.dataList = res.data.data
                     this.count = res.data.all_count[0]
                 } else {

@@ -105,18 +105,6 @@
 
                 </div>
                 <div class="flex3">
-                    <FormItem label="" prop="detail">
-                        <div class="flex">
-                            <div class="sb addFormLabel ">
-                                <span>详</span>
-                                <span>情</span>
-                            </div>: 
-                            <textarea class="width200" v-model="addForm.detail" ></textarea>
-
-                        </div>
-                    </FormItem>
-                </div>
-                <div class="flex3">
                     <div class="flex">
                         <div class="sb addFormLabel ">
                             <span>图</span>
@@ -150,7 +138,19 @@
                 </div>
             </div>
         </Form>
+
         <br>
+
+        <div class="al">
+            <div class="sb addFormLabel ">
+                <span>详</span>
+                <span>情</span>
+            </div>: 
+        </div>
+        <Editor v-model="addForm.detail" :value="addForm.detail"></Editor>
+        <br>
+
+
         <div class="width70 flex-end">
             <Button class="blueBtn" @click="okAdd" v-if="!id">确认新增广告</Button>
             <Button class="blueBtn" @click="okEdit" v-else>储存</Button>
@@ -239,6 +239,7 @@ export default {
                     this.addForm.status = res.data.data[0].status + ""
                     this.addForm.detail = res.data.data[0].detail
                     this.addForm.image = res.data.data[0].image
+                    this.addForm.rank = res.data.data[0].rank
                 }
             }).catch(e => {
                 console.log(e)
@@ -251,7 +252,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "putAdvertisement/",
@@ -262,6 +263,7 @@ export default {
                             detail: this.addForm.detail,
                             status: this.addForm.status * 1,
                             image: this.addForm.image,
+                            rank: Number(this.addForm.rank)
                         },
                     }).then(res => {
                         load()
@@ -282,7 +284,7 @@ export default {
                 if (flag) {
                     let load = this.$Message.loading({
                         content: "Loading...",
-                        duration: "999"
+                        duration: 999
                     })
                     that.$axios({
                         url: "postAdvertisement/",
@@ -292,6 +294,7 @@ export default {
                             detail: this.addForm.detail,
                             status: this.addForm.status * 1,
                             image: this.addForm.image,
+                            rank: parseInt(Date.now() / 1000),
                             // image: "['1','2','3']",
                         }
                     }).then(res => {
