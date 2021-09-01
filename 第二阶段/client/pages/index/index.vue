@@ -8,7 +8,10 @@
 					<swiper-item v-for="(item,i) in adv">
 						<view class="full" :style="{'background-image': `url('${item.image}')`}">
 							<view class="tc">{{item.name}}</view>
-							<view class="height80" v-html="item.detail"></view>
+							
+							<scroll-view scroll-y class="height80">
+								<view v-html="item.detail"></view>
+							</scroll-view>
 						</view>
 					</swiper-item>
 				</swiper>

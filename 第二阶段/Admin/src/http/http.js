@@ -79,7 +79,7 @@ function initPro (item) {
         item.img = item.desc.img ? item.desc.img : []
         item.video_link = item.desc.video_link
     } catch {
-        console.log('catch', item.ID)
+        // console.log('catch', item.ID)
         item.desc = {}
     }
 }
