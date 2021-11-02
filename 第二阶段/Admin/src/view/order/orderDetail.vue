@@ -173,6 +173,21 @@
             </div>
         </div>
         
+        <!--  發票圖片 -->
+        <br/>
+        <div>
+            <h3>發票圖片</h3><br>
+            <div class="upload" v-if="!invoice" >
+                <label for="invoice" @change="upLoadInvoice">
+                    <input type="file" id="invoice" v-show="false">
+                </label>
+            </div>
+            <div class="relative inline-block" v-else >
+                <img :src="invoice" width="200" alt="">
+                <Icon type="ios-close-circle delImg" color="red" size="25" @click="delInvoice" />
+            </div>
+        </div>
+        
 
 
         <br>
@@ -226,6 +241,7 @@ export default {
             categories: [],
             cateAct: 0,
             src: "",
+            invoice: "",
             status: "0",
         }
     },
@@ -241,12 +257,43 @@ export default {
         this.deliveryCost = this.order.deliveryCost + ""
         this.status = this.order.status + ""
         if (this.order.image) this.src = window.imgUrl + "bankin/" + this.order.image
+        if (this.order.image) this.invoice = window.imgUrl + "bankin/" + this.order.Invoice
         if (this.order.status==3) this.status="2"
+
+
     },
     methods:{
         delImg () {
             this.src = ''
             this.order.image = ''
+        },
+        delInvoice () {
+            this.invoice = ''
+            this.order.image = ''
+        },
+        upLoadInvoice (e) {
+            let f = e.target.files[0]
+            // console.log(f)
+            if (f.type.includes("jp") || f.type.includes("png")) {
+                this.dealImg(f, invoice => {
+                    let data = new FormData()
+                    data.append("file", invoice),
+                    data.append("id", this.order.ID),
+                    this.$axios({
+                        url: "order/invoice",
+                        data,
+                        method:"POST"
+                    }).then(res => {
+                        console.log(res)
+                        this.invoice = window.imgUrl + "invoice/" + res.data.data
+                        this.order.Invoice = res.data.data
+                    })
+                })
+                
+
+            } else {
+                this.$Message.warning("请上传图片文件")
+            }
         },
         upLoad (e) {
             let f = e.target.files[0]

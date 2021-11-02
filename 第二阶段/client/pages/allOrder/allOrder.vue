@@ -66,9 +66,13 @@
 .orderTotal {
 	text-align: right;
 }
-.blueColor {
+.orangeColor {
 	background: #FF9900;
 	color: #000;
+}
+.blueColor {
+	background: Navy;
+	color: #fff;
 }
 .copy {
 	margin-left: 20upx;
@@ -159,7 +163,8 @@
 					</view>
 				</view>
 				<view class="ju">
-					<view class="receive blueColor op" v-if="item.status==0" @click="addImg(item)">上传转账记录</view>
+					<view class="receive blueColor op" v-if="item.Invoice!==''" @click="downloadInvoice(item)">下載發票</view>
+					<view class="receive orangeColor op" v-if="item.status==0" @click="addImg(item)">上传转账记录</view>
 					<view @click="received(item)" 
 						v-if="item.status==2 || item.status==3 || item.status==4"
 						:class="['receive','op']">收货</view>
@@ -275,6 +280,10 @@
 					}
 				})
 				
+			},
+			downloadInvoice(item){
+				let URL = "https://acarepro.online/IMGPATH/bankin/invoice" + item.ID + ".jpg"
+				window.open(URL, '_blank');
 			},
 			addImg (item) {
 				let that = this

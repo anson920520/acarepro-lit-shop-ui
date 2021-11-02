@@ -7,6 +7,7 @@ window.baseURL = "https://acarepro.online/store/qiaoyumin/login/little/api/v1/"
 // axios.defaults.baseURL = "/local/"
 // window.baseURL = "http://192.168.1.115:5005/api/v1/"
 // window.baseURL = "http://139.9.194.151:9005/api/v1/"
+//window.baseURL = "http://127.0.0.1:5005/api/v1/"
 
 
 axios.defaults.baseURL = window.baseURL

@@ -87,6 +87,7 @@
                 }
             },
             "https" : false
-        }
+        },
+        "domain" : ""
     }
 }

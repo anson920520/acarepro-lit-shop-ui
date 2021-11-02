@@ -209,6 +209,12 @@
                                 <p>截屏</p>
                             </div>
                         </div>
+                         <div class="ju al" @click="toEdit(item)">
+                            <div>
+                                <p>上傳</p>
+                                <p>發票</p>
+                            </div>
+                        </div>
                     </div>
                     <br>
                     <p>下单日期: {{item.CreatedAt}}</p>
